@@ -3,22 +3,34 @@ package com.example.gogame.GoGame;
 import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GoGame.infoMessage.GoGameState;
 
 /* GoLocalGame
- * A class that knows how to play the game Go. The data in this class represent
- * the state of a game. The state represented by an instance of this class can
- * be a complete state (as might be used by the main Go game activity) or a partial
- * state as it would be seen from the perspective of an individual player.
- *
- * Each game of Go has a unique state definition, so this abstract base class
- * has little inherent functionality.
+ * The TTTLocalGame class for a simple tic-tac-toe game.  Defines and enforces
+ * the game rules; handles interactions with players.
  *
  * @author Brynn Harrington
  * @version October 22
  */
-public abstract class GoLocalGame extends LocalGame {
+public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
-    private static final String TAG = "LocalGoGame";
+    private static final String TAG = "GoLocalGame";
+
+    // mark the colors for the players and empty
+    public enum Color {
+        BLACK,
+        WHITE,
+        EMPTY
+    }
+    /* Constructor
+     * This method builds the Go local game instance.
+     * */
+    public GoLocalGame() {
+        // initialize with the superclass
+        super();
+        // create a new empty Go State object
+        super.state = new GoGameState();
+    }
 
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
