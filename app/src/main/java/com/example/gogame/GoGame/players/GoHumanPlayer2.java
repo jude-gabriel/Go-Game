@@ -32,4 +32,6 @@ public class GoHumanPlayer2 extends GameHumanPlayer implements View.OnClickListe
     public void setAsGui(GameMainActivity activity) {
 
     }
+
+
 }
