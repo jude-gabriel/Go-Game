@@ -4,6 +4,7 @@ import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 
@@ -99,7 +100,7 @@ public class GoLocalGame extends LocalGame {
 	@Override
 	protected void sendUpdatedStateTo(GamePlayer p) {
 		// make a copy of the state, and send it to the player
-		p.sendInfo(new TTTState(((TTTState) state)));
+		p.sendInfo(new GoGameState(((GoGameState) state)));
 
 	}
 
@@ -113,7 +114,9 @@ public class GoLocalGame extends LocalGame {
 	 * 		true iff the player is allowed to move
 	 */
 	protected boolean canMove(int playerIdx) {
-		return playerIdx == ((TTTState)state).getWhoseMove();
+		//Verify the player index is the current player
+		if (((GoGameState) state).getIsPlayer1() && playerIdx = 0) return true;
+		return (!(GoGameState) state).getIsPlayer1() && playerIdx = 1;
 	}
 
 	/**
@@ -128,14 +131,14 @@ public class GoLocalGame extends LocalGame {
 	protected boolean makeMove(GameAction action) {
 
 		// get the row and column position of the player's move
-		TTTMoveAction tm = (TTTMoveAction) action;
-		TTTState state = (TTTState) super.state;
+		GoMoveAction goMove = (GoMoveAction) action;
+		GoGameState state = (GoGameState) super.state;
 
-		int row = tm.getRow();
-		int col = tm.getCol();
+		int row = goMove.getX();
+		int col = goMove.getY();
 
 		// get the 0/1 id of our player
-		int playerId = getPlayerIdx(tm.getPlayer());
+		int playerId = getPlayerIdx(goMove.getPlayer());
 
 		// if that space is not blank, indicate an illegal move
 		if (state.getPiece(row, col) != ' ') {
@@ -143,7 +146,7 @@ public class GoLocalGame extends LocalGame {
 		}
 
 		// get the 0/1 id of the player whose move it is
-		int whoseMove = state.getWhoseMove();
+		int whoseMove = state.getIsPlayer1();
 
 		// place the player's piece on the selected square
 		state.setPiece(row, col, mark[playerId]);
