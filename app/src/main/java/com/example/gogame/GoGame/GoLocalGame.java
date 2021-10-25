@@ -10,7 +10,7 @@ import com.example.gogame.GoGame.infoMessage.GoGameState;
  * the game rules; handles interactions with players.
  *
  * @author Brynn Harrington
- * @version October 22
+ * @version October 24
  */
 public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
