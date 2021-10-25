@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 
 import com.example.gogame.GameFramework.utilities.FlashSurfaceView;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
+import com.example.gogame.R;
 
 public class GoSurfaceView extends FlashSurfaceView {
 
@@ -30,9 +32,9 @@ public class GoSurfaceView extends FlashSurfaceView {
      *
      * @param context - a reference to the activity this animation is run under
      */
-    public GoSurfaceView(Context context) {
+    public GoSurfaceView(Context context, AttributeSet attrs) {
 
-        super(context);
+        super(context,attrs);
         init();
 
         //Initialize board to draw
@@ -74,7 +76,8 @@ public class GoSurfaceView extends FlashSurfaceView {
     protected void onDraw(Canvas canvas){
         //Create a bitmap of the board image. Pass in resources and ID
         //Bitmap gameBoard = BitmapFactory.decodeResource(getResources(), );
-        Bitmap gameBoard = BitmapFactory.decodeResource(getResources(),R.);
+        Bitmap gameBoard;
+        gameBoard = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
         //Draw the board on the canvas
         canvas.drawBitmap(gameBoard, 0.f, 0.f, null);
 
@@ -95,6 +98,6 @@ public class GoSurfaceView extends FlashSurfaceView {
         canvas.drawCircle(610, 280, radius, whitePaint);
         canvas.drawCircle(500, 500, radius, whitePaint);
         canvas.drawCircle(830, 830, radius, whitePaint);
-    }
+    } //onDraw
 
 }
