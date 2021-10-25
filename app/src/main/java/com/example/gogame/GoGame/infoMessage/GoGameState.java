@@ -28,6 +28,8 @@ public class GoGameState extends GameState {
     private Stone[][] stoneCopiesSecond;    //Stores the board from one move ago
     private int totalMoves;                 //Total number of moves made in game
     private int numSkips;                   //Tracks whether two consecutive skips
+    private boolean p1Handicap;             //Tracks if Player 1 agrees to handicap
+    private boolean p2Handicap;             //Tracks if Player 2 agrees to handicap
 
     /**
      * GoGameState
@@ -63,6 +65,10 @@ public class GoGameState extends GameState {
         //Initialize the arrays that store former board positions
         stoneCopiesFirst = new Stone[boardSize][boardSize];
         stoneCopiesSecond = new Stone[boardSize][boardSize];
+
+        //Initialize handicap
+        p1Handicap = false;
+        p2Handicap = false;
     }
 
 
@@ -91,6 +97,8 @@ public class GoGameState extends GameState {
         this.numSkips = gs.numSkips;
         this.isPlayer1 = gs.isPlayer1;
         this.totalMoves = gs.totalMoves;
+        this.p1Handicap = gs.p1Handicap;
+        this.p2Handicap = gs.p2Handicap;
     }
 
 
@@ -609,6 +617,32 @@ public class GoGameState extends GameState {
 
         //Return the total Score
         return totalScore;
+    }
+
+
+    /**
+     * setHandicap
+     * Checks if both users agree on a handicap and places player 1's handicap
+     * if so.
+     *
+     * @author Jude Gabriel
+     */
+    public void setHandicap(){
+        if((isPlayer1 == true) && (totalMoves) == 0){
+            p1Handicap = true;
+            isPlayer1 = !isPlayer1;
+        }
+        if((isPlayer1 == false) && (totalMoves == 0)){
+            p2Handicap = true;
+            isPlayer1 = !isPlayer1;
+        }
+
+        if(p1Handicap && p2Handicap && totalMoves == 0){
+            gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
+            gameBoard[6][6].setStoneColor(Stone.StoneColor.WHITE);
+            p1Handicap = false;
+            p2Handicap = false;
+        }
     }
 }
 
