@@ -622,6 +622,7 @@ public class GoGameState extends GameState {
     /** isGameOver
      * Returns the current instance of game over.
      *
+     * @author Brynn Harrington
      * @return game over
      */
     public boolean isGameOver() { return gameOver; }
