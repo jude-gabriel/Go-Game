@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.example.gogame.GameFramework.GameMainActivity;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
@@ -34,6 +33,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         this.layoutId = layoutID;
     }
 
+
     @Override
     public void receiveInfo(GameInfo info) {
         if(goSurfaceView == null){
@@ -54,6 +54,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
     }
 
+
     @Override
     public void setAsGui(GameMainActivity activity) {
         activity.setContentView(layoutId);
@@ -71,9 +72,11 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         return myActivity.findViewById(R.id.top_gui_layout);
     }
 
+
     public void initAfterReady(){
         myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -104,6 +107,4 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         //Event finished
         return true;
     }
-
-
 }

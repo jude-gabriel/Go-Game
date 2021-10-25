@@ -4,6 +4,8 @@ import android.view.View;
 
 import com.example.gogame.GameFramework.GameMainActivity;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
+import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
+import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameHumanPlayer;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 
@@ -36,29 +38,51 @@ public class GoHumanPlayer2 extends GameHumanPlayer implements View.OnClickListe
         myActivity.setTitle("Go Game: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
     }
 
+
     @Override
     public void onClick(View v) {
 
     }
+
 
     @Override
     public View getTopView() {
         return null;
     }
 
+
     @Override
     public void receiveInfo(GameInfo info) {
+        if(info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
+            //Send error message
+        }
+        else if(!(info instanceof  GoGameState){
+            return;
+        }
+        else{
+            goGameState = (GoGameState) info;
 
+            //Do we need??????
+            setButtonLocationsAndColors();
+        }
     }
+
 
     @Override
     public void setAsGui(GameMainActivity activity) {
+        myActivity = activity;
 
+        activity.setContentView(R.layout.); //NEEDS THE VIEW
+
+        //NEED THESE METHODS
+        initializeButtons();
+        updatePlayerNames();
+
+        if(goGameState != null) {
+            receiveInfo(goGameState);
+        }
     }
 
 
-
     //Will need a method to get the players score and update it
-
-
 }
