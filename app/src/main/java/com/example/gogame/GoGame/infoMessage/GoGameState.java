@@ -627,6 +627,14 @@ public class GoGameState extends GameState {
      */
     public boolean isGameOver() { return gameOver; }
 
+    /** getIsPlayer1
+     * Returns whether it is player 1's turn or not
+     *
+     * @author Brynn Harrington
+     * @return current player
+     */
+    public boolean getIsPlayer1() { return isPlayer1; }
+
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap

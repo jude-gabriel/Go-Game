@@ -5,6 +5,7 @@ import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
+import com.example.gogame.GoGame.infoMessage.Stone;
 
 /* GoLocalGame
  * The TTTLocalGame class for a simple tic-tac-toe game.  Defines and enforces
@@ -41,6 +42,7 @@ public class GoLocalGame extends LocalGame {
      *
 	 * @return - a message that tells who has won the game, or null if the
      * game is not over
+	 * TODO: Verify the function works
 	 */
 	@Override
 	protected String checkIfGameOver()
@@ -54,36 +56,34 @@ public class GoLocalGame extends LocalGame {
 
 		GoGameState state = (GoGameState) super.state;
 
-		// check if the player forfeited
-        if (state.)
+		// check if the game is over, if its not return null
+        if (!state.isGameOver()) return null;
 
-			////////////////////////////////////////////////////////////
-			// At this point, if any of our three variables is non-blank
-			// then we have found a winner.
-			////////////////////////////////////////////////////////////
-
-			// if we find a winner, indicate such by setting 'resultChar'
-			// to the winning mark.
-			if (rowToken != ' ') resultChar = rowToken;
-			else if (colToken != ' ') resultChar = colToken;
-			else if (diagToken != ' ') resultChar = diagToken;
+        // determine the current player color
+		Stone.StoneColor currStoneColor;
+		Stone.StoneColor oppStoneColor;
+		if (state.getIsPlayer1()) {
+			currStoneColor = Stone.StoneColor.BLACK;
+			oppStoneColor = Stone.StoneColor.WHITE;
+		}
+		else {
+			currStoneColor = Stone.StoneColor.WHITE;
+			oppStoneColor = Stone.StoneColor.BLACK;
 		}
 
-		// if resultChar is blank, we found no winner, so return null,
-		// unless the board is filled up. In that case, it's a cat's game.
-		if (resultChar == ' ') {
-			if  (moveCount >= 9) {
-				// no winner, but all 9 spots have been filled
-				return "It's a cat's game.";
-			}
-			else {
-				return null; // no winner, but game not over
-			}
+        // if game is over, then determine the player's scores
+		int currPlayerScore = state.calculateScore(currStoneColor, oppStoneColor);
+		int oppPlayerScore = state.calculateScore(oppStoneColor, currStoneColor);
+
+		// determine who the winner is
+		int gameWinner = -1;
+		if (currPlayerScore > oppPlayerScore)
+		{
+			if (currStoneColor == Stone.StoneColor.BLACK) gameWinner = 0;
+			else gameWinner = 1;
 		}
 
-		// if we get here, then we've found a winner, so return the 0/1
-		// value that corresponds to that mark; then return a message
-		int gameWinner = resultChar == mark[0] ? 0 : 1;
+		// return the winner of the game
 		return playerNames[gameWinner]+" is the winner.";
 	}
 
