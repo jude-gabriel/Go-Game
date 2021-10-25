@@ -619,6 +619,12 @@ public class GoGameState extends GameState {
         return totalScore;
     }
 
+    /** isGameOver
+     * Returns the current instance of game over.
+     *
+     * @return game over
+     */
+    public boolean isGameOver() { return gameOver; }
 
     /**
      * setHandicap
@@ -626,6 +632,7 @@ public class GoGameState extends GameState {
      * if so.
      *
      * @author Jude Gabriel
+     * @author Brynn Harrington
      */
     public void setHandicap(){
         if((isPlayer1 == true) && (totalMoves) == 0){
