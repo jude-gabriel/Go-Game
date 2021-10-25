@@ -23,6 +23,12 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import com.example.gogame.GameFramework.Game;
+import com.example.gogame.GameFramework.GameMainActivity;
+import com.example.gogame.GameFramework.infoMessage.TimerInfo;
+import com.example.gogame.GameFramework.utilities.GameTimer;
+import com.example.gogame.GameFramework.utilities.Tickable;
+
 /**
  * class GameHumanPlayer
  *
