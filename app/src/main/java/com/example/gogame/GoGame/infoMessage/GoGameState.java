@@ -619,6 +619,27 @@ public class GoGameState extends GameState {
         return totalScore;
     }
 
+    /** isGameOver
+     * Returns the current instance of game over.
+     *
+     * @author Brynn Harrington
+     * @return game over
+     */
+    public boolean isGameOver() { return gameOver; }
+
+    /** getPlayer
+     * Returns whether it is player 1's turn or not
+     *
+     * @author Brynn Harrington
+     * @return current player
+     */
+    public int getPlayer() {
+        // if is player 1, return index 0
+        if (isPlayer1) return 0;
+
+        // otherwise return player 2, index 1
+        else return 1;
+    }
 
     /**
      * setHandicap
@@ -626,13 +647,14 @@ public class GoGameState extends GameState {
      * if so.
      *
      * @author Jude Gabriel
+     * @author Brynn Harrington
      */
     public void setHandicap(){
-        if((isPlayer1 == true) && (totalMoves) == 0){
+        if((isPlayer1) && (totalMoves) == 0){
             p1Handicap = true;
             isPlayer1 = !isPlayer1;
         }
-        if((isPlayer1 == false) && (totalMoves == 0)){
+        if((!isPlayer1) && (totalMoves == 0)){
             p2Handicap = true;
             isPlayer1 = !isPlayer1;
         }
