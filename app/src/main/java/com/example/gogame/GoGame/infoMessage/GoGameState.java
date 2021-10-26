@@ -641,6 +641,30 @@ public class GoGameState extends GameState {
         else return 1;
     }
 
+
+    /**
+     * Getter for player 1's score
+     *
+     * @return  player 1's score
+     *
+     * @author Jude Gabriel
+     */
+    public int getPlayer1Score(){
+        return player1Score;
+    }
+
+
+    /**
+     * Getter for player 2's turn
+     *
+     * @return  Player 2's score
+     *
+     * @author Jude Gabriel
+     */
+    public int getPlayer2Score(){
+        return player2Score;
+    }
+
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
@@ -666,6 +690,8 @@ public class GoGameState extends GameState {
             p2Handicap = false;
         }
     }
+
+
 }
 
 

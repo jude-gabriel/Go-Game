@@ -1,10 +1,12 @@
 package com.example.gogame.GoGame.players;
 
 import android.graphics.Color;
-import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
+
 import com.example.gogame.GameFramework.GameMainActivity;
+import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
@@ -17,9 +19,16 @@ import com.example.gogame.R;
 
 public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListener {
 
+    //Variables used to reference widgets that will be modified during play
+    private TextView player1ScoreText   = null;
+    private TextView player2ScoreText   = null;
+    private TextView playerTurnText     = null;
+    private TextView validMoveText      = null;
+    private TextView timerText          = null;
+
+
     //Tag for logging
     private static final String TAG = "GoHumanPlayer1";
-
 
     //Surface view
     private GoSurfaceView goSurfaceView;
@@ -28,18 +37,60 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private int layoutId;
 
 
+    /**
+     * Constructor for GoHumanPlayer1
+     *
+     * @param name      the name of the player
+     * @param layoutID  id for the layout
+     *
+     * @author Jude Gabriel
+     */
     public GoHumanPlayer1(String name, int layoutID){
         super(name);
         this.layoutId = layoutID;
     }
 
-
+    /**
+     * Has player receive the current game info
+     * @param info the current game info
+     *
+     * @author Jude Gabriel
+     *
+     * TODO: This is where we will change all the view objects and update them
+     * to reflect the stuff we need to show. i.e. timer, score etc. Check
+     * PigHumanplayer for reference
+     */
     @Override
     public void receiveInfo(GameInfo info) {
+        int p1Score;
+        int p2Score;
+        int elapsedMin;
+        int elapsedSec;
+        int playerTurn;
+
+
+        /** Update the view objects?? **/
+        if(info instanceof GoGameState){
+            p1Score = ((GoGameState) info).getPlayer1Score();
+            p2Score = ((GoGameState) info).getPlayer2Score();
+            playerTurn = ((GoGameState) info).getPlayer();
+
+            player1ScoreText.setText("Player 1 Score: " + p1Score);
+            player1ScoreText.setText("Player 2 Score: " + p2Score);
+            playerTurnText.setText(allPlayerNames[playerTurn] "'s Turn!");
+
+            //What should be done for the timer????
+        }
+
+
+        //Error check if the surface view exists
         if(goSurfaceView == null){
             return;
         }
 
+        /* Check if the move was valid. If it wasn't produce an error message.
+            if it is set the current state and then call invalidate.
+         */
         if(info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
             goSurfaceView.flash(Color.RED, 1000);
         }
@@ -47,16 +98,32 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             return;
         }
         else{
-            goSurfaceView.setState((GoGameState)info);
+            goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
             goSurfaceView.invalidate();
             Logger.log(TAG, "receiving");
         }
 
     }
 
-
+    /**
+     * Updates the activity GUI to be the player
+     *
+     * @param activity the current activity
+     *
+     * @author Jude Gabriel
+     *
+     * TODO: Gather all buttons and texts here
+     */
     @Override
     public void setAsGui(GameMainActivity activity) {
+
+        //initialize the widget reference members
+        this.player1ScoreText = (TextView)activity.findViewById(R.id.player1ScoreText);
+        this.player2ScoreText = (TextView)activity.findViewById(R.id.player2ScoreText);
+        this.playerTurnText = (TextView)activity.findViewById(R.id.playerTurnText);
+        this.validMoveText = (TextView)activity.findViewById(R.id.validMovetext);
+        this.timerText = (TextView)activity.findViewById(R.id.elapsedTimeText);
+
         activity.setContentView(layoutId);
 
         //SURFACE VIEW DOES NOT EXIST YET
@@ -66,6 +133,13 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     }
 
 
+    /**
+     * Getter for the GUI's top view
+     *
+     * @return the GUI's top view
+     *
+     * @author Jude Gabriel
+     */
     @Override
     public View getTopView() {
         //DOESN'T EXIST YET
@@ -73,13 +147,30 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     }
 
 
+    /**
+     * Performs all initialization that needs to be done after all starting
+     * info is received
+     *
+     * @author Jude Gabriel
+     */
     public void initAfterReady(){
         myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
     }
 
 
+    /**
+     * Detects the users move and calls the appropriate methods to alter the game
+     * board
+     * @param v         the current view
+     * @param event     the touch event we are handling
+     * @return          true after the event has been handled
+     *
+     * @author Jude Gabriel
+     */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        int[] xyLoc = null;
+
         //Check if the action has ended
         if(event.getAction() != MotionEvent.ACTION_UP){
             return true;
@@ -88,15 +179,15 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         //Get the coordinates of a press-location and map it to a liberty
         int x = (int) event.getX();
         int y = (int) event.getY();
-        Point p = goSurfaceView.mapPixelToLiberty(x, y);
+        xyLoc = goSurfaceView.findStone(x, y);  //NEED FIND STONE FROM NATALIE
 
         //Check if the location was not valid and flash screen if so
-        if(p == null){
+        if(xyLoc == null || xyLoc[0] == -1 || xyLoc[1] == -1){
             goSurfaceView.flash(Color.RED, 1000);
         }
         else{
             //Create a new action and send it to the game
-            GoMoveAction action = new GoMoveAction(this, p.x, p.y);
+            GoMoveAction action = new GoMoveAction(this, xyLoc[0], xyLoc[1]);
             Logger.log("onTouch", "Human player sending Go Move Action");
             game.sendAction(action);
 

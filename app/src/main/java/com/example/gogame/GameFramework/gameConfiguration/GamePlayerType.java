@@ -1,6 +1,6 @@
 package com.example.gogame.GameFramework.gameConfiguration;
 
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
+import com.example.gogame.GameFramework.players.GamePlayer;
 
 /**
  * class GamePlayerType

@@ -1,7 +1,7 @@
 package com.example.gogame.GameFramework.players;
 
-import edu.up.cs301.game.GameFramework.GameMainActivity;
-import edu.up.cs301.game.GameFramework.infoMessage.GameInfo;
+import com.example.gogame.GameFramework.GameMainActivity;
+import com.example.gogame.GameFramework.infoMessage.GameInfo;
 
 /**
  * A player who plays a (generic) game. Each class that implements a player for
