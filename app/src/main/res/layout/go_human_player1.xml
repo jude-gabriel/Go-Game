@@ -259,6 +259,13 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#000000"
                     android:text="SKIP TURN" />
+
+                <Button
+                    android:id="@+id/forfeitButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#000000"
+                    android:text="FORFEIT" />
             </LinearLayout>
         </LinearLayout>
 

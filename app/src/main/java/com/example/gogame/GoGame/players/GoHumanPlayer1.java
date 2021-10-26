@@ -6,18 +6,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.gogame.GameFramework.GameMainActivity;
-import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameHumanPlayer;
 import com.example.gogame.GameFramework.utilities.Logger;
+import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.views.GoSurfaceView;
 import com.example.gogame.R;
 
-public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListener {
+public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListener, View.OnClickListener {
 
     //Variables used to reference widgets that will be modified during play
     private TextView player1ScoreText   = null;
@@ -197,5 +198,34 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //Event finished
         return true;
+    }
+
+
+    /**
+     * Handler for click events
+     *
+     * @param v the current view
+     *
+     * @author Jude Gabriel
+     */
+    @Override
+    public void onClick(View v) {
+        //Get the ID of the object clicked
+        int viewID = v.getId();
+        switch (viewID){
+
+            //Case 1: It was the skip turn button, send a skip turn action
+            case R.id.skipTurnButton:
+                game.sendAction(new GoSkipTurnAction(this));
+                break;
+
+            //Case 2: It was the forfeit button
+            case R.id.forfeitButton:
+                    game.sendAction(new GoForfeitAction(this));
+                    break;
+            default:
+                return;
+        }
+        return;
     }
 }
