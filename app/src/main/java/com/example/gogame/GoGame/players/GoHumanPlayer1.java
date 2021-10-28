@@ -12,6 +12,7 @@ import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameHumanPlayer;
 import com.example.gogame.GameFramework.utilities.Logger;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
@@ -78,7 +79,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
             player1ScoreText.setText("Player 1 Score: " + p1Score);
             player1ScoreText.setText("Player 2 Score: " + p2Score);
-            playerTurnText.setText(allPlayerNames[playerTurn] "'s Turn!");
+            playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
 
             //What should be done for the timer????
         }
@@ -128,7 +129,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         activity.setContentView(layoutId);
 
         //SURFACE VIEW DOES NOT EXIST YET
-        goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.surfaceView);
+        goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.goSurfaceView);
 
         Logger.log("set listener", "onTouch");
     }
@@ -219,13 +220,21 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 game.sendAction(new GoSkipTurnAction(this));
                 break;
 
-            //Case 2: It was the forfeit button
+            //Case 2: It was the forfeit button, send a forfeit action
             case R.id.forfeitButton:
                     game.sendAction(new GoForfeitAction(this));
                     break;
+
+            //Case 3: It was the handicap button, send a handicap action
+            case R.id.handicapButton:
+                game.sendAction(new GoHandicapAction(this));
+
+            //If this case is hit, it was not one of the buttons that was hit. Exit method
             default:
                 return;
         }
+
+        //Error if we hit here
         return;
     }
 }
