@@ -11,10 +11,15 @@ import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameHumanPlayer;
 import com.example.gogame.GameFramework.utilities.Logger;
+import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
+import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
+import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
+import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.views.GoSurfaceView;
 import com.example.gogame.R;
@@ -100,7 +105,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             return;
         }
         else{
-            goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
+            //goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
             goSurfaceView.invalidate();
             Logger.log(TAG, "receiving");
         }
@@ -185,6 +190,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //Check if the location was not valid and flash screen if so
         if(xyLoc == null || xyLoc[0] == -1 || xyLoc[1] == -1){
+            validMoveText.setText("INVALID MOVE");
+            validMoveText.setBackgroundColor(Color.RED);
             goSurfaceView.flash(Color.RED, 1000);
         }
         else{
@@ -192,6 +199,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             GoMoveAction action = new GoMoveAction(this, xyLoc[0], xyLoc[1]);
             Logger.log("onTouch", "Human player sending Go Move Action");
             game.sendAction(action);
+            validMoveText.setText("VALID MOVE");
+            validMoveText.setBackgroundColor(Color.GREEN);
 
             //Update the surface view
             goSurfaceView.invalidate();
@@ -222,12 +231,38 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
             //Case 2: It was the forfeit button, send a forfeit action
             case R.id.forfeitButton:
-                    game.sendAction(new GoForfeitAction(this));
-                    break;
+                game.sendAction(new GoForfeitAction(this));
+                break;
 
             //Case 3: It was the handicap button, send a handicap action
             case R.id.handicapButton:
                 game.sendAction(new GoHandicapAction(this));
+                break;
+
+            //Case 4: It was the quit game button, send a quit game action
+            case R.id.quitGameButton:
+                game.sendAction(new GoQuitGameAction(this));
+                break;
+
+            //Case 5: It was the dumbAi button, send a dumbAi action
+            case R.id.dumbAIButton:
+                game.sendAction(new GoDumbAIAction(this));
+                break;
+
+            //Case 6: It was the smartAi button, send a smartAI action
+            case R.id.smartAIButton:
+                game.sendAction(new GoSmartAIAction(this));
+                break;
+
+            //Case 7: It was the 2-player button, send a 2-player action
+            case R.id.twoPlayerButton:
+                game.sendAction(new GoTwoPlayerAction(this));
+                break;
+
+            //Case 8: It was the network play button, send a network play action
+            case R.id.networkButton:
+                game.sendAction(new GoNetworkPlayAction(this));
+                break;
 
             //If this case is hit, it was not one of the buttons that was hit. Exit method
             default:
