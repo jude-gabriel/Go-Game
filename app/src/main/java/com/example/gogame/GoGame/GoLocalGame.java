@@ -118,22 +118,41 @@ public class GoLocalGame extends LocalGame {
 	/**
 	 * Makes a move on behalf of a player.
 	 *
-	 * @param action - The move that the player has sent to the game
+	 * @param action - The action that the player has sent to the game
 	 * @return - Tells whether the move was a legal one.
 	 * //TODO - testing
 	 */
-	@Override
+	//@Override /// unsure if needed // TODO
 	protected boolean makeMove(GameAction action) {
+		// ensure the moveAction is not null
+		if (action == null ) return false;
 
-		// get the row and column position of the player's move
-		GoMoveAction goMove = (GoMoveAction) action;
+		// get the current game state by calling the super class instructor
 		GoGameState state = (GoGameState) super.state;
 
-		int row = goMove.getX();
-		int col = goMove.getY();
+		// ensure the state is not null
+		assert state != null;
+
+		// determine the action to perform based on the action provided
+		// move action
+		if (action instanceof GoMoveAction) {
+			// get the row and column position of the player's move
+			int row = ((GoMoveAction) action).getX();
+			int col = ((GoMoveAction) action).getY();
+
+			// get the ID of the current player
+			int playerID = getPlayerIdx(action.getPlayer());
+
+			// place the player's stone at the selected liberty if possible
+			return state.playerMove(row, col);
+		}
+
+		//
+/*				int row = ((GoMoveAction) action).getX();
+		int col = ((GoMoveAction) action).getY();
 
 		// get the 0/1 id of our player
-		int playerId = getPlayerIdx(goMove.getPlayer());
+		int playerId = getPlayerIdx(((GoMoveAction) action).getPlayer());
 
 		// if that space is not blank, indicate an illegal move
 		if (state.isValidLocation(row, col)) return false;
@@ -146,15 +165,25 @@ public class GoLocalGame extends LocalGame {
 		state.playerMove(row, col);
 
 		// return true, indicating the it was a legal move
-		return true;
+		return true;*/
+
+		// otherwise, invalid return false
+		return false;
 	}
 
 	//TESTING
 
 	public int whoWon(){
+		// get the string for game over
 		String gameOver = checkIfGameOver();
-		if(gameOver == null || gameOver.equals("It's a cat's game.")) return -1;
+
+		// if null, return -1
+		if(gameOver == null) return -1;
+
+		// if game over, return 0
 		if(gameOver.equals(playerNames[0]+" is the winner.")) return 0;
+
+		// otherwise return 1
 		return 1;
 	}
 }
