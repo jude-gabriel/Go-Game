@@ -653,6 +653,16 @@ public class GoGameState extends GameState {
         return player1Score;
     }
 
+    /**
+     * Getter for board size
+     *
+     * @return  the current board size
+     *
+     * @author Brynn Harrington
+     */
+    public int getBoardSize(){
+        return boardSize;
+    }
 
     /**
      * Getter for player 2's turn
