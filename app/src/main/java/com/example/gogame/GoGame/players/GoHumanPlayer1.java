@@ -193,6 +193,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             validMoveText.setText("INVALID MOVE");
             validMoveText.setBackgroundColor(Color.RED);
             goSurfaceView.flash(Color.RED, 1000);
+
+            goSurfaceView.invalidate();
         }
         else{
             //Create a new action and send it to the game

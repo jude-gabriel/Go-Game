@@ -692,6 +692,123 @@ public class GoGameState extends GameState {
     }
 
 
+    pubic boolean equals(Object object) {
+        if (!(object instanceof GoGameState)) {
+            return false;
+        }
+
+        GoGameState goGameState = (GoGameState) object;
+
+        for(int i = 0; i < boardSize; i++){
+            for(int j = 0; j < boardSize; j++){
+                if(this.gameBoard[i][j].getStoneColor() != goGameState.gameBoard[i][j].getStoneColor()){
+                    return false;
+                }
+            }
+        }
+
+        if(this.getPlayer() != goGameState.getPlayer()){
+            return false;
+        }
+
+        if(this.getPlayer1Score() != goGameState.getPlayer2Score()){
+            return false;
+        }
+
+        if(this.getPlayer2Score() != goGameState.getPlayer2Score()){
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+
+
+
+
+
+
+    ///////// HELPER METHODS FOR TESTING //////////
+
+    /** testCaptures
+     * Used to test if captures works
+     *
+     * @author Jude Gabriel
+     */
+    public void testCapture() {
+        //Populate the board with stones
+        gameBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[0][1].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[0][2].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[1][0].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
+        gameBoard[1][2].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[2][0].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[2][1].setStoneColor(Stone.StoneColor.BLACK);
+    }
+
+
+    /**
+     * testRepeatedPositions
+     * Used to test a player does not repeat the past position
+     *
+     * @author Brynn Harrington
+     * @author Jude Gabriel
+     */
+    public void testRepeatedPosition() {
+
+        //Set up the triangle of black stones
+        gameBoard[0][1].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[1][0].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[1][2].setStoneColor(Stone.StoneColor.BLACK);
+
+
+        //Set up the triangle of whiteStones
+        gameBoard[0][2].setStoneColor(Stone.StoneColor.WHITE);
+        gameBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
+        gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
+        gameBoard[1][3].setStoneColor(Stone.StoneColor.WHITE);
+    }
+
+
+    /**
+     * testForfeit
+     * Used to test if forfeit works
+     *
+     * @author Brynn Harrington
+     * @author Jude Gabriel
+     */
+    public void testForfeit() {
+        gameOver = false;
+
+        // dummy values for the board
+        gameBoard[0][3].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[2][0].setStoneColor(Stone.StoneColor.BLACK);
+        gameBoard[1][3].setStoneColor(Stone.StoneColor.WHITE);
+        gameBoard[0][0].setStoneColor(Stone.StoneColor.WHITE);
+
+        // forfeit
+        this.forfeit();
+    }
+
+
+    /**
+     * Used to reset the board in testing
+     *
+     * @author Jude Gabriel
+     *
+     */
+    public void resetStones(){
+        for(int i = 0; i < boardSize; i++){
+            for(int j = 0; j < boardSize; j++){
+                gameBoard[i][j].setStoneColor(Stone.StoneColor.NONE);
+            }
+        }
+    }
+}
+
 }
 
 
