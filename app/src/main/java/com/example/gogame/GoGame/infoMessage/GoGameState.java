@@ -675,6 +675,17 @@ public class GoGameState extends GameState {
         return player2Score;
     }
 
+        /**
+     * Getter for board
+     *
+     * @return  the current board
+     *
+     * @author Brynn Harrington
+     */
+    public Stone[][] getGameBoard(){
+        return gameBoard;
+    }
+
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap

@@ -137,7 +137,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}
 		}*/
 	}// receiveInfo
-	/*
+
+	/**
 	 * getter function for the winning score
 	 *
 	 * @return  If a winning move was found, a Point object containing
@@ -184,36 +185,91 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		else return 0;
 	}//evaluateBoard
 
-	/*
-	 * flattens the 2D board (avoids using a deep copy)
+
+	/**
+	 * calculates the board score of the specified player
+	 * (i.e. How good a player's general standing on the board by considering how many
+	 * consecutive 2's, 3's, 4's it has, how many of them are blocked etc...)
 	 *
-	 * @param state  the state of the game
-	 * @param theStone  the stone we're trying to place ('X' or 'O') for a
-	 *   win
-	 * @return  If a winning move was found, a Point object containing
-	 *   the coordinates.  If no winning move was found, null.
+	 * @param goGS  the current state of the game
+	 *
+	 * @return  the board score for the specified player
 	 */
-	//private ?? flattenBoard(GoGameState state, char theStone) {
+	public int getScore(GoGameState goGS) {
+		// calculate the score
+		// TODO - come back to this with evaluation functions
+		return  0;
+	}
 
 	/*
-	 * un-flattens the 2D board
+	 * calculates the board score in the horizontal direction
 	 *
-	 * @param state  the state of the game
-	 * @param flatStone  the stone we're trying to place ('X' or 'O') for a
-	 *   win
-	 * @return  If a winning move was found, a Point object containing
-	 *   the coordinates.  If no winning move was found, null.
-	 */
-	//private ??? unflattenStone (GoGameState state, char flatStone)
-	/**
-	 * determine the neighbors of a
+	 * @param goGS  the current state of the game
+	 * @param forPlayer the current player to evaluate the score for
+	 * @param turn the current turn for the players
 	 *
-	 * @param state  the state of the game
-	 * @param theStone  the stone we're trying to place ('X' or 'O') for a
-	 *   win
-	 * @return If a winning move was found, a Point object containing
-	 *   the coordinates.  If no winning move was found, null.
+	 * @return  the horizontal board score for the specified player
 	 */
+	public int evaluateHorizontalScore(GoGameState goGS, boolean forPlayer, boolean turn)
+	{
+		int consecutive = 0;
+		// blocks variable is used to check if a consecutive stone set is blocked by the opponent or
+		// the board border. If the both sides of a consecutive set is blocked, blocks variable will be 2
+
+		// If only a single side is blocked, blocks variable will be 1, and if both sides of the consecutive
+		// set is free, blocks count will be 0.
+
+		// By default, first cell in a row is blocked by the left border of the board.
+		// If the first cell is empty, block count will be decremented by 1.
+		// If there is another empty cell after a consecutive stones set, block count will again be
+		// decremented by 1.
+		int blocks = 2;
+		int score = 0;
+
+		// determine the board size (row = col so will be the same)
+		int boardSize = goGS.getBoardSize();
+
+		// iterate through the rows
+		for (int row = 0; row < boardSize; row++) {
+
+			// iterate through each index in the row
+			for (int index = 0; index < boardSize; index++) {
+
+				// get the current game board
+				Stone[][] gameBoard = goGS.getGameBoard();
+				//TODO determine how to verify which player it is
+				if (gameBoard[row][index] == forPlayer)
+
+				// check if the current index is empty
+				if (gameBoard[row][index].getStoneColor() == Stone.StoneColor.NONE) {
+					// verify there were consecutive stones before this empty cell
+					if (consecutive > 0) {
+						// the consecutive set is not blocked by the opponent so
+						// decrement block count
+						blocks--;
+						// get the consecutive set score
+						//TODO -  create function
+						//score += getConsecutiveScore(consecutive, block, forPlayer == turn);
+
+						// reset the consecutive stone count
+						consecutive = 0;
+
+						// since the current cell is empty, the next consecutive set will have
+						// at most 1 blocked side
+						blocks = 1;
+					}
+					// no consecutive stones - current cell is empty so next consecutive set will
+					// have at most 1 blocked side
+					else blocks = 1;
+				}
+				// if the cell is occupied by the opponent, check if there were any consecutive stones
+				// are before this empty cell
+				else if ()
+			}
+
+
+		}
+	}
 
 	/**
 	 * finds a winning move for a player
