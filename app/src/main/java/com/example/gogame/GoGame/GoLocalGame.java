@@ -30,7 +30,18 @@ public class GoLocalGame extends LocalGame {
         // initialize with the superclass
         super();
         // create a new empty Go State object
-        super.state = new GameState();
+        super.state = new GoGameState();
+    }
+
+    /**
+	 * Copy Constructor
+     * This method copies the the Go local game instance.
+     */
+    public GoLocalGame(GoGameState gameState) {
+        // initialize with the superclass
+        super();
+        // create a new empty Go State object
+        super.state = new GoGameState(gameState);
     }
 
     /**
