@@ -4,7 +4,9 @@ import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 
@@ -134,20 +136,26 @@ public class GoLocalGame extends LocalGame {
 		assert state != null;
 
 		// determine the action to perform based on the action provided
+		// handicap action
+		if (action instanceof GoHandicapAction) return state.setHandicap();
+
 		// move action
-		if (action instanceof GoMoveAction) {
+		else if (action instanceof GoMoveAction) {
 			// get the row and column position of the player's move
 			int row = ((GoMoveAction) action).getX();
 			int col = ((GoMoveAction) action).getY();
 
 			// get the ID of the current player
-			int playerID = getPlayerIdx(action.getPlayer());
+			//TODO determine if necessary
+			//int playerID = getPlayerIdx(action.getPlayer());
 
 			// place the player's stone at the selected liberty if possible
 			return state.playerMove(row, col);
 		}
 
-		//
+		// skip turn action
+		else if (action instanceof GoSkipTurnAction) return state.skipTurn();
+
 /*				int row = ((GoMoveAction) action).getX();
 		int col = ((GoMoveAction) action).getY();
 
@@ -168,7 +176,7 @@ public class GoLocalGame extends LocalGame {
 		return true;*/
 
 		// otherwise, invalid return false
-		return false;
+		else return false;
 	}
 
 	//TESTING
