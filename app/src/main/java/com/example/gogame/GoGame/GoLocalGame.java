@@ -4,6 +4,7 @@ import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
@@ -124,8 +125,8 @@ public class GoLocalGame extends LocalGame {
 	 * @return - Tells whether the move was a legal one.
 	 * //TODO - testing
 	 */
-	//@Override /// unsure if needed // TODO
-	protected boolean makeMove(GameAction action) {
+	@Override
+	protected boolean takeAction(GameAction action) {
 		// ensure the moveAction is not null
 		if (action == null ) return false;
 
@@ -156,30 +157,15 @@ public class GoLocalGame extends LocalGame {
 		// skip turn action
 		else if (action instanceof GoSkipTurnAction) return state.skipTurn();
 
-/*				int row = ((GoMoveAction) action).getX();
-		int col = ((GoMoveAction) action).getY();
-
-		// get the 0/1 id of our player
-		int playerId = getPlayerIdx(((GoMoveAction) action).getPlayer());
-
-		// if that space is not blank, indicate an illegal move
-		if (state.isValidLocation(row, col)) return false;
-
-		// get the 0/1 id of the player whose move it is
-		int whoseMove = state.getPlayer();
-
-		// place the player's piece on the selected liberty
-		// NOTE: the player's turn will be switched inside this function
-		state.playerMove(row, col);
-
-		// return true, indicating the it was a legal move
-		return true;*/
+		// forfeit action
+		else if (action instanceof GoForfeitAction) return state.forfeit();
 
 		// otherwise, invalid return false
 		else return false;
 	}
 
 	//TESTING
+
 
 	public int whoWon(){
 		// get the string for game over

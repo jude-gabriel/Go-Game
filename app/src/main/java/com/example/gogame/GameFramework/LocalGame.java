@@ -297,7 +297,7 @@ public abstract class LocalGame implements Game, Tickable {
 
         // attempt to make the move; if the move was not a legal one,
         // send the player a message to that effect
-        if (!makeMove(action)) {
+        if (!takeAction(action)) {
             player.sendInfo(new IllegalMoveInfo());
             sendUpdatedStateTo(player);
             return;
@@ -379,7 +379,7 @@ public abstract class LocalGame implements Game, Tickable {
      * @return
      * 			Tells whether the move was a legal one.
      */
-    protected abstract boolean makeMove(GameAction action);
+    protected abstract boolean takeAction(GameAction action);
 
     /**
      * sends a given action to the Game object
