@@ -41,7 +41,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	//char EMPTY = '.';
 	//int EMPTY_BOARD = EMPTY * N * N;
 	// store the current game state
-	private GoGameState goGS;
+	//private GoGameState goGS;
 
 	// store the winning score (storing with a score impossible to begin)
 	private static final int winningScore = 1000000000;
@@ -143,10 +143,47 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @return  If a winning move was found, a Point object containing
 	 *   the coordinates.  If no winning move was found, null.
 	 */
+	public static int getWinningScore() { return winningScore; }//getWinningScore
 
-	public static int getWinningScore() {
-		return winningScore;
-	}
+	/**
+	 * calculates the relative score of the computer player against
+	 * the other player (i.e. how likely the other player is to win
+	 * the game before the computer player_
+	 *
+	 * @param goGS the current state of the game
+	 * @param isPlayer1 the current playerID
+	 *
+	 * @return the score to be used in the Minimax algorithm
+	 */
+	public double evaluateBoard(GoGameState goGS, boolean isPlayer1) {
+		// get the current player
+		int player0Score = goGS.getPlayer1Score();
+		int player1Score = goGS.getPlayer1Score();
+
+		// determine if current player is black
+		if (goGS.getPlayer() == this.playerNum && this.playerNum == 0)
+		{
+			// ensure the score for black is not 0 for division
+			if (player0Score == 0) player0Score = 1;
+
+			// return the relative score of white against black
+			return (double) (player1Score / player0Score);
+		}
+
+		// otherwise, the current player is white
+		else if (goGS.getPlayer() == this.playerNum && this.playerNum == 1)
+		{
+			// ensure the score for black is not 0 for division
+			if (player0Score == 0) player0Score = 1;
+
+			// return the relative score of black against white
+			return (double) (player1Score / player0Score);
+		}
+
+		// otherwise return 0
+		else return 0;
+	}//evaluateBoard
+
 	/*
 	 * flattens the 2D board (avoids using a deep copy)
 	 *
