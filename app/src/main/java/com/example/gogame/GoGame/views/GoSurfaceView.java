@@ -91,7 +91,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         //offset each stone to place it directly on a liberty
         for (int i = 0; i < state.getBoardSize(); i++){
             for (int j = 0; j < state.getBoardSize(); j++){
-                stonesArray[i][j].draw((j * 350) + 250, (i * 350) + 20);
+                stonesArray[i][j].draw(canvas,(j * 350) + 250, (i * 350) + 20);
 
             }
         }
