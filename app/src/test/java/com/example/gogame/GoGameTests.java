@@ -2,7 +2,7 @@ package com.example.gogame;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 import com.example.gogame.GameFramework.Game;
 import com.example.gogame.GameFramework.actionMessage.ReadyAction;
 import com.example.gogame.GameFramework.players.GamePlayer;
@@ -12,25 +12,33 @@ import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
-
 import android.view.View;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-/** HOW DO I USE THESE IMPORTS?? **/
-//import org.robolectric.Robolectric;
-//import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 
+@RunWith(RobolectricTestRunner.class)
 public class GoGameTests {
 
+    //Create a main activity instance variable
     public GoMainActivity goMainActivity;
 
+
+    /**
+     * Sets up our tests for the Go Game functionality
+     *
+     * @throws Exception
+     *
+     * TODO: Verify the game gets set up correctly with this test
+     *
+     * @author Jude Gabriel
+     */
     @Before
     public void setup() throws Exception{
-       // goMainActivity = Robolectric.buildActivity(GoMainActivity.class).create().resume().get();
+        goMainActivity = Robolectric.buildActivity(GoMainActivity.class).create().resume().get();
     }
 
 
@@ -273,12 +281,24 @@ public class GoGameTests {
         assertTrue("Copy constructor did not produce equal state", goGameState.equals(copyState));
     }
 
+    /**
+     * Tests that placing a stone works correctly
+     *
+     * @author Natalie Tashchuk
+     *
+     * TODO: Write method
+     */
+    public void testPlaceStone(){
+
+    }
 
     /**
      * Tests that captures are successful
      *
      * TODO: Write method
      * TODO: verify if works
+     *
+     * @author Brynn Harrington
      */
     @Test
     public void testCapture(){
@@ -291,6 +311,8 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: Verify it works
+     *
+     * @author Mia Anderson
      */
     @Test
     public void testForfeit(){
@@ -303,6 +325,8 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: Verify it works
+     *
+     * @author Jude Gabriel
      */
     @Test
     public void testSkipTurn(){
@@ -315,6 +339,8 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: Verify it works
+     *
+     * @author Brynn Harrington
      */
     @Test
     public void testGameOver(){
@@ -327,6 +353,8 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: Verify that it works
+     *
+     * @author Mia Anderson
      */
     @Test
     public void testHandicap(){
@@ -339,6 +367,8 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: Verify that it works
+     *
+     * @author Jude Gabriel
      */
     @Test
     public void testRepeatedPosition(){
@@ -350,6 +380,7 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: Verify that it works
+     *
      */
     @Test
     public void test_Equals_Empty_State(){
