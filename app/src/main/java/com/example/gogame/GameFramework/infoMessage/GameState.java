@@ -1,6 +1,6 @@
 package com.example.gogame.GameFramework.infoMessage;
 
-import static edu.up.cs301.game.GameFramework.utilities.Saving.SEPARATOR;
+import static com.example.gogame.GameFramework.utilities.Saving.SEPARATOR;
 
 /**
  * The state of the game. This class should be subclassed so that it holds
