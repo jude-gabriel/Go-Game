@@ -34,5 +34,6 @@ public class GoComputerPlayer1 extends GameComputerPlayer {
         // will continue to be called until a valid position is chosen
         Logger.log("GoComputer", "Sending move");
         game.sendAction(new GoMoveAction(this, xVal, yVal));
+        //new push
     }
 }
