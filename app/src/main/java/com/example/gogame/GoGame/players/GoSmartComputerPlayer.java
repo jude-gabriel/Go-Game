@@ -162,11 +162,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer implements View.On
      *
      * @author Jude Gabriel
      */
-    //@Override
-    public View getTopView() {
-        //DOESN'T EXIST YET
-        return myActivity.findViewById(R.id.top_gui_layout);
-    }
+//    //@Override
+//    public View getTopView() {
+//        //DOESN'T EXIST YET
+//        return myActivity.findViewById(R.id.hum);
+//    }
 
 
     /**
@@ -176,7 +176,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer implements View.On
      * @author Jude Gabriel
      */
     public void initAfterReady(){
-        myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
+        if(myActivity != null) {
+            myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
+        }
     }
 
 

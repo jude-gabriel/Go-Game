@@ -3,7 +3,7 @@ package com.example.gogame.GoGame.goActionMessage;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.players.GamePlayer;
 
-public class PGoTwoPlayerAction extends GameAction {
+public class GoTwoPlayerAction extends GameAction {
     /**
      * constructor for GameAction
      *
