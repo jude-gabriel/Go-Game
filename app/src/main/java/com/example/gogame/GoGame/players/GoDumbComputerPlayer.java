@@ -9,9 +9,9 @@ import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 
 import java.util.Random;
 
-public class GoComputerPlayer1 extends GameComputerPlayer {
+public class GoDumbComputerPlayer extends GameComputerPlayer {
 
-   public GoComputerPlayer1(String name){
+   public GoDumbComputerPlayer(String name){
        super(name);
    }
 
@@ -48,6 +48,6 @@ public class GoComputerPlayer1 extends GameComputerPlayer {
         }
         Logger.log("GoComputer1", "Sending move");
         game.sendAction(new GoMoveAction(this, xVal, yVal));
-        //new push
+
     }
 }
