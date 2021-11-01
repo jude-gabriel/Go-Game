@@ -11,6 +11,9 @@
 
 package com.example.gogame.GoGame.infoMessage;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 public class Stone {
 
 
@@ -65,6 +68,31 @@ public class Stone {
         yBottom = yLocation + radius;
 
         checkedStone = CheckedStone.FALSE;
+    }
+
+
+
+    /**
+     * Draws the stone on the canvas
+     *
+     * @param canvas        The canvas to draw on
+     */
+    public void draw(Canvas canvas, int x, int y){
+        Paint paint = new Paint();
+        if(stoneColor == StoneColor.NONE){
+            paint.setARGB(0, 0, 0, 0);
+        }
+        else if(stoneColor == StoneColor.BLACK){
+            paint.setARGB(255, 0, 0, 0);
+        }
+        else{
+            paint.setARGB(255, 255, 255, 255);
+        }
+
+
+        //Draw the stone on the board
+        canvas.drawCircle(x, y, radius, paint);
+
     }
 
 
