@@ -540,6 +540,13 @@ public class GoGameState extends GameState {
         return copyArr;
     }
 
+    public int getBoardSize(){
+        return boardSize;
+    }
+
+    public Stone[][] getGameBoard(){
+        return gameBoard;
+    }
 
     /**
      * skipTurn

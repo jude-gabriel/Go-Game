@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 
 import com.example.gogame.GameFramework.utilities.FlashSurfaceView;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
+import com.example.gogame.GoGame.infoMessage.Stone;
 import com.example.gogame.R;
 
 //sv draws whatever the state shows
@@ -54,7 +55,6 @@ public class GoSurfaceView extends FlashSurfaceView {
      */
     private void init() {
         setBackgroundColor(backgroundColor());
-        //intialize board size
 
     }// init
 
@@ -65,9 +65,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         return Color.BLUE;
     }
 
-    //method that takes x y float value and maps it to the right liberty
-    //and return the r and c index of where i am in the for loop
-    //to be called in human player class
+
 
     public void setState(GoGameState state) {
         this.state = state;
@@ -108,14 +106,15 @@ public class GoSurfaceView extends FlashSurfaceView {
      * @param x - the x location of the user click
      * @param y - the y location of the user click
      * @return an integer array containing the indices
-     * @author Natalie
+     * @author Natalie Tashchuk
      */
     public int[] findStone(float x, float y) {
         //initialize indices for error checking
         int iIndex = -1;
         int jIndex = -1;
+        int boardSize = state.getBoardSize();
+        Stone[][] gameBoard = state.getGameBoard();
 
-        //Since the radius of the stone is 25 we wanna check double the surroundings
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if ((x < gameBoard[i][j].getxRight()) && (x > gameBoard[i][j].getxLeft())) {
@@ -127,6 +126,11 @@ public class GoSurfaceView extends FlashSurfaceView {
             }
         }
 
+        //Create an array to store the index values
+        int[] indexArray = new int[2];
+        indexArray[0] = iIndex;
+        indexArray[1] = jIndex;
 
+        return indexArray;  //Return the array with the index values of the stone
     }
 }
