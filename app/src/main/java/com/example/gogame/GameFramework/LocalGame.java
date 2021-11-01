@@ -1,21 +1,21 @@
 package com.example.gogame.GameFramework;
 
-import edu.up.cs301.game.GameFramework.actionMessage.EndTurnAction;
-import edu.up.cs301.game.GameFramework.actionMessage.GameAction;
-import edu.up.cs301.game.GameFramework.actionMessage.GameOverAckAction;
-import edu.up.cs301.game.GameFramework.actionMessage.MyNameIsAction;
-import edu.up.cs301.game.GameFramework.actionMessage.ReadyAction;
-import edu.up.cs301.game.GameFramework.actionMessage.TimerAction;
-import edu.up.cs301.game.GameFramework.infoMessage.BindGameInfo;
-import edu.up.cs301.game.GameFramework.infoMessage.GameOverInfo;
-import edu.up.cs301.game.GameFramework.infoMessage.GameState;
-import edu.up.cs301.game.GameFramework.infoMessage.IllegalMoveInfo;
-import edu.up.cs301.game.GameFramework.infoMessage.NotYourTurnInfo;
-import edu.up.cs301.game.GameFramework.infoMessage.StartGameInfo;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
-import edu.up.cs301.game.GameFramework.utilities.GameTimer;
-import edu.up.cs301.game.GameFramework.utilities.Tickable;
-import edu.up.cs301.game.GameFramework.utilities.Logger;
+import com.example.gogame.GameFramework.actionMessage.EndTurnAction;
+import com.example.gogame.GameFramework.actionMessage.GameAction;
+import com.example.gogame.GameFramework.actionMessage.GameOverAckAction;
+import com.example.gogame.GameFramework.actionMessage.MyNameIsAction;
+import com.example.gogame.GameFramework.actionMessage.ReadyAction;
+import com.example.gogame.GameFramework.actionMessage.TimerAction;
+import com.example.gogame.GameFramework.infoMessage.BindGameInfo;
+import com.example.gogame.GameFramework.infoMessage.GameOverInfo;
+import com.example.gogame.GameFramework.infoMessage.GameState;
+import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
+import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
+import com.example.gogame.GameFramework.infoMessage.StartGameInfo;
+import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GameFramework.utilities.GameTimer;
+import com.example.gogame.GameFramework.utilities.Tickable;
+import com.example.gogame.GameFramework.utilities.Logger;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -297,7 +297,7 @@ public abstract class LocalGame implements Game, Tickable {
 
         // attempt to make the move; if the move was not a legal one,
         // send the player a message to that effect
-        if (!makeMove(action)) {
+        if (!takeAction(action)) {
             player.sendInfo(new IllegalMoveInfo());
             sendUpdatedStateTo(player);
             return;
@@ -379,7 +379,7 @@ public abstract class LocalGame implements Game, Tickable {
      * @return
      * 			Tells whether the move was a legal one.
      */
-    protected abstract boolean makeMove(GameAction action);
+    protected abstract boolean takeAction(GameAction action);
 
     /**
      * sends a given action to the Game object

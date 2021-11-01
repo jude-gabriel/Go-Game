@@ -1,6 +1,6 @@
 package com.example.gogame.GameFramework.infoMessage;
 
-import edu.up.cs301.game.GameFramework.utilities.GameTimer;
+import com.example.gogame.GameFramework.utilities.GameTimer;
 
 /**
  * The a message from to a player (typically sent by a timer) that the timer's
