@@ -82,7 +82,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         //Create a bitmap of the board image. Pass in resources and ID
         //Bitmap gameBoard = BitmapFactory.decodeResource(getResources(), );
         Bitmap gameBoardImage;
-        gameBoardImage = BitmapFactory.decodeResource(getResources(), R.drawable.board);
+        gameBoardImage = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
         //Draw the board onto the sv
         canvas.drawBitmap(gameBoardImage, 0.f, 0.f, null);
 
@@ -93,7 +93,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         else{
             for(int i = 0; i < 9; i++){
                 for(int j = 0; j < 9; j++){
-                    stonesArray[i][j] = new Stone((j * 350) + 250, (i * 350) + 50);
+                    stonesArray[i][j] = new Stone((j * 110) + 65, (i * 100) + 90);
                 }
             }
         }
@@ -102,7 +102,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         //offset each stone to place it directly on a liberty
         for (int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++){
-                stonesArray[i][j].draw(canvas,(j * 350) + 250, (i * 350) + 20);
+                stonesArray[i][j].draw(canvas,(j * 110) + 65, (i * 110) + 60);
 
             }
         }
