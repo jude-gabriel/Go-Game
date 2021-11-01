@@ -80,7 +80,7 @@ public class Stone {
     public void draw(Canvas canvas, int x, int y){
         Paint paint = new Paint();
         if(stoneColor == StoneColor.NONE){
-            paint.setARGB(0 0, 0, 0);
+            paint.setARGB(0, 0, 0, 0);
         }
         else if(stoneColor == StoneColor.BLACK){
             paint.setARGB(255, 0, 0, 0);
