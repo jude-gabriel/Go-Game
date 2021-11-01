@@ -12,6 +12,7 @@ import com.example.gogame.GameFramework.utilities.FlashSurfaceView;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.R;
 
+//sv draws whatever the state shows
 public class GoSurfaceView extends FlashSurfaceView {
 
     //Tag for logging
@@ -34,7 +35,7 @@ public class GoSurfaceView extends FlashSurfaceView {
      */
     public GoSurfaceView(Context context, AttributeSet attrs) {
 
-        super(context,attrs);
+        super(context, attrs);
         init();
 
         //Initialize board to draw
@@ -50,15 +51,15 @@ public class GoSurfaceView extends FlashSurfaceView {
 
     /**
      * Helper-method for the constructors
-     * sets the backgroundColor
      */
     private void init() {
         setBackgroundColor(backgroundColor());
+        //intialize board size
+
     }// init
 
     /**
-     * @return
-     * 		the color to set the background
+     * @return the color to set the background
      */
     public int backgroundColor() {
         return Color.BLUE;
@@ -73,7 +74,7 @@ public class GoSurfaceView extends FlashSurfaceView {
     }
 
 
-    protected void onDraw(Canvas canvas){
+    protected void onDraw(Canvas canvas) {
         //Create a bitmap of the board image. Pass in resources and ID
         //Bitmap gameBoard = BitmapFactory.decodeResource(getResources(), );
         Bitmap gameBoard;
@@ -100,4 +101,32 @@ public class GoSurfaceView extends FlashSurfaceView {
         canvas.drawCircle(830, 830, radius, whitePaint);
     } //onDraw
 
+    /**
+     * findStone
+     * finds which index the user clicked on in the stones array
+     *
+     * @param x - the x location of the user click
+     * @param y - the y location of the user click
+     * @return an integer array containing the indices
+     * @author Natalie
+     */
+    public int[] findStone(float x, float y) {
+        //initialize indices for error checking
+        int iIndex = -1;
+        int jIndex = -1;
+
+        //Since the radius of the stone is 25 we wanna check double the surroundings
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if ((x < gameBoard[i][j].getxRight()) && (x > gameBoard[i][j].getxLeft())) {
+                    if ((y > gameBoard[i][j].getyTop()) && (y < gameBoard[i][j].getyBottom())) {
+                        iIndex = i;
+                        jIndex = j;
+                    }
+                }
+            }
+        }
+
+
+    }
 }
