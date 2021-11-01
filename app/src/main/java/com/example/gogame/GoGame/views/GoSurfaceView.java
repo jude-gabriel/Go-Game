@@ -83,7 +83,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         //Bitmap gameBoard = BitmapFactory.decodeResource(getResources(), );
         Bitmap gameBoardImage;
         gameBoardImage = BitmapFactory.decodeResource(getResources(), R.drawable.board);
-        //Draw the board on the canvas
+        //Draw the board onto the sv
         canvas.drawBitmap(gameBoardImage, 0.f, 0.f, null);
 
         Stone[][] stonesArray = state.getGameBoard();
