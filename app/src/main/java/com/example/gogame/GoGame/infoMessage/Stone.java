@@ -76,6 +76,8 @@ public class Stone {
      * Draws the stone on the canvas
      *
      * @param canvas        The canvas to draw on
+     *
+     * @author Jude Gabriel
      */
     public void draw(Canvas canvas, int x, int y){
         Paint paint = new Paint();

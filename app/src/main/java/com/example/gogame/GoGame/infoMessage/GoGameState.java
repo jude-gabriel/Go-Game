@@ -691,6 +691,14 @@ public class GoGameState extends GameState {
     }
 
 
+    public void setGameOver(boolean isOver){
+        gameOver = isOver;
+    }
+
+    public boolean getGameOver(){
+        return gameOver;
+    }
+
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
@@ -699,7 +707,7 @@ public class GoGameState extends GameState {
      * @author Jude Gabriel
      * @author Brynn Harrington
      */
-    public void setHandicap(){
+    public boolean setHandicap(){
         if((isPlayer1) && (totalMoves) == 0){
             p1Handicap = true;
             isPlayer1 = !isPlayer1;
@@ -715,6 +723,8 @@ public class GoGameState extends GameState {
             p1Handicap = false;
             p2Handicap = false;
         }
+
+        return true;
     }
 
 
