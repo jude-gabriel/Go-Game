@@ -694,7 +694,7 @@ public class GoGameState extends GameState {
      * @author Jude Gabriel
      * @author Brynn Harrington
      */
-    public boolean setHandicap(){
+    public void setHandicap(){
         if((isPlayer1) && (totalMoves) == 0){
             p1Handicap = true;
             isPlayer1 = !isPlayer1;
@@ -705,17 +705,15 @@ public class GoGameState extends GameState {
         }
 
         if(p1Handicap && p2Handicap && totalMoves == 0){
-            gameBoard[2][2].setStoneColor(Stone.StoneColor.BLACK);
-            gameBoard[6][6].setStoneColor(Stone.StoneColor.BLACK);
+            gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
+            gameBoard[6][6].setStoneColor(Stone.StoneColor.WHITE);
             p1Handicap = false;
             p2Handicap = false;
-            return true;
         }
-        else return false;
     }
 
 
-    public boolean equals(Object object) {
+    pubic boolean equals(Object object) {
         if (!(object instanceof GoGameState)) {
             return false;
         }
@@ -832,6 +830,6 @@ public class GoGameState extends GameState {
     }
 }
 
-
+}
 
 
