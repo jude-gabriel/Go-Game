@@ -86,33 +86,26 @@ public class GoSurfaceView extends FlashSurfaceView {
         //Draw the board onto the sv
         canvas.drawBitmap(gameBoardImage, 0.f, 0.f, null);
 
-        Stone[][] stonesArray = state.getGameBoard();
+        Stone[][] stonesArray = new Stone[9][9];
+        if(state != null) {
+            stonesArray = state.getGameBoard();
+        }
+        else{
+            for(int i = 0; i < 9; i++){
+                for(int j = 0; j < 9; j++){
+                    stonesArray[i][j] = new Stone((j * 350) + 250, (i * 350) + 50);
+                }
+            }
+        }
+
 
         //offset each stone to place it directly on a liberty
-        for (int i = 0; i < state.getBoardSize(); i++){
-            for (int j = 0; j < state.getBoardSize(); j++){
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++){
                 stonesArray[i][j].draw(canvas,(j * 350) + 250, (i * 350) + 20);
 
             }
         }
-
-        //Draw a few black chips on the board to represent mid-game
-        canvas.drawCircle(70, 70, radius, blackPaint);
-        canvas.drawCircle(395, 390, radius, blackPaint);
-        canvas.drawCircle(500, 500, radius, blackPaint);
-        canvas.drawCircle(500, 390, radius, blackPaint);
-        canvas.drawCircle(500, 170, radius, blackPaint);
-        canvas.drawCircle(170, 390, radius, blackPaint);
-        canvas.drawCircle(500, 280, radius, blackPaint);
-
-        //Draw a few white chips on the board to represent mid-game
-        canvas.drawCircle(500, 70, radius, whitePaint);
-        canvas.drawCircle(395, 280, radius, whitePaint);
-        canvas.drawCircle(610, 390, radius, whitePaint);
-        canvas.drawCircle(610, 170, radius, whitePaint);
-        canvas.drawCircle(610, 280, radius, whitePaint);
-        canvas.drawCircle(500, 500, radius, whitePaint);
-        canvas.drawCircle(830, 830, radius, whitePaint);
     } //onDraw
 
     /**
@@ -133,8 +126,8 @@ public class GoSurfaceView extends FlashSurfaceView {
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                if ((x < gameBoard[i][j].getxRight()) && (x > gameBoard[i][j].getxLeft())) {
-                    if ((y > gameBoard[i][j].getyTop()) && (y < gameBoard[i][j].getyBottom())) {
+                if ((x < gameBoard[i][j].getxRight() + 50) && (x > gameBoard[i][j].getxLeft() - 50)) {
+                    if ((y > gameBoard[i][j].getyTop() -50) && (y < gameBoard[i][j].getyBottom() + 50)) {
                         iIndex = i;
                         jIndex = j;
                     }

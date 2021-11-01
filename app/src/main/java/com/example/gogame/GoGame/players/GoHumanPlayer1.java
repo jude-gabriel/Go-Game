@@ -80,9 +80,11 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             p2Score = ((GoGameState) info).getPlayer2Score();
             playerTurn = ((GoGameState) info).getPlayer();
 
-            player1ScoreText.setText("Player 1 Score: " + p1Score);
-            player1ScoreText.setText("Player 2 Score: " + p2Score);
-            playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
+            if(player1ScoreText != null && playerTurnText != null) {
+                player1ScoreText.setText("Player 1 Score: " + p1Score);
+                player2ScoreText.setText("Player 2 Score: " + p2Score);
+                playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
+            }
 
             //What should be done for the timer????
         }
@@ -103,7 +105,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             return;
         }
         else{
-            //goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
+            goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
             goSurfaceView.invalidate();
             Logger.log(TAG, "receiving");
         }
@@ -121,20 +123,23 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
-
-        //initialize the widget reference members
-        this.player1ScoreText = (TextView)activity.findViewById(R.id.player1ScoreText);
-        this.player2ScoreText = (TextView)activity.findViewById(R.id.player2ScoreText);
-        this.playerTurnText = (TextView)activity.findViewById(R.id.playerTurnText);
-        this.validMoveText = (TextView)activity.findViewById(R.id.validMovetext);
-        this.timerText = (TextView)activity.findViewById(R.id.elapsedTimeText);
-
         activity.setContentView(layoutId);
+        //initialize the widget reference members
+        if(activity != null) {
+            this.player1ScoreText = (TextView) activity.findViewById(R.id.player1ScoreText);
+            this.player2ScoreText = (TextView) activity.findViewById(R.id.player2ScoreText);
+            this.playerTurnText = (TextView) activity.findViewById(R.id.playerTurnText);
+            this.validMoveText = (TextView) activity.findViewById(R.id.validMovetext);
+            this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
+        }
+
+
 
         //SURFACE VIEW DOES NOT EXIST YET
         goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.goSurfaceView);
 
         Logger.log("set listener", "onTouch");
+        goSurfaceView.setOnTouchListener(this);
     }
 
 
