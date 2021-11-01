@@ -16,3 +16,4 @@ public class GoHandicapAction extends GameAction {
         super(player);
     }
 }
+i

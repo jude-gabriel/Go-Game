@@ -27,7 +27,7 @@ public class Stone {
     };
 
 
-    /**
+    /**s
      * Enum's for if the Stone was checked in the capture method
      */
     public enum CheckedStone{
