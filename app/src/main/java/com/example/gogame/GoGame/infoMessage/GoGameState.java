@@ -686,6 +686,14 @@ public class GoGameState extends GameState {
         return gameBoard;
     }
 
+    public void setGameOver(boolean isOver){
+        gameOver = isOver;
+    }
+
+    public boolean getGameOver(){
+        return gameOver;
+    }
+
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
@@ -713,7 +721,7 @@ public class GoGameState extends GameState {
     }
 
 
-    pubic boolean equals(Object object) {
+    public boolean equals(Object object) {
         if (!(object instanceof GoGameState)) {
             return false;
         }
@@ -830,6 +838,6 @@ public class GoGameState extends GameState {
     }
 }
 
-}
+
 
 
