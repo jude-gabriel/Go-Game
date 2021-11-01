@@ -26,13 +26,13 @@ public class GoSurfaceView extends FlashSurfaceView {
     private Paint whitePaint;
     private int radius;
 
-
     protected GoGameState state;
 
     /**
      * Constructor for the GoSurfaceView class.
      *
      * @param context - a reference to the activity this animation is run under
+     * @author Natalie Tashchuk
      */
     public GoSurfaceView(Context context, AttributeSet attrs) {
 
@@ -66,19 +66,35 @@ public class GoSurfaceView extends FlashSurfaceView {
     }
 
 
-
     public void setState(GoGameState state) {
         this.state = state;
     }
 
 
+    /**
+     * onDraw
+     *
+     *
+     * @author Natalie Tashchuk
+     */
     protected void onDraw(Canvas canvas) {
+
         //Create a bitmap of the board image. Pass in resources and ID
         //Bitmap gameBoard = BitmapFactory.decodeResource(getResources(), );
-        Bitmap gameBoard;
-        gameBoard = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
+        Bitmap gameBoardImage;
+        gameBoardImage = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
         //Draw the board on the canvas
-        canvas.drawBitmap(gameBoard, 0.f, 0.f, null);
+        canvas.drawBitmap(gameBoardImage, 0.f, 0.f, null);
+
+        Stone[][] stonesArray = state.getGameBoard();
+
+        //offset each stone to place it directly on a liberty
+        for (int i = 0; i < state.getBoardSize(); i++){
+            for (int j = 0; j < state.getBoardSize(); j++){
+                stonesArray[i][j].draw((j * 350) + 250, (i * 350) + 20);
+
+            }
+        }
 
         //Draw a few black chips on the board to represent mid-game
         canvas.drawCircle(70, 70, radius, blackPaint);
