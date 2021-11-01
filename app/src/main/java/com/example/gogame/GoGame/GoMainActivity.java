@@ -44,6 +44,14 @@ public class GoMainActivity extends GameMainActivity {
             }
         });
 
+        //add human player
+        playerTypes.add(new GamePlayerType("Player 2") {
+            public GamePlayer createPlayer(String name) {
+                return new GoHumanPlayer1(name, R.layout.go_human_player1);
+            }
+        });
+
+
         //add dumb computer player
         playerTypes.add(new GamePlayerType("Computer Player dumb") {
             @Override

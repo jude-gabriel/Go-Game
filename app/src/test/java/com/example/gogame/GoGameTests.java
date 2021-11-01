@@ -330,7 +330,31 @@ public class GoGameTests {
      */
     @Test
     public void testSkipTurn(){
+        //Create the button for skipping
+        View skipButton = goMainActivity.findViewById(R.id.skipTurnButton);
 
+        //Initialize a local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Start making moves */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        goMainActivity.onClick(skipButton);
+
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+
+        int thePlayer = goGameState.getPlayer();
+        assertEquals("Turn did not skip", 2, thePlayer);
     }
 
 
@@ -376,15 +400,21 @@ public class GoGameTests {
     }
 
 
-    /** Tests that empty states are equal
+    /**
+     * Tests that empty states are equal
      *
-     * TODO: Write method
      * TODO: Verify that it works
      *
+     * @author Jude Gabriel
      */
     @Test
     public void test_Equals_Empty_State(){
+        //Create the game states
+        GoGameState goGameState = new GoGameState();
+        GoGameState equalsState = new GoGameState();
 
+        //Checks if they are equal
+        assertTrue("Equals method lists gamestates as not equal", goGameState.equals(equalsState));
     }
 
 
