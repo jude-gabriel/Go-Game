@@ -540,6 +540,25 @@ public class GoGameState extends GameState {
         return copyArr;
     }
 
+    /**
+     * Getter for boardSize
+     *
+     * @return size of current board as an int
+     * @author Natalie Tashchuk
+     */
+    public int getBoardSize(){
+        return boardSize;
+    }
+
+    /**
+     * Getter for gameBoard
+     *
+     * @return current board as an array of Stone Objects
+     * @author Natalie Tashchuk
+     */
+    public Stone[][] getGameBoard(){
+        return gameBoard;
+    }
 
     /**
      * skipTurn
@@ -659,10 +678,6 @@ public class GoGameState extends GameState {
      * @return  the current board size
      *
      * @author Brynn Harrington
-     */
-    public int getBoardSize(){
-        return boardSize;
-    }
 
     /**
      * Getter for player 2's turn
@@ -675,16 +690,6 @@ public class GoGameState extends GameState {
         return player2Score;
     }
 
-        /**
-     * Getter for board
-     *
-     * @return  the current board
-     *
-     * @author Brynn Harrington
-     */
-    public Stone[][] getGameBoard(){
-        return gameBoard;
-    }
 
     /**
      * setHandicap
@@ -713,7 +718,7 @@ public class GoGameState extends GameState {
     }
 
 
-    pubic boolean equals(Object object) {
+    public boolean equals(Object object) {
         if (!(object instanceof GoGameState)) {
             return false;
         }
@@ -743,12 +748,6 @@ public class GoGameState extends GameState {
         return true;
 
     }
-
-
-
-
-
-
 
 
     ///////// HELPER METHODS FOR TESTING //////////
@@ -830,6 +829,6 @@ public class GoGameState extends GameState {
     }
 }
 
-}
+
 
 

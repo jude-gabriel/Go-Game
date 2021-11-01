@@ -43,7 +43,7 @@ public class GoComputerPlayer1 extends GameComputerPlayer {
         // will continue to be called until a valid position is chosen
 
         if(skipVal == 1) {
-            Logger.log("GoComputer1", "Skipping turn);
+            Logger.log("GoComputer1", "Skipping turn");
             game.sendAction(new GoSkipTurnAction(this));
         }
         Logger.log("GoComputer1", "Sending move");
