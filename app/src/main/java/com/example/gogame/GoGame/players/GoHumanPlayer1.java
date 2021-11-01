@@ -63,9 +63,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      *
      * @author Jude Gabriel
      *
-     * TODO: This is where we will change all the view objects and update them
-     * to reflect the stuff we need to show. i.e. timer, score etc. Check
-     * PigHumanplayer for reference
+     * TODO: Add support for timer and test
      */
     @Override
     public void receiveInfo(GameInfo info) {
@@ -119,7 +117,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      *
      * @author Jude Gabriel
      *
-     * TODO: Gather all buttons and texts here
+     * TODO: Requires Testing
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
@@ -146,6 +144,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @return the GUI's top view
      *
      * @author Jude Gabriel
+     *
+     * TODO: Requires Testing
      */
     @Override
     public View getTopView() {
@@ -159,6 +159,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * info is received
      *
      * @author Jude Gabriel
+     *
+     * TODO: Requires Testing
      */
     public void initAfterReady(){
         myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
@@ -173,6 +175,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @return          true after the event has been handled
      *
      * @author Jude Gabriel
+     *
+     * TODO: Requires Testing
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -219,6 +223,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @param v the current view
      *
      * @author Jude Gabriel
+     *
+     * TODO: Requires Testing
      */
     @Override
     public void onClick(View v) {
@@ -270,6 +276,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             default:
                 return;
         }
+        goSurfaceView.invalidate();
 
         //Error if we hit here
         return;
