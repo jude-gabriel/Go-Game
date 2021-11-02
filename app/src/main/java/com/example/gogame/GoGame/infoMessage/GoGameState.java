@@ -634,6 +634,7 @@ public class GoGameState extends GameState {
         //Reset the capture
         resetCapture();
 
+
         //Return the total Score
         return totalScore;
     }

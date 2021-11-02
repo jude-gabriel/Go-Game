@@ -51,21 +51,24 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
             android:hapticFeedbackEnabled="false"
-            android:text="Dumb AI" />
+            android:text="Dumb AI"
+            android:textColor="#F6F6F6" />
 
         <Button
             android:id="@+id/smartAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
-            android:text="@string/smart_ai" />
+            android:text="@string/smart_ai"
+            android:textColor="#FAFAFA" />
 
         <Button
             android:id="@+id/twoPlayerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#090909"
-            android:text="2-PLAYER" />
+            android:text="@string/_2_player"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 
@@ -89,7 +92,8 @@
                 android:backgroundTint="#000000"
                 android:gravity="right"
                 android:paddingLeft="20dp"
-                android:text="Network Play" />
+                android:text="@string/network_play"
+                android:textColor="#FBFBFB" />
 
         </LinearLayout>
 
@@ -135,59 +139,57 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/timeAndScoreLayout"
+        android:layout_width="880dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="700dp"
+        android:layout_marginEnd="200dp"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/networkLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/elapsedTimeText"
+            android:layout_width="434dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Elapsed Time: 18:20"
+            android:textColor="#F1EBEB"
+            android:textSize="25sp" />
+
         <LinearLayout
-            android:id="@+id/timeAndScoreLayout"
-            android:layout_width="880dp"
-            android:layout_height="75dp"
-            android:layout_marginStart="200dp"
-            android:layout_marginTop="1250dp"
-            android:layout_marginEnd="200dp"
-            android:gravity="center|center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/gameBoardLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
+            android:id="@+id/playerScoreLayout"
+            android:layout_width="486dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/elapsedTimeText"
-                android:layout_width="434dp"
+                android:id="@+id/player1ScoreText"
+                android:layout_width="467dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:text="Elapsed Time: 18:20"
-                android:textColor="#F1EBEB"
+                android:text="Player 1 Score: 25"
+                android:textColor="#F6F2F2"
                 android:textSize="25sp" />
 
-            <LinearLayout
-                android:id="@+id/playerScoreLayout"
-                android:layout_width="486dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/player1ScoreText"
-                    android:layout_width="467dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Player 1 Score: 25"
-                    android:textColor="#F6F2F2"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/player2ScoreText"
-                    android:layout_width="467dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Player 2 Score: 19"
-                    android:textColor="#F1EBEB"
-                    android:textSize="25sp" />
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/player2ScoreText"
+                android:layout_width="467dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Player 2 Score: 19"
+                android:textColor="#F1EBEB"
+                android:textSize="25sp" />
         </LinearLayout>
+
+    </LinearLayout>
 
         <LinearLayout
             android:id="@+id/quitGameLayout"
@@ -207,71 +209,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#000000"
-                android:text="QUIT GAME" />
+                android:text="@string/quit_game"
+                android:textColor="#FFFFFF" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/turnOptionsLayout"
-            android:layout_width="166dp"
-            android:layout_height="744dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="700dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/gameBoardLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
-
-            <LinearLayout
-                android:id="@+id/howToPlayLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/howToPlayText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:text="On your turn, click the location you would like to place a chip."
-                    android:textColor="#FDFDFD"
-                    android:textSize="25sp"
-                    android:textStyle="italic" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/skipTurnLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/skipTurnButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#000000"
-                    android:text="SKIP TURN" />
-
-                <Button
-                    android:id="@+id/forfeitButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#000000"
-                    android:text="FORFEIT" />
-
-                <Button
-                    android:id="@+id/handicapButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#000000"
-                    android:text="Handicap" />
-
-
-            </LinearLayout>
         </LinearLayout>
 
     <LinearLayout
@@ -295,6 +235,55 @@
             android:textColor="#090909"
             android:textSize="25sp"
             android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="198dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="145dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/networkLayout"
+        app:layout_constraintEnd_toStartOf="@+id/gameBoardLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
+
+        <TextView
+            android:id="@+id/howToPlayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
+            android:textColor="#FDFDFD"
+            android:textSize="25sp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/skipTurnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#000000"
+            android:text="@string/skip_turn"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/forfeitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#000000"
+            android:text="@string/forfeit"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/handicapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#000000"
+            android:text="@string/handicap"
+            android:textColor="#FBFBFB" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

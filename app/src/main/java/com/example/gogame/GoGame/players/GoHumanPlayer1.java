@@ -3,6 +3,7 @@ package com.example.gogame.GoGame.players;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gogame.GameFramework.GameMainActivity;
@@ -32,6 +33,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView playerTurnText     = null;
     private TextView validMoveText      = null;
     private TextView timerText          = null;
+    private Button skipButton           = null;
+    private Button handicapButton       = null;
+    private Button forfeitButton        = null;
+    private Button twoPlayerButton      = null;
+    private Button dumbAIButton         = null;
+    private Button smartAIButton        = null;
+    private Button networkPlay          = null;
+    private Button quitGameButton       = null;
 
 
     //Tag for logging
@@ -86,6 +95,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 player1ScoreText.setText("Player 1 Score: " + p1Score);
                 player2ScoreText.setText("Player 2 Score: " + p2Score);
                 playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
+                handicapButton.setText("HANDICAP");
+
             }
 
             //What should be done for the timer????
@@ -133,6 +144,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.playerTurnText = (TextView) activity.findViewById(R.id.playerTurnText);
             this.validMoveText = (TextView) activity.findViewById(R.id.validMovetext);
             this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
+            this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
+            this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
+            this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
+            this.twoPlayerButton = (Button) activity.findViewById(R.id.twoPlayerButton);
+            this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
+            this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
+            this.networkPlay = (Button) activity.findViewById(R.id.networkButton);
+            this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
         }
 
 
@@ -142,6 +161,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         Logger.log("set listener", "onTouch");
         goSurfaceView.setOnTouchListener(this);
+        skipButton.setOnClickListener(this);
+        handicapButton.setOnClickListener(this);
+        this.forfeitButton.setOnClickListener(this);
+        this.twoPlayerButton.setOnClickListener(this);
+        this.dumbAIButton.setOnClickListener(this);
+        this.smartAIButton.setOnClickListener(this);
+        this.networkPlay.setOnClickListener(this);
+        this.quitGameButton.setOnClickListener(this);
     }
 
 
