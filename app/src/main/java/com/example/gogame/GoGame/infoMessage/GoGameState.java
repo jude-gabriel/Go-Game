@@ -117,7 +117,7 @@ public class GoGameState extends GameState {
         //Initialize the stones to a certain color
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                tempBoard[i][j] = new Stone((j * 350) + 250, (i * 350) + 50);
+                tempBoard[i][j] = new Stone((j * 110) + 65, (i * 110) + 70);
             }
         }
 
@@ -633,6 +633,7 @@ public class GoGameState extends GameState {
 
         //Reset the capture
         resetCapture();
+
 
         //Return the total Score
         return totalScore;

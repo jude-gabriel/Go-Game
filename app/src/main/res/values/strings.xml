@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">GoGame</string>
     <string name="smart_ai">Smart AI</string>
+    <string name="_2_player">2-PLAYER</string>
+    <string name="network_play">Network Play</string>
+    <string name="quit_game">QUIT GAME</string>
+    <string name="on_your_turn_click_the_location_you_would_like_to_place_a_chip">On your turn, click the location you would like to place a chip.</string>
+    <string name="forfeit">FORFEIT</string>
+    <string name="handicap">Handicap</string>
+    <string name="skip_turn">SKIP TURN</string>
 </resources>
