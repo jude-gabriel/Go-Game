@@ -169,11 +169,27 @@ public class GoGameTests {
      *
      * TODO: Verify this test works
      *
-     * @author Jude Gabriel
+     * @author Natalie Tashchuk
      */
     @Test
     public void test_CopyConstructorOfState_Full(){
         GoGameState goGameState = new GoGameState();
+
+        //double for loop to place stones in every position on board
+        for (int c = 0; c < 9; c = c + 2){
+            for (int r = 0; r < 9; r = r + 2){
+                //setting white stones
+                goGameState.getGameBoard()[r][c].setStoneColor(Stone.StoneColor.WHITE);
+            }
+        }
+
+        for (int c = 1; c < 9; c = c + 2){
+            for (int r = 1; r < 9; r = r + 2){
+                //setting black stones
+                goGameState.getGameBoard()[r][c].setStoneColor(Stone.StoneColor.BLACK);
+            }
+        }
+
 
         //Set the first row
         goGameState.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.WHITE);
