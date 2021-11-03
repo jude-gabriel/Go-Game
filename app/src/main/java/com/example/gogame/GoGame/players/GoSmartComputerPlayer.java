@@ -1,6 +1,7 @@
 package com.example.gogame.GoGame.players;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
