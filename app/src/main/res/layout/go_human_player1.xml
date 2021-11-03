@@ -97,27 +97,27 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/playerTurnLayout"
-            android:layout_width="158dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:gravity="top"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:id="@+id/playerTurnLayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:gravity="top"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/playerTurnText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:paddingLeft="7dp"
-                android:text="Player 1's Turn!"
-                android:textColor="#FFFEFE"
-                android:textSize="25sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/playerTurnText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="7dp"
+            android:text="Player 1's Turn!"
+            android:textColor="#FFFEFE"
+            android:textSize="25sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/goLinearLayout"

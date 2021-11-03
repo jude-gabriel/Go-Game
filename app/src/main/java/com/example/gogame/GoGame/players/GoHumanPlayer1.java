@@ -103,6 +103,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         }
 
 
+
         //Error check if the surface view exists
         if(goSurfaceView == null){
             return;
@@ -111,8 +112,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         /* Check if the move was valid. If it wasn't produce an error message.
             if it is set the current state and then call invalidate.
          */
-        if(info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
+        if(info instanceof IllegalMoveInfo){
             goSurfaceView.flash(Color.RED, 1000);
+            validMoveText.setText("INVALID MOVE");
+            validMoveText.setBackgroundColor(Color.RED);
+        }
+        else if(info instanceof NotYourTurnInfo){
+            validMoveText.setText("NOT YOUR TURN");
+            validMoveText.setBackgroundColor(Color.RED);
         }
         else if(!(info instanceof GoGameState)){
             return;

@@ -1,5 +1,7 @@
 package com.example.gogame.GoGame;
 
+import android.app.Activity;
+
 import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
@@ -7,6 +9,7 @@ import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
@@ -90,14 +93,33 @@ public class GoLocalGame extends LocalGame {
 		// determine who the winner is
 		int gameWinner = -1;
 
+		//Initialize forfeit variables
+		boolean p1Forfeit = state.getPlayer1Forfeit();
+		boolean p2Forfeit = state.getPlayer2Forfeit();
+
+		//Check for a forfeit
+		if(p1Forfeit == true){
+			return playerNames[1] + " wins by forfeit! ";
+		}
+		if(p2Forfeit == true){
+			return playerNames[0] + " wins by forfeit! ";
+		}
+
 		// determine which schore is greater
 		if (currPlayerScore > oppPlayerScore) {
 			if (currStoneColor == Stone.StoneColor.BLACK) gameWinner = 0;
 			else gameWinner = 1;
 		}
+		else if(oppPlayerScore > currPlayerScore){
+			if(currStoneColor == Stone.StoneColor.WHITE) gameWinner = 0;
+			else gameWinner = 1;
+		}
+		else{
+			return "Tie game! ";
+		}
 
 		// return the winner of the game
-		return playerNames[gameWinner]+" is the winner.";
+		return playerNames[gameWinner] + " is the winner.";
 	}
 
 	/**
@@ -170,6 +192,10 @@ public class GoLocalGame extends LocalGame {
 
 		// forfeit action
 		else if (action instanceof GoForfeitAction) return state.forfeit();
+		else if(action instanceof GoQuitGameAction){
+			System.exit(0);
+			return false;
+		}
 
 		// otherwise, invalid return false
 		else return false;
@@ -186,7 +212,7 @@ public class GoLocalGame extends LocalGame {
 		if(gameOver == null) return -1;
 
 		// if game over, return 0
-		if(gameOver.equals(playerNames[0]+" is the winner.")) return 0;
+		if(gameOver.equals(playerNames[0]+" is the winner. ")) return 0;
 
 		// otherwise return 1
 		return 1;
