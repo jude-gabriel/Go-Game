@@ -27,6 +27,8 @@ import com.example.gogame.GoGame.infoMessage.Stone;
 import com.example.gogame.GoGame.views.GoSurfaceView;
 import com.example.gogame.R;
 
+import java.util.ArrayList;
+
 /**
  * A computerized Go player that recognizes an immediate capture of the
  * opponent or a possible capture from the other opponent, and plays
@@ -455,7 +457,83 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return null; // dummy
 	}
 
+	/** searchWinningMove
+	 * This function looks for a move that can win the game
+	 *
+	 * @param gameBoard - the current instance of the game board
+	 * @return the winning move
+	 *
+	 * //TODO FINISH
+	 */
+	private static Object[] searchWinningMove(Stone[][] gameBoard)
+	{
+		// initialize a new array list for all possible moves
+		// TODO - write generate moves function
+		//ArrayList<Integer> allPossibleMoves = gameBoard.generateMoves();
 
+		// initialize an object to store the winning move
+		Object[] winningMove = new Object[3];
 
+		return null;
+	}
 
+	/** evaluateHorizontal
+	 * This function calculates the score by evaluating stone horizontal positions
+	 *
+	 * @param gameBoard - the current instance of the game board
+	 * @param forPlayer0 - whether evaluating for player 0
+	 * @param playersTurn - which player it is
+	 * @return the score
+	 *
+	 * //TODO FINISH
+	 */
+	public static int evaluateHorizontal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn)
+	{
+		return -1; // dummy
+	}
+
+	/** evaluateVertical
+	 * This function calculates the score by evaluating stone horizontal positions
+	 *
+	 * @param gameBoard - the current instance of the game board
+	 * @param forPlayer0 - whether evaluating for player 0
+	 * @param playersTurn - which player it is
+	 * @return the score
+	 *
+	 * //TODO FINISH
+	 */
+	public static int evaluateVertical(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn)
+	{
+		return -1; // dummy
+	}
+
+	/** evaluateDiagonal
+	 * This function calculates the score by evaluating stone horizontal positions
+	 *
+	 * @param gameBoard - the current instance of the game board
+	 * @param forPlayer0 - whether evaluating for player 0
+	 * @param playersTurn - which player it is
+	 * @return the score
+	 *
+	 * //TODO FINISH
+	 */
+	public static int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn)
+	{
+		return -1; // dummy
+	}
+
+	/** getConsecutiveSetScore
+	 * This function determines the score from a given consecutive set
+	 *
+	 * @param count - the current instance of the game board
+	 * @param blocks - whether evaluating for player 0
+	 * @param currentTurn - which player it is
+	 * @return the score
+	 *
+	 * //TODO FINISH
+	 */
+	public static int getConsecutiveSetScore(int count, int blocks, boolean currentTurn)
+	{
+		return -1; // dummy
+	}
 }
