@@ -23,6 +23,7 @@ import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
+import com.example.gogame.GoGame.infoMessage.Stone;
 import com.example.gogame.GoGame.views.GoSurfaceView;
 import com.example.gogame.R;
 
@@ -74,11 +75,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		super(name);
 	}// constructor
 
-	@Override
-	protected void receiveInfo(GameInfo info) {
-
-	}
-
 	/*
 	 * perform any initialization that needs to be done after the player
 	 * knows what their game-position and opponents' names are.
@@ -96,71 +92,71 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @param info the message from the game
 	 */
-	//@Override
-	//protected void receiveInfo(GameInfo info) {
+	@Override
+	protected void receiveInfo(GameInfo info) {
 
-//		// verify this is an instance of the GoGameState
-//		if (!(info instanceof GoGameState)) return;
-//
-//		// initialize a variable to track the current state
-//		goGS = (GoGameState) info;
-//
-//		// if it's not our move, ignore it
-//		if (goGS.getPlayer() != this.playerNum) return;
-//
-//		// sleep for a second to make any observers think that we're thinking
-//		sleep(1);
-//
-//
-//		// if we find a win, select that move
-//		/*Point win = findWin(goGS, piece);
-//		if (win != null) {
-//			Logger.log("TTTComputer", "sending action");
-//			game.sendAction(new TTTMoveAction(this, win.y, win.x));
-//			return;
-//		}*/
-//
-//		/*// if we find a threat of a loss (i.e., a direct win for out opponent),
-//		// select that position as a blocking move.
-//		char opponentPiece = piece == 'X' ? 'O' : 'X';
-//		Point loss = findWin(goGS, opponentPiece);
-//		if (loss != null) {
-//			Logger.log("TTTComputer", "sending action");
-//			game.sendAction(new TTTMoveAction(this, loss.y, loss.x));
-//			return;
-//		}
-//
-//		// otherwise, make a move that is randomly selected from the
-//		// blank squares ...
-//
-//		// count the spaces
-//		int spaceCount = 0;
-//		for (int i = 0; i < 3; i++) {
-//			for (int j = 0; j < 3; j++) {
-//				if (goGS.getPiece(j, i) == ' ') spaceCount++;
-//			}
-//		}
-//
-//		// generate a random integer in range 0 through #spaces-1
-//		int selectCount = (int)(spaceCount*Math.random());
-//
-//		// re-find the space that corresponds to the random integer we
-//		// just generated; make that move
-//		for (int i = 0; i < 3; i++) {
-//			for (int j = 0; j < 3; j++) {
-//				if (goGS.getPiece(j, i) == ' ') {
-//					if (selectCount == 0) {
-//						// make the move
-//						game.sendAction(new TTTMoveAction(this, j, i));
-//						return;
-//					}
-//					selectCount--;
-//				}
-//			}
-//		}*/
+		// verify this is an instance of the GoGameState
+		if (!(info instanceof GoGameState)) return;
+
+		// initialize a variable to track the current state
+		goGS = (GoGameState) info;
+
+		// if it's not our move, ignore it
+		if (goGS.getPlayer() != this.playerNum) return;
+
+		// sleep for a second to make any observers think that we're thinking
+		sleep(1);
+
+
+		// if we find a win, select that move
+		Point win = findWin(goGS, piece);
+		if (win != null) {
+			Logger.log("TTTComputer", "sending action");
+			game.sendAction(new TTTMoveAction(this, win.y, win.x));
+			return;
+		}
+
+		// if we find a threat of a loss (i.e., a direct win for out opponent),
+		// select that position as a blocking move.
+		char opponentPiece = piece == 'X' ? 'O' : 'X';
+		Point loss = findWin(goGS, opponentPiece);
+		if (loss != null) {
+			Logger.log("TTTComputer", "sending action");
+			game.sendAction(new TTTMoveAction(this, loss.y, loss.x));
+			return;
+		}
+
+		// otherwise, make a move that is randomly selected from the
+		// blank squares ...
+
+		// count the spaces
+		int spaceCount = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (goGS.getPiece(j, i) == ' ') spaceCount++;
+			}
+		}
+
+		// generate a random integer in range 0 through #spaces-1
+		int selectCount = (int)(spaceCount*Math.random());
+
+		// re-find the space that corresponds to the random integer we
+		// just generated; make that move
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (goGS.getPiece(j, i) == ' ') {
+					if (selectCount == 0) {
+						// make the move
+						game.sendAction(new TTTMoveAction(this, j, i));
+						return;
+					}
+					selectCount--;
+				}
+			}
+		}
 	}// receiveInfo
 
-	/**
+	/*
 	 * getter function for the winning score
 	 *
 	 * @return  If a winning move was found, a Point object containing
@@ -360,7 +356,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * the coordinates.  If no winning move was found, null.
 	 */
 	// helper method to find a winning move
-	private Point helpFindWin(TTTState state, char thePiece, int rowStart,
+	private Point helpFindWin(GoGameState state, char thePiece, int rowStart,
 							  int colStart, int rowDelta, int colDelta) {
 
 		// our starting position
@@ -405,4 +401,59 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			return null;
 		}
 	}// helpFindWin
+
+
+	/* HELPER FUNCTIONS */
+	/** evaluateBoardForPlayer1
+	 * This function evaluates the relative score for player 1 against player
+	 * 2. It determines how likely player 1 is to win the game before player 2.
+	 *
+	 * @param gameBoard - the current instance of the game board
+	 * @param isPlayer0Turn - whether it's blacks turn or not
+	 * @return the value to be used as the score in the minimax algorithm
+	 *
+	 * //TODO FINISH
+	 */
+	public static double evaluateBoardForPlayer1(Stone[][] gameBoard, boolean isPlayer0Turn)
+	{
+		return 0.0; // dummy
+	}
+
+	/** calculateNextMove
+	 * This function calculates the next move given the current depth of the board.
+	 *
+	 * @param depth - the current depth we are searching for the best move at
+	 * @return an integer array for the best move
+	 *
+	 * //TODO FINISH
+	 */
+	public int[] calculateNextMove(int depth) {
+		// act as the computer is "thinking"
+		sleep(1000);
+
+		// initialize an array to store the move
+		int move[] = new int[2];
+
+		// return the move
+		return move;
+	}
+
+	/** miniMaxSearchAB
+	 * This function tkaes the best possible AI move (the maximum), the best player move (min),
+	 * and returns the score for moves at 0 and 1.
+	 *
+	 * @param depth - the current depth to perform the search on
+	 * @param gameBoard - the current instance of the game board
+	 * @param alpha - the best AI move (max)
+	 * @param beta - the best player move (min)
+	 * @return the score and moves (an object with {score, move[0], move[1]}
+	 *
+	 * //TODO FINISH
+	 */
+	private static Object[] miniMaxSearchAB (int depth, Stone[][] gameBoard, boolean max, double alpha, double beta)
+	{
+		return null; // dummy
+	}
+
+
 }
