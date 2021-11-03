@@ -439,7 +439,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}
 
 	/** miniMaxSearchAB
-	 * This function tkaes the best possible AI move (the maximum), the best player move (min),
+	 * This function takes the best possible AI move (the maximum), the best player move (min),
 	 * and returns the score for moves at 0 and 1.
 	 *
 	 * @param depth - the current depth to perform the search on
@@ -454,6 +454,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	{
 		return null; // dummy
 	}
+
+
 
 
 }
