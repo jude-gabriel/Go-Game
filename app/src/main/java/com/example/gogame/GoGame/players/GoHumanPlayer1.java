@@ -3,6 +3,7 @@ package com.example.gogame.GoGame.players;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gogame.GameFramework.GameMainActivity;
@@ -32,6 +33,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView playerTurnText     = null;
     private TextView validMoveText      = null;
     private TextView timerText          = null;
+    private Button skipButton           = null;
+    private Button handicapButton       = null;
+    private Button forfeitButton        = null;
+    private Button twoPlayerButton      = null;
+    private Button dumbAIButton         = null;
+    private Button smartAIButton        = null;
+    private Button networkPlay          = null;
+    private Button quitGameButton       = null;
 
 
     //Tag for logging
@@ -82,12 +91,17 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             p2Score = ((GoGameState) info).getPlayer2Score();
             playerTurn = ((GoGameState) info).getPlayer();
 
-            player1ScoreText.setText("Player 1 Score: " + p1Score);
-            player1ScoreText.setText("Player 2 Score: " + p2Score);
-            playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
+            if(player1ScoreText != null && playerTurnText != null) {
+                player1ScoreText.setText("Player 1 Score: " + p1Score);
+                player2ScoreText.setText("Player 2 Score: " + p2Score);
+                playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
+                handicapButton.setText("HANDICAP");
+
+            }
 
             //What should be done for the timer????
         }
+
 
 
         //Error check if the surface view exists
@@ -98,14 +112,20 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         /* Check if the move was valid. If it wasn't produce an error message.
             if it is set the current state and then call invalidate.
          */
-        if(info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo){
+        if(info instanceof IllegalMoveInfo){
             goSurfaceView.flash(Color.RED, 1000);
+            validMoveText.setText("INVALID MOVE");
+            validMoveText.setBackgroundColor(Color.RED);
+        }
+        else if(info instanceof NotYourTurnInfo){
+            validMoveText.setText("NOT YOUR TURN");
+            validMoveText.setBackgroundColor(Color.RED);
         }
         else if(!(info instanceof GoGameState)){
             return;
         }
         else{
-            //goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
+            goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
             goSurfaceView.invalidate();
             Logger.log(TAG, "receiving");
         }
@@ -123,20 +143,39 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
-
-        //initialize the widget reference members
-        this.player1ScoreText = (TextView)activity.findViewById(R.id.player1ScoreText);
-        this.player2ScoreText = (TextView)activity.findViewById(R.id.player2ScoreText);
-        this.playerTurnText = (TextView)activity.findViewById(R.id.playerTurnText);
-        this.validMoveText = (TextView)activity.findViewById(R.id.validMovetext);
-        this.timerText = (TextView)activity.findViewById(R.id.elapsedTimeText);
-
         activity.setContentView(layoutId);
+        //initialize the widget reference members
+        if(activity != null) {
+            this.player1ScoreText = (TextView) activity.findViewById(R.id.player1ScoreText);
+            this.player2ScoreText = (TextView) activity.findViewById(R.id.player2ScoreText);
+            this.playerTurnText = (TextView) activity.findViewById(R.id.playerTurnText);
+            this.validMoveText = (TextView) activity.findViewById(R.id.validMovetext);
+            this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
+            this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
+            this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
+            this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
+            this.twoPlayerButton = (Button) activity.findViewById(R.id.twoPlayerButton);
+            this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
+            this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
+            this.networkPlay = (Button) activity.findViewById(R.id.networkButton);
+            this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
+        }
+
+
 
         //SURFACE VIEW DOES NOT EXIST YET
         goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.goSurfaceView);
 
         Logger.log("set listener", "onTouch");
+        goSurfaceView.setOnTouchListener(this);
+        skipButton.setOnClickListener(this);
+        handicapButton.setOnClickListener(this);
+        this.forfeitButton.setOnClickListener(this);
+        this.twoPlayerButton.setOnClickListener(this);
+        this.dumbAIButton.setOnClickListener(this);
+        this.smartAIButton.setOnClickListener(this);
+        this.networkPlay.setOnClickListener(this);
+        this.quitGameButton.setOnClickListener(this);
     }
 
 

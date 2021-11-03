@@ -76,6 +76,7 @@ public class GoMainActivity extends GameMainActivity {
         defaultConfig.addPlayer("DumbComputer", 3); // dumb computer player
 
         // Set the initial information for the remote
+        defaultConfig.setRemoteData("Remote Player", "", 1);
 
         return defaultConfig;
     }

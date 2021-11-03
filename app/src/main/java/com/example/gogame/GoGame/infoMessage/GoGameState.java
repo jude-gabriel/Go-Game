@@ -30,6 +30,8 @@ public class GoGameState extends GameState {
     private int numSkips;                   //Tracks whether two consecutive skips
     private boolean p1Handicap;             //Tracks if Player 1 agrees to handicap
     private boolean p2Handicap;             //Tracks if Player 2 agrees to handicap
+    private boolean player1Forfeit;         //Tracks if Player 1 forfeits
+    private boolean player2Forfeit;         //Tracks if Player 2 forfeits
 
     /**
      * GoGameState
@@ -69,6 +71,10 @@ public class GoGameState extends GameState {
         //Initialize handicap
         p1Handicap = false;
         p2Handicap = false;
+
+        //Initialize forfeits
+        player1Forfeit = false;
+        player2Forfeit = false;
     }
 
 
@@ -99,6 +105,8 @@ public class GoGameState extends GameState {
         this.totalMoves = gs.totalMoves;
         this.p1Handicap = gs.p1Handicap;
         this.p2Handicap = gs.p2Handicap;
+        this.player1Forfeit = gs.player1Forfeit;
+        this.player2Forfeit = gs.player2Forfeit;
     }
 
 
@@ -117,7 +125,7 @@ public class GoGameState extends GameState {
         //Initialize the stones to a certain color
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                tempBoard[i][j] = new Stone((j * 350) + 250, (i * 350) + 50);
+                tempBoard[i][j] = new Stone((j * 110) + 65, (i * 110) + 70);
             }
         }
 
@@ -593,6 +601,12 @@ public class GoGameState extends GameState {
     public boolean forfeit() {
         // set game over to true since forfeited
         gameOver = true;
+        if(isPlayer1){
+            player1Forfeit = true;
+        }
+        else{
+            player2Forfeit = true;
+        }
         return true;
     }
 
@@ -633,6 +647,7 @@ public class GoGameState extends GameState {
 
         //Reset the capture
         resetCapture();
+
 
         //Return the total Score
         return totalScore;
@@ -699,6 +714,14 @@ public class GoGameState extends GameState {
         return gameOver;
     }
 
+    public boolean getPlayer1Forfeit(){
+        return player1Forfeit;
+    }
+
+    public boolean getPlayer2Forfeit(){
+        return player2Forfeit;
+    }
+
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
@@ -711,10 +734,16 @@ public class GoGameState extends GameState {
         if((isPlayer1) && (totalMoves) == 0){
             p1Handicap = true;
             isPlayer1 = !isPlayer1;
+            if(p2Handicap == false){
+                return true;
+            }
         }
         if((!isPlayer1) && (totalMoves == 0)){
             p2Handicap = true;
             isPlayer1 = !isPlayer1;
+            if(p1Handicap == false){
+                return true;
+            }
         }
 
         if(p1Handicap && p2Handicap && totalMoves == 0){

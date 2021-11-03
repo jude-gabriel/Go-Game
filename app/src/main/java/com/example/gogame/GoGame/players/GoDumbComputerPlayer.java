@@ -29,7 +29,7 @@ public class GoDumbComputerPlayer extends GameComputerPlayer {
         Random rand = new Random();
         if(info instanceof NotYourTurnInfo) return;
         //log message?
-        Logger.log("GoComputer", "Computers Turn");
+        Logger.log("GoComputer1", "Computers Turn");
 
         // pick random values from 0-9 for the x and y values
         int xVal = rand.nextInt(9);
