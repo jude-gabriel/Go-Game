@@ -37,7 +37,7 @@ import com.example.gogame.R;
  * @version October 2021
  * @source https://www.moderndescartes.com/essays/implementing_go/
  */
-public class GoSmartComputerPlayer extends GameComputerPlayer implements View.OnTouchListener, View.OnClickListener {
+public class GoSmartComputerPlayer extends GameComputerPlayer {
 	/** LOGGING TAGS **/
 	private static final String TAG = "GoSmartComputerPlayer";
 
@@ -72,6 +72,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer implements View.On
 		// invoke superclass constructor
 		super(name);
 	}// constructor
+
+	@Override
+	protected void receiveInfo(GameInfo info) {
+
+	}
 
 	/*
 	 * perform any initialization that needs to be done after the player
