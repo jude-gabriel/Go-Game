@@ -51,7 +51,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	private Stone[][] gameBoard;
 
 	// set the win score to an impossible score initially
-	private static final int winScore = 100000000;
+	private static final int winningScore = 100000000;
 
 	/**
 	 * constructor
@@ -66,7 +66,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @return  If a winning move was found, a Point object containing
 	 *   the coordinates.  If no winning move was found, null.
 	 */
-	//public static int getWinningScore() { return winningScore; }//getWinningScore
+	public static int getWinningScore() { return winningScore; }//getWinningScore
 
 	/**
 	 * calculates the relative score of the computer player against
@@ -121,7 +121,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// calculate the score
 		// TODO - come back to this with evaluation functions
 		return  0;
-	}
+	}//getScore
 
 	/*
 	 * calculates the board score in the horizontal direction
