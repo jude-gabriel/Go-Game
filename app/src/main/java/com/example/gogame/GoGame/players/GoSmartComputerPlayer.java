@@ -46,117 +46,19 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	private static final String TAG = "GoSmartComputerPlayer";
 
 
-	/** INSTANCE / MEMBER VARIABLES **/
-	// current stone color being played - set once player finds out which
-	// player they are
-	//protected Stone.StoneColor stone;
+	/* INSTANCE / MEMBER VARIABLES */
+	// instantiate a variable to track the current board
+	private Stone[][] gameBoard;
 
-	// current size of the board - initialized to a string for easier
-	// copying/printing
-	// TODO - alter so have access to current board size
-	int N;
-	char BLACK = 'X';
-	char WHITE = 'O';
-	char EMPTY = '.';
-	int EMPTY_BOARD = EMPTY * N * N;
-
-	// store the current game state
-	private GoGameState goGS;
-
-	// store the winning score (storing with a score impossible to begin)
-	//private static final int winningScore = 1000000000;
-
+	// set the win score to an impossible score initially
+	private static final int winScore = 100000000;
 
 	/**
-	 * constructor for the smart player
+	 * constructor
 	 *
-	 * @param name the player's name
+	 * @param name the player's name (e.g., "John")
 	 */
-	public GoSmartComputerPlayer(String name) {
-		// invoke superclass constructor
-		super(name);
-	}// constructor
-
-	/*
-	 * perform any initialization that needs to be done after the player
-	 * knows what their game-position and opponents' names are.
-	 */
-	///// TODO figure out how to implement this function
-
-	/*	protected void initAfterReady() {
-		// initialize our piece
-		piece = "XO".charAt(playerNum);
-	}// initAfterReady*/
-
-	/**
-	 * Called when the player receives a game-state (or other info) from the
-	 * game.
-	 *
-	 * @param info the message from the game
-	 */
-	@Override
-	protected void receiveInfo(GameInfo info) {
-
-		// verify this is an instance of the GoGameState
-		if (!(info instanceof GoGameState)) return;
-
-		// initialize a variable to track the current state
-		goGS = (GoGameState) info;
-
-		// if it's not our move, ignore it
-		if (goGS.getPlayer() != this.playerNum) return;
-
-		// sleep for a second to make any observers think that we're thinking
-		sleep(1);
-
-
-		// if we find a win, select that move
-		Point win = findWin(goGS, piece);
-		if (win != null) {
-			Logger.log("TTTComputer", "sending action");
-			game.sendAction(new TTTMoveAction(this, win.y, win.x));
-			return;
-		}
-
-		// if we find a threat of a loss (i.e., a direct win for out opponent),
-		// select that position as a blocking move.
-		char opponentPiece = piece == 'X' ? 'O' : 'X';
-		Point loss = findWin(goGS, opponentPiece);
-		if (loss != null) {
-			Logger.log("TTTComputer", "sending action");
-			game.sendAction(new TTTMoveAction(this, loss.y, loss.x));
-			return;
-		}
-
-		// otherwise, make a move that is randomly selected from the
-		// blank squares ...
-
-		// count the spaces
-		int spaceCount = 0;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (goGS.getPiece(j, i) == ' ') spaceCount++;
-			}
-		}
-
-		// generate a random integer in range 0 through #spaces-1
-		int selectCount = (int)(spaceCount*Math.random());
-
-		// re-find the space that corresponds to the random integer we
-		// just generated; make that move
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (goGS.getPiece(j, i) == ' ') {
-					if (selectCount == 0) {
-						// make the move
-						game.sendAction(new TTTMoveAction(this, j, i));
-						return;
-					}
-					selectCount--;
-				}
-			}
-		}
-	}// receiveInfo
+	public GoSmartComputerPlayer(String name) { super(name); }
 
 	/*
 	 * getter function for the winning score
@@ -536,4 +438,122 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	{
 		return -1; // dummy
 	}
+
+	@Override
+	protected void receiveInfo(GameInfo info) {
+
+	}
 }
+
+// OLD CODE - MAY NEED LATER
+/*
+	// current stone color being played - set once player finds out which
+	// player they are
+	//protected Stone.StoneColor stone;
+
+	// current size of the board - initialized to a string for easier
+	// copying/printing
+	// TODO - alter so have access to current board size
+	int N;
+	char BLACK = 'X';
+	char WHITE = 'O';
+	char EMPTY = '.';
+	int EMPTY_BOARD = EMPTY * N * N;
+
+	// store the current game state
+	private GoGameState goGS;
+
+	// store the winning score (storing with a score impossible to begin)
+	//private static final int winningScore = 1000000000;
+
+
+	*//**
+	 * constructor for the smart player
+	 *
+	 * @param name the player's name
+	 *//*
+	public GoSmartComputerPlayer(String name) {
+		// invoke superclass constructor
+		super(name);
+	}// constructor
+
+	*//*
+	 * perform any initialization that needs to be done after the player
+	 * knows what their game-position and opponents' names are.
+	 *//*
+	///// TODO figure out how to implement this function
+
+	*//*	protected void initAfterReady() {
+		// initialize our piece
+		piece = "XO".charAt(playerNum);
+	}// initAfterReady*//*
+
+	*//**
+	 * Called when the player receives a game-state (or other info) from the
+	 * game.
+	 *
+	 * @param info the message from the game
+	 *//*
+	@Override
+	protected void receiveInfo(GameInfo info) {
+
+		// verify this is an instance of the GoGameState
+		if (!(info instanceof GoGameState)) return;
+
+		// initialize a variable to track the current state
+		goGS = (GoGameState) info;
+
+		// if it's not our move, ignore it
+		if (goGS.getPlayer() != this.playerNum) return;
+
+		// sleep for a second to make any observers think that we're thinking
+		sleep(1);
+
+
+		// if we find a win, select that move
+		Point win = findWin(goGS, piece);
+		if (win != null) {
+			Logger.log("TTTComputer", "sending action");
+			game.sendAction(new TTTMoveAction(this, win.y, win.x));
+			return;
+		}
+
+		// if we find a threat of a loss (i.e., a direct win for out opponent),
+		// select that position as a blocking move.
+		char opponentPiece = piece == 'X' ? 'O' : 'X';
+		Point loss = findWin(goGS, opponentPiece);
+		if (loss != null) {
+			Logger.log("TTTComputer", "sending action");
+			game.sendAction(new TTTMoveAction(this, loss.y, loss.x));
+			return;
+		}
+
+		// otherwise, make a move that is randomly selected from the
+		// blank squares ...
+
+		// count the spaces
+		int spaceCount = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (goGS.getPiece(j, i) == ' ') spaceCount++;
+			}
+		}
+
+		// generate a random integer in range 0 through #spaces-1
+		int selectCount = (int)(spaceCount*Math.random());
+
+		// re-find the space that corresponds to the random integer we
+		// just generated; make that move
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (goGS.getPiece(j, i) == ' ') {
+					if (selectCount == 0) {
+						// make the move
+						game.sendAction(new TTTMoveAction(this, j, i));
+						return;
+					}
+					selectCount--;
+				}
+			}
+		}
+	}// receiveInfo*/
