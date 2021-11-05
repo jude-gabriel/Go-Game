@@ -46,7 +46,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private Button smartAIButton        = null;
     private Button networkPlay          = null;
     private Button quitGameButton       = null;
-
+    //test comment
 
     //Tag for logging
     private static final String TAG = "GoHumanPlayer1";
