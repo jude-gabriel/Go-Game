@@ -6,6 +6,7 @@ import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
 import com.example.gogame.GameFramework.actionMessage.TimerAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
+import com.example.gogame.GameFramework.infoMessage.TimerInfo;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GameFramework.utilities.GameTimer;
 import com.example.gogame.GameFramework.utilities.Tickable;
@@ -34,6 +35,7 @@ public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
     private static final String TAG = "GoLocalGame";
     private GameTimer timer;
+    private static final int TICK = 1000;
 
 
     /**
@@ -50,14 +52,7 @@ public class GoLocalGame extends LocalGame {
 
         //TODO: Fix the timer!
 		timer = this.getTimer();
-		timer = new GameTimer(new Tickable() {
-			@Override
-			public void tick(GameTimer timer) {
-				if(state != null && GoLocalGame.super.players != null && timer != null) {
-					sendAction(new TimerAction(timer));
-				}
-			}
-		});
+		timer.setInterval(TICK);
     }
 
 
@@ -72,8 +67,8 @@ public class GoLocalGame extends LocalGame {
         super.state = new GoGameState(gameState);
 
         //TODO: Fix the timer!
-		//timer = this.getTimer();
-		//timer.start();
+		timer = this.getTimer();
+		timer.setInterval(TICK);
     }
 
 
@@ -213,17 +208,18 @@ public class GoLocalGame extends LocalGame {
 		// get the current game state by calling the super class instructor
 		GoGameState state = (GoGameState) super.state;
 
-//		if(state.getTotalMoves() == 1){
-//			timer.start();
-//		}
+		if(state.getTotalMoves() == 1){
+			timer.start();
+		}
 
 		// ensure the state is not null
 		assert state != null;
 
 		//Check if it was a timer action and update the timer
-		if(action instanceof TimerAction){
-			state.setTime(timer.getTicks());
-		}
+
+
+
+
 
 
 		// determine the action to perform based on the action provided
@@ -278,8 +274,8 @@ public class GoLocalGame extends LocalGame {
 
 	@Override
 	protected void timerTicked(){
-		if(state instanceof GoGameState){
-			((GoGameState) state).setTime(timer.getTicks());
-		}
+		GoGameState state = (GoGameState) super.state;
+		state.setTime(timer.getTicks());
+		this.sendAllUpdatedState();
 	}
 }

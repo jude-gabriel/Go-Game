@@ -88,6 +88,9 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         int elapsedSec;
         int playerTurn;
 
+        Logger.log(TAG, "Hit recieveInfo : " + info.getClass());
+
+
 
         /** Update the view objects?? **/
         if(info instanceof GoGameState){
@@ -105,6 +108,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 if(((GoGameState) info).getTotalMoves() > 0){
                     handicapButton.setVisibility(View.GONE);
                 }
+                Logger.log(TAG, "TIMER");
+                goSurfaceView.invalidate();
 
             }
 
@@ -133,12 +138,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //Check if it was a timer action, if so update the timer
         else if(info instanceof TimerInfo){
-            GameTimer timer = ((TimerInfo) info).getTimer();
-            elapsedSec = timer.getTicks();
-            elapsedMin = elapsedSec / 60;
-            elapsedSec = elapsedSec % 60;
-            timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
-            Logger.log(TAG, "TIMER");
+//            GameTimer timer = ((TimerInfo) info).getTimer();
+//            elapsedSec = timer.getTicks();
+//            elapsedMin = elapsedSec / 60;
+//            elapsedSec = elapsedSec % 60;
+//            timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+//            Logger.log(TAG, "TIMER");
 
         }
 
