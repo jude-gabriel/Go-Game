@@ -32,6 +32,7 @@ public class GoGameState extends GameState {
     private boolean p2Handicap;             //Tracks if Player 2 agrees to handicap
     private boolean player1Forfeit;         //Tracks if Player 1 forfeits
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
+    private int time;                       //Tracks the time of the game
 
     /**
      * GoGameState
@@ -75,6 +76,8 @@ public class GoGameState extends GameState {
         //Initialize forfeits
         player1Forfeit = false;
         player2Forfeit = false;
+
+        time = 0;
     }
 
 
@@ -107,6 +110,7 @@ public class GoGameState extends GameState {
         this.p2Handicap = gs.p2Handicap;
         this.player1Forfeit = gs.player1Forfeit;
         this.player2Forfeit = gs.player2Forfeit;
+        this.time = gs.time;
     }
 
 
@@ -469,14 +473,14 @@ public class GoGameState extends GameState {
         Stone[][] copyArray = deepCopyArray(gameBoard);
 
         //Determine the current color
-        Stone.StoneColor currStoneColor;
-        if (isPlayer1) currStoneColor = Stone.StoneColor.BLACK;
-        else currStoneColor = Stone.StoneColor.WHITE;
+        Stone.StoneColor oppStoneColor;
+        if (isPlayer1) oppStoneColor = Stone.StoneColor.WHITE;
+        else oppStoneColor = Stone.StoneColor.BLACK;
 
         //Iterate and determine if capture is possible, if so commence capture
         //and reset capture
         iterateAndCheckCapture(x, y);
-        commenceCapture(currStoneColor);
+        commenceCapture(oppStoneColor);
         resetCapture();
 
         //Check if the boards are equal
@@ -548,6 +552,7 @@ public class GoGameState extends GameState {
         return copyArr;
     }
 
+
     /**
      * Getter for boardSize
      *
@@ -558,6 +563,7 @@ public class GoGameState extends GameState {
         return boardSize;
     }
 
+
     /**
      * Getter for gameBoard
      *
@@ -567,6 +573,7 @@ public class GoGameState extends GameState {
     public Stone[][] getGameBoard(){
         return gameBoard;
     }
+
 
     /**
      * skipTurn
@@ -612,6 +619,28 @@ public class GoGameState extends GameState {
 
 
     /**
+     * Setter for the total time the game has been played for
+     *
+     * @param aTime the current game time
+     * @author Jude Gabriel
+     */
+    public void setTime(int aTime){
+        time = aTime;
+    }
+
+
+    /**
+     * Getter for the total game time
+     *
+     * @return the game time
+     * @author Jude Gabriel
+     */
+    public int getTime(){
+        return time;
+    }
+
+
+    /**
      * calculateScore
      * Calculates the current score
      *
@@ -653,6 +682,7 @@ public class GoGameState extends GameState {
         return totalScore;
     }
 
+
     /** isGameOver
      * Returns the current instance of game over.
      *
@@ -660,6 +690,7 @@ public class GoGameState extends GameState {
      * @return game over
      */
     public boolean isGameOver() { return gameOver; }
+
 
     /** getPlayer
      * Returns whether it is player 1's turn or not
@@ -687,12 +718,6 @@ public class GoGameState extends GameState {
         return player1Score;
     }
 
-    /**
-     * Getter for board size
-     *
-     * @return  the current board size
-     *
-     * @author Brynn Harrington
 
     /**
      * Getter for player 2's turn
@@ -706,21 +731,48 @@ public class GoGameState extends GameState {
     }
 
 
+    /**
+     * Setter for gameOver
+     *
+     * @param isOver
+     */
     public void setGameOver(boolean isOver){
         gameOver = isOver;
     }
 
-    public boolean getGameOver(){
-        return gameOver;
-    }
 
+    /**
+     * Getter for player1Forfeit
+     *
+     * @return  true if the player forfeited
+     * @author Jude Gabriel
+     */
     public boolean getPlayer1Forfeit(){
         return player1Forfeit;
     }
 
+
+    /**
+     * Getter for the player2Forfeit
+     *
+     * @return true if the player forfeited
+     * @auhor Jude Gabriel
+     */
     public boolean getPlayer2Forfeit(){
         return player2Forfeit;
     }
+
+
+    /**
+     * Getter for the total moves in the game
+     *
+     * @return the total number of moves
+     * @author Jude Gabriel
+     */
+    public int getTotalMoves(){
+        return totalMoves;
+    }
+
 
     /**
      * setHandicap
@@ -757,6 +809,18 @@ public class GoGameState extends GameState {
     }
 
 
+
+
+    ///////// HELPER METHODS FOR TESTING //////////
+
+    /**
+     * Checks if two gamestates are equal
+     *
+     * @param object the gamestate to compare to
+     *
+     * @return true if the gamestate's are equal
+     * @author Jude Gabriel
+     */
     public boolean equals(Object object) {
         if (!(object instanceof GoGameState)) {
             return false;
@@ -788,8 +852,6 @@ public class GoGameState extends GameState {
 
     }
 
-
-    ///////// HELPER METHODS FOR TESTING //////////
 
     /** testCaptures
      * Used to test if captures works
@@ -857,7 +919,6 @@ public class GoGameState extends GameState {
      * Used to reset the board in testing
      *
      * @author Jude Gabriel
-     *
      */
     public void resetStones(){
         for(int i = 0; i < boardSize; i++){

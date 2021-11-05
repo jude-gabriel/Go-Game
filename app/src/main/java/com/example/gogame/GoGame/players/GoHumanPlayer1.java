@@ -7,10 +7,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gogame.GameFramework.GameMainActivity;
+import com.example.gogame.GameFramework.actionMessage.EndTurnAction;
+import com.example.gogame.GameFramework.actionMessage.TimerAction;
+import com.example.gogame.GameFramework.infoMessage.BindGameInfo;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
+import com.example.gogame.GameFramework.infoMessage.TimerInfo;
 import com.example.gogame.GameFramework.players.GameHumanPlayer;
+import com.example.gogame.GameFramework.utilities.GameTimer;
 import com.example.gogame.GameFramework.utilities.Logger;
 import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
@@ -91,43 +96,62 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             p2Score = ((GoGameState) info).getPlayer2Score();
             playerTurn = ((GoGameState) info).getPlayer();
 
-            if(player1ScoreText != null && playerTurnText != null) {
+            if(player1ScoreText != null && playerTurnText != null && timerText != null) {
                 player1ScoreText.setText("Player 1 Score: " + p1Score);
                 player2ScoreText.setText("Player 2 Score: " + p2Score);
                 playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
                 handicapButton.setText("HANDICAP");
+                timerText.setText("TIMER");
+                timerText.setText("Timer " + ((GoGameState) info).getTime());
+                if(((GoGameState) info).getTotalMoves() > 0){
+                    handicapButton.setVisibility(View.GONE);
+                }
 
             }
 
             //What should be done for the timer????
         }
 
-
-
         //Error check if the surface view exists
         if(goSurfaceView == null){
             return;
         }
 
-        /* Check if the move was valid. If it wasn't produce an error message.
-            if it is set the current state and then call invalidate.
-         */
+        //Check if the move was valid. If it wasn't produce an error message.
+        //if it is set the current state and then call invalidate
         if(info instanceof IllegalMoveInfo){
             goSurfaceView.flash(Color.RED, 1000);
             validMoveText.setText("INVALID MOVE");
             validMoveText.setBackgroundColor(Color.RED);
+            Logger.log(TAG, "Invalid move hit");
         }
+
+        //Check the human tried to move out of turn, update the valid move text
         else if(info instanceof NotYourTurnInfo){
             validMoveText.setText("NOT YOUR TURN");
             validMoveText.setBackgroundColor(Color.RED);
         }
+
+        //Check if it was a timer action, if so update the timer
+        else if(info instanceof TimerInfo){
+            GameTimer timer = ((TimerInfo) info).getTimer();
+            elapsedSec = timer.getTicks();
+            elapsedMin = elapsedSec / 60;
+            elapsedSec = elapsedSec % 60;
+            timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+            Logger.log(TAG, "TIMER");
+
+        }
+
+        //If we hit here and do not have a gamestate action, exit
         else if(!(info instanceof GoGameState)){
             return;
         }
+
+        //If it is, then update the surface view
         else{
             goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
             goSurfaceView.invalidate();
-            Logger.log(TAG, "receiving");
         }
 
     }
@@ -143,7 +167,9 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
+        //Initialize the activity
         activity.setContentView(layoutId);
+
         //initialize the widget reference members
         if(activity != null) {
             this.player1ScoreText = (TextView) activity.findViewById(R.id.player1ScoreText);
@@ -161,12 +187,10 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
         }
 
-
-
-        //SURFACE VIEW DOES NOT EXIST YET
+        //Initialize the surface view
         goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.goSurfaceView);
 
-        Logger.log("set listener", "onTouch");
+        //Set the listener for all buttons
         goSurfaceView.setOnTouchListener(this);
         skipButton.setOnClickListener(this);
         handicapButton.setOnClickListener(this);
@@ -188,7 +212,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      */
     @Override
     public View getTopView() {
-        //DOESN'T EXIST YET
+        //Return the top gui
         return myActivity.findViewById(R.id.top_gui_layout);
     }
 
@@ -200,6 +224,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @author Jude Gabriel
      */
     public void initAfterReady(){
+        //Initialize the title
         myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
     }
 
@@ -207,6 +232,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     /**
      * Detects the users move and calls the appropriate methods to alter the game
      * board
+     *
      * @param v         the current view
      * @param event     the touch event we are handling
      * @return          true after the event has been handled
@@ -215,6 +241,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        //Initialize the array that stores the clicks
         int[] xyLoc = null;
 
         //Check if the action has ended
@@ -225,14 +252,13 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         //Get the coordinates of a press-location and map it to a liberty
         int x = (int) event.getX();
         int y = (int) event.getY();
-        xyLoc = goSurfaceView.findStone(x, y);  //NEED FIND STONE FROM NATALIE
+        xyLoc = goSurfaceView.findStone(x, y);
 
-        //Check if the location was not valid and flash screen if so
+        //Check if the location was not valid and update validMove if so
         if(xyLoc == null || xyLoc[0] == -1 || xyLoc[1] == -1){
             validMoveText.setText("INVALID MOVE");
             validMoveText.setBackgroundColor(Color.RED);
             goSurfaceView.flash(Color.RED, 1000);
-
             goSurfaceView.invalidate();
         }
         else{
@@ -240,6 +266,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             GoMoveAction action = new GoMoveAction(this, xyLoc[0], xyLoc[1]);
             Logger.log("onTouch", "Human player sending Go Move Action");
             game.sendAction(action);
+
+            //Update the valid move text since the move was valid
             validMoveText.setText("VALID MOVE");
             validMoveText.setBackgroundColor(Color.GREEN);
 
