@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 import com.example.gogame.GameFramework.Game;
 import com.example.gogame.GameFramework.actionMessage.ReadyAction;
+import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.GoLocalGame;
 import com.example.gogame.GoGame.GoMainActivity;
@@ -316,9 +317,33 @@ public class GoGameTests {
      */
     @Test
     public void testForfeit(){
+        //create button for Forfeit
+        View forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
+
+        //create a local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        // Get the players
+        GamePlayer[] gamePlayers = goLocalGame.getPlayers();
+
+        // Send players to the game
+        for(GamePlayer gamePlayer: gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        // have the players make moves
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        goMainActivity.onClick(forfeitButton);
+
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+
+        boolean didForfeit = goGameState.forfeit();
+
+        assertEquals("Turn did not forfeit", true, didForfeit);
 
     }
-
 
     /**
      * Tests that a turn can be skipped successfully

@@ -37,7 +37,7 @@ public class GoMainActivity extends GameMainActivity {
         //define allowed player types
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 
-        //add human player
+        //add human player1
         playerTypes.add(new GamePlayerType("Player 1") {
             public GamePlayer createPlayer(String name) {
                 return new GoHumanPlayer1(name, R.layout.go_human_player1);
@@ -81,7 +81,13 @@ public class GoMainActivity extends GameMainActivity {
         return defaultConfig;
     }
 
-
+    /**
+     * createLocal Game - Creates a new game to run on the server tablet
+     * @param gameState
+     *              The desired gameState to start at or null for new game
+     *
+     * @return a new, game-specific instance of a sub-class of the LocalGame class
+     */
     @Override
     public LocalGame createLocalGame(GameState gameState) {
 
@@ -93,6 +99,10 @@ public class GoMainActivity extends GameMainActivity {
 
     /**
      * saveGame, adds this games prepend to the filename
+     *
+     * @param gameName
+     *              The save name
+     * @return a String representation of the save
      */
     @Override
     public GameState saveGame(String gameName) {
@@ -104,6 +114,7 @@ public class GoMainActivity extends GameMainActivity {
      * game specific state
      *
      * @param gameName
+     *              file to open
      * @return The loaded GameState
      */
     @Override
