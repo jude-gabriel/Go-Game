@@ -1,15 +1,27 @@
 package com.example.gogame.GoGame;
 
+import android.app.Activity;
+
 import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
+import com.example.gogame.GameFramework.actionMessage.TimerAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GameFramework.utilities.GameTimer;
+import com.example.gogame.GameFramework.utilities.Tickable;
+import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
+import com.example.gogame.GoGame.players.GoDumbComputerPlayer;
+import com.example.gogame.GoGame.players.GoHumanPlayer1;
+
+import java.lang.annotation.Target;
+import java.util.Timer;
 
 /* GoLocalGame
  * The TTTLocalGame class for a simple tic-tac-toe game.  Defines and enforces
@@ -21,6 +33,8 @@ import com.example.gogame.GoGame.infoMessage.Stone;
 public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
     private static final String TAG = "GoLocalGame";
+    private GameTimer timer;
+
 
     /**
 	 * Constructor
@@ -31,7 +45,21 @@ public class GoLocalGame extends LocalGame {
         super();
         // create a new empty Go State object
         super.state = new GoGameState();
+
+
+
+        //TODO: Fix the timer!
+		timer = this.getTimer();
+		timer = new GameTimer(new Tickable() {
+			@Override
+			public void tick(GameTimer timer) {
+				if(state != null && GoLocalGame.super.players != null && timer != null) {
+					sendAction(new TimerAction(timer));
+				}
+			}
+		});
     }
+
 
     /**
 	 * Copy Constructor
@@ -42,7 +70,12 @@ public class GoLocalGame extends LocalGame {
         super();
         // create a new empty Go State object
         super.state = new GoGameState(gameState);
+
+        //TODO: Fix the timer!
+		//timer = this.getTimer();
+		//timer.start();
     }
+
 
     /**
 	 * checkIfGameOver
@@ -90,14 +123,33 @@ public class GoLocalGame extends LocalGame {
 		// determine who the winner is
 		int gameWinner = -1;
 
+		//Initialize forfeit variables
+		boolean p1Forfeit = state.getPlayer1Forfeit();
+		boolean p2Forfeit = state.getPlayer2Forfeit();
+
+		//Check for a forfeit
+		if(p1Forfeit == true){
+			return playerNames[1] + " wins by forfeit! ";
+		}
+		if(p2Forfeit == true){
+			return playerNames[0] + " wins by forfeit! ";
+		}
+
 		// determine which schore is greater
 		if (currPlayerScore > oppPlayerScore) {
 			if (currStoneColor == Stone.StoneColor.BLACK) gameWinner = 0;
 			else gameWinner = 1;
 		}
+		else if(oppPlayerScore > currPlayerScore){
+			if(currStoneColor == Stone.StoneColor.WHITE) gameWinner = 0;
+			else gameWinner = 1;
+		}
+		else{
+			return "Tie game! ";
+		}
 
 		// return the winner of the game
-		return playerNames[gameWinner]+" is the winner.";
+		return playerNames[gameWinner] + " is the winner.";
 	}
 
 	/**
@@ -134,18 +186,45 @@ public class GoLocalGame extends LocalGame {
 	 *
 	 * @param action - The action that the player has sent to the game
 	 * @return - Tells whether the move was a legal one.
+	 *
+	 * @author Brynn Harrington
+	 * @author Jude Gabriel
 	 * //TODO - testing
 	 */
 	@Override
 	protected boolean takeAction(GameAction action) {
+
+		//TODO: How to handle change of players
+//		if(action instanceof GoDumbAIAction){
+//			GoMainActivity goMainActivity = new GoMainActivity();
+//			goMainActivity.createDefaultConfig();
+//			goMainActivity.createLocalGame(new GoGameState());
+//			//this.sendUpdatedStateTo(new GoDumbComputerPlayer("Dumb AI"));
+//			this.playerNames = null;
+//			this.
+//			this.start(players);
+//			return true;
+//		}
+
+
 		// ensure the moveAction is not null
 		if (action == null ) return false;
 
 		// get the current game state by calling the super class instructor
 		GoGameState state = (GoGameState) super.state;
 
+//		if(state.getTotalMoves() == 1){
+//			timer.start();
+//		}
+
 		// ensure the state is not null
 		assert state != null;
+
+		//Check if it was a timer action and update the timer
+		if(action instanceof TimerAction){
+			state.setTime(timer.getTicks());
+		}
+
 
 		// determine the action to perform based on the action provided
 		// handicap action
@@ -170,6 +249,10 @@ public class GoLocalGame extends LocalGame {
 
 		// forfeit action
 		else if (action instanceof GoForfeitAction) return state.forfeit();
+		else if(action instanceof GoQuitGameAction){
+			System.exit(0);
+			return false;
+		}
 
 		// otherwise, invalid return false
 		else return false;
@@ -186,9 +269,17 @@ public class GoLocalGame extends LocalGame {
 		if(gameOver == null) return -1;
 
 		// if game over, return 0
-		if(gameOver.equals(playerNames[0]+" is the winner.")) return 0;
+		if(gameOver.equals(playerNames[0]+" is the winner. ")) return 0;
 
 		// otherwise return 1
 		return 1;
+	}
+
+
+	@Override
+	protected void timerTicked(){
+		if(state instanceof GoGameState){
+			((GoGameState) state).setTime(timer.getTicks());
+		}
 	}
 }

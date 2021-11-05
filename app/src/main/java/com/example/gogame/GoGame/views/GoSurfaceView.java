@@ -116,8 +116,13 @@ public class GoSurfaceView extends FlashSurfaceView {
      * @param y - the y location of the user click
      * @return an integer array containing the indices
      * @author Natalie Tashchuk
+     * @author Jude Gabriel
      */
     public int[] findStone(float x, float y) {
+        if(state == null){
+            int[] error = {-1, -1};
+            return error;
+        }
         //initialize indices for error checking
         int iIndex = -1;
         int jIndex = -1;
@@ -126,8 +131,8 @@ public class GoSurfaceView extends FlashSurfaceView {
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                if ((x < gameBoard[i][j].getxRight() + 50) && (x > gameBoard[i][j].getxLeft() - 50)) {
-                    if ((y > gameBoard[i][j].getyTop() -50) && (y < gameBoard[i][j].getyBottom() + 50)) {
+                if ((x < gameBoard[i][j].getxRight() + 20) && (x > gameBoard[i][j].getxLeft() - 20)) {
+                    if ((y > gameBoard[i][j].getyTop() - 20) && (y < gameBoard[i][j].getyBottom() + 20)) {
                         iIndex = i;
                         jIndex = j;
                     }
