@@ -45,12 +45,11 @@ public class GoLocalGame extends LocalGame {
     public GoLocalGame() {
         // initialize with the superclass
         super();
+
         // create a new empty Go State object
         super.state = new GoGameState();
 
-
-
-        //TODO: Fix the timer!
+        //Initialize the timer
 		timer = this.getTimer();
 		timer.setInterval(TICK);
     }
@@ -66,7 +65,7 @@ public class GoLocalGame extends LocalGame {
         // create a new empty Go State object
         super.state = new GoGameState(gameState);
 
-        //TODO: Fix the timer!
+        //Copy the timer
 		timer = this.getTimer();
 		timer.setInterval(TICK);
     }
@@ -189,38 +188,21 @@ public class GoLocalGame extends LocalGame {
 	@Override
 	protected boolean takeAction(GameAction action) {
 
-		//TODO: How to handle change of players
-//		if(action instanceof GoDumbAIAction){
-//			GoMainActivity goMainActivity = new GoMainActivity();
-//			goMainActivity.createDefaultConfig();
-//			goMainActivity.createLocalGame(new GoGameState());
-//			//this.sendUpdatedStateTo(new GoDumbComputerPlayer("Dumb AI"));
-//			this.playerNames = null;
-//			this.
-//			this.start(players);
-//			return true;
-//		}
-
+		//TODO: Add action for changing difficulty
 
 		// ensure the moveAction is not null
 		if (action == null ) return false;
 
-		// get the current game state by calling the super class instructor
-		GoGameState state = (GoGameState) super.state;
-
-		if(state.getTotalMoves() == 1){
-			timer.start();
-		}
-
 		// ensure the state is not null
 		assert state != null;
 
-		//Check if it was a timer action and update the timer
+		// get the current game state by calling the super class instructor
+		GoGameState state = (GoGameState) super.state;
 
-
-
-
-
+		//Start the timer after the first move
+		if(state.getTotalMoves() == 0){
+			timer.start();
+		}
 
 		// determine the action to perform based on the action provided
 		// handicap action
@@ -271,7 +253,11 @@ public class GoLocalGame extends LocalGame {
 		return 1;
 	}
 
-
+	/**
+	 * Updates the timer info for all players in the game
+	 *
+	 * @author Jude Gabriel
+	 */
 	@Override
 	protected void timerTicked(){
 		GoGameState state = (GoGameState) super.state;
