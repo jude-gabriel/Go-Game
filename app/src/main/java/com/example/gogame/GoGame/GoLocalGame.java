@@ -4,8 +4,13 @@ import android.app.Activity;
 
 import com.example.gogame.GameFramework.LocalGame;
 import com.example.gogame.GameFramework.actionMessage.GameAction;
+import com.example.gogame.GameFramework.actionMessage.TimerAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
+import com.example.gogame.GameFramework.infoMessage.TimerInfo;
 import com.example.gogame.GameFramework.players.GamePlayer;
+import com.example.gogame.GameFramework.utilities.GameTimer;
+import com.example.gogame.GameFramework.utilities.Tickable;
+import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
@@ -13,6 +18,11 @@ import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
+import com.example.gogame.GoGame.players.GoDumbComputerPlayer;
+import com.example.gogame.GoGame.players.GoHumanPlayer1;
+
+import java.lang.annotation.Target;
+import java.util.Timer;
 
 /* GoLocalGame
  * The TTTLocalGame class for a simple tic-tac-toe game.  Defines and enforces
@@ -24,6 +34,9 @@ import com.example.gogame.GoGame.infoMessage.Stone;
 public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
     private static final String TAG = "GoLocalGame";
+    private GameTimer timer;
+    private static final int TICK = 1000;
+
 
     /**
 	 * Constructor
@@ -32,9 +45,15 @@ public class GoLocalGame extends LocalGame {
     public GoLocalGame() {
         // initialize with the superclass
         super();
+
         // create a new empty Go State object
         super.state = new GoGameState();
+
+        //Initialize the timer
+		timer = this.getTimer();
+		timer.setInterval(TICK);
     }
+
 
     /**
 	 * Copy Constructor
@@ -45,7 +64,12 @@ public class GoLocalGame extends LocalGame {
         super();
         // create a new empty Go State object
         super.state = new GoGameState(gameState);
+
+        //Copy the timer
+		timer = this.getTimer();
+		timer.setInterval(TICK);
     }
+
 
     /**
 	 * checkIfGameOver
@@ -156,18 +180,29 @@ public class GoLocalGame extends LocalGame {
 	 *
 	 * @param action - The action that the player has sent to the game
 	 * @return - Tells whether the move was a legal one.
+	 *
+	 * @author Brynn Harrington
+	 * @author Jude Gabriel
 	 * //TODO - testing
 	 */
 	@Override
 	protected boolean takeAction(GameAction action) {
+
+		//TODO: Add action for changing difficulty
+
 		// ensure the moveAction is not null
 		if (action == null ) return false;
+
+		// ensure the state is not null
+		assert state != null;
 
 		// get the current game state by calling the super class instructor
 		GoGameState state = (GoGameState) super.state;
 
-		// ensure the state is not null
-		assert state != null;
+		//Start the timer after the first move
+		if(state.getTotalMoves() == 0){
+			timer.start();
+		}
 
 		// determine the action to perform based on the action provided
 		// handicap action
@@ -216,5 +251,17 @@ public class GoLocalGame extends LocalGame {
 
 		// otherwise return 1
 		return 1;
+	}
+
+	/**
+	 * Updates the timer info for all players in the game
+	 *
+	 * @author Jude Gabriel
+	 */
+	@Override
+	protected void timerTicked(){
+		GoGameState state = (GoGameState) super.state;
+		state.setTime(timer.getTicks());
+		this.sendAllUpdatedState();
 	}
 }

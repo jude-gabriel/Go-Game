@@ -20,6 +20,8 @@ public class GoMoveAction extends GameAction {
      * @param player the player who created the action
      * @param x the x index of the selected liberty
      * @param y the y index of the selected liberty
+     *
+     * @author Jude Gabriel
      */
     public GoMoveAction(GamePlayer player, int x, int y) {
         //Invoke the super class
@@ -35,6 +37,8 @@ public class GoMoveAction extends GameAction {
      * get the objects x index value
      *
      * @return the x index value
+     *
+     * @author Jude Gabriel
      */
     public int getX(){
         return x;
@@ -45,6 +49,8 @@ public class GoMoveAction extends GameAction {
      * get the objects y index value
      *
      * @return the y index value
+     *
+     * @author Jude Gabriel
      */
     public int getY(){
         return y;

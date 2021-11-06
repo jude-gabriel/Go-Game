@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
             android:hapticFeedbackEnabled="false"
-            android:text="Dumb AI"
+            android:text="DIFFICULTY --"
             android:textColor="#F6F6F6" />
 
         <Button
@@ -59,16 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
-            android:text="@string/smart_ai"
+            android:text="DIFFICULTY ++"
             android:textColor="#FAFAFA" />
-
-        <Button
-            android:id="@+id/twoPlayerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#090909"
-            android:text="@string/_2_player"
-            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 
@@ -231,7 +223,6 @@
             android:layout_height="wrap_content"
             android:background="#ED1909"
             android:text="INVALID MOVE TRY AGAIN"
-            android:textAlignment="center"
             android:textColor="#090909"
             android:textSize="25sp"
             android:textStyle="bold" />

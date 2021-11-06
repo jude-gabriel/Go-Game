@@ -116,8 +116,13 @@ public class GoSurfaceView extends FlashSurfaceView {
      * @param y - the y location of the user click
      * @return an integer array containing the indices
      * @author Natalie Tashchuk
+     * @author Jude Gabriel
      */
     public int[] findStone(float x, float y) {
+        if(state == null){
+            int[] error = {-1, -1};
+            return error;
+        }
         //initialize indices for error checking
         int iIndex = -1;
         int jIndex = -1;
