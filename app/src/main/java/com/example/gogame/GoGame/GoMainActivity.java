@@ -90,10 +90,12 @@ public class GoMainActivity extends GameMainActivity {
      */
     @Override
     public LocalGame createLocalGame(GameState gameState) {
-
+        //Check if the gamestate exists
         if (gameState == null) {
             return new GoLocalGame();
         }
+
+        //Return the local game
         return new GoLocalGame((GoGameState) gameState);
     }
 
@@ -119,9 +121,12 @@ public class GoMainActivity extends GameMainActivity {
      */
     @Override
     public GameState loadGame(String gameName) {
+        //Get the game name and load the game
         String appName = getGameString(gameName);
         super.loadGame(appName);
         Logger.log(TAG, "Loading: " + gameName);
+
+        //Return the gamestate
         return (GameState) new GoGameState((GoGameState) Saving.readFromFile(appName, this.getApplicationContext()));
 
     }

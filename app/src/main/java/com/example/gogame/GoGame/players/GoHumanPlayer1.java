@@ -64,6 +64,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @author Jude Gabriel
      */
     public GoHumanPlayer1(String name, int layoutID){
+        //Initialize instance variables
         super(name);
         this.layoutId = layoutID;
     }
@@ -325,6 +326,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             default:
                 return;
         }
+
+        //Invalidate the surface view
         goSurfaceView.invalidate();
 
         //Error if we hit here
