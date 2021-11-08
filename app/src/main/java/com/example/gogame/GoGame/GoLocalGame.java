@@ -238,7 +238,12 @@ public class GoLocalGame extends LocalGame {
 
 	//TESTING
 
-
+	/**
+	 * Finds which user won the game
+	 *
+	 * @returns 0 if player 0 won, else returns 1
+	 * @author Brynn Harrington
+	 */
 	public int whoWon(){
 		// get the string for game over
 		String gameOver = checkIfGameOver();
@@ -260,8 +265,11 @@ public class GoLocalGame extends LocalGame {
 	 */
 	@Override
 	protected void timerTicked(){
+		//Set the state and the timer
 		GoGameState state = (GoGameState) super.state;
 		state.setTime(timer.getTicks());
+
+		//Send the updated state to all users
 		this.sendAllUpdatedState();
 	}
 }

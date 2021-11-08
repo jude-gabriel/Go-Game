@@ -377,8 +377,12 @@ public class GoGameState extends GameState {
                 }
             }
         }
+
+        //Capture possible stones and reset capture enum
         commenceCapture(capCol);
         resetCapture();
+
+        //Return whether or not the stone was captured
         return gameBoard[x][y].getStoneColor() != capCol;
     }
 
@@ -677,7 +681,6 @@ public class GoGameState extends GameState {
         //Reset the capture
         resetCapture();
 
-
         //Return the total Score
         return totalScore;
     }
@@ -783,14 +786,19 @@ public class GoGameState extends GameState {
      * @author Brynn Harrington
      */
     public boolean setHandicap(){
+        //Case 1: It is player 1's turn and the game hasn't started
         if((isPlayer1) && (totalMoves) == 0){
+            //Set player 1 handicap to true and change the turn
             p1Handicap = true;
             isPlayer1 = !isPlayer1;
             if(p2Handicap == false){
                 return true;
             }
         }
+
+        //Case 2: It is player 2's turn and the game hasn't started
         if((!isPlayer1) && (totalMoves == 0)){
+            //Set player 2 handicap to true and change the turn
             p2Handicap = true;
             isPlayer1 = !isPlayer1;
             if(p1Handicap == false){
@@ -798,20 +806,21 @@ public class GoGameState extends GameState {
             }
         }
 
+        //Case 3: Both players agree to a handicap
         if(p1Handicap && p2Handicap && totalMoves == 0){
+            //Place the stones on the board and set both handicap's to false
             gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
             gameBoard[6][6].setStoneColor(Stone.StoneColor.WHITE);
             p1Handicap = false;
             p2Handicap = false;
         }
-
         return true;
     }
 
 
 
 
-    ///////// HELPER METHODS FOR TESTING //////////
+    ///////// HELPER METHODS FOR TESTING (NOT FINISHED!) //////////
 
     /**
      * Checks if two gamestates are equal

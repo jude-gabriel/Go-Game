@@ -58,7 +58,8 @@ public class GoDumbComputerPlayer extends GameComputerPlayer {
 
         //Check if it is the AI's turn
         if(info instanceof NotYourTurnInfo) return;
-        //log message?
+
+        //log message
         Logger.log("GoComputer1", "Computers Turn");
 
 
