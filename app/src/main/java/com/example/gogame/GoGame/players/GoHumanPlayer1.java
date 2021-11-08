@@ -43,7 +43,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private Button forfeitButton        = null;
     private Button dumbAIButton         = null;
     private Button smartAIButton        = null;
-    private Button networkPlay          = null;
     private Button quitGameButton       = null;
 
     //Tag for logging
@@ -178,7 +177,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
             this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
             this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
-            this.networkPlay = (Button) activity.findViewById(R.id.networkButton);
+
             this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
         }
 
@@ -192,7 +191,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         this.forfeitButton.setOnClickListener(this);
         this.dumbAIButton.setOnClickListener(this);
         this.smartAIButton.setOnClickListener(this);
-        this.networkPlay.setOnClickListener(this);
         this.quitGameButton.setOnClickListener(this);
     }
 
@@ -322,11 +320,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 game.sendAction(new GoSmartAIAction(this));
                 break;
 
-
-            //Case 7: It was the network play button, send a network play action
-            case R.id.networkButton:
-                game.sendAction(new GoNetworkPlayAction(this));
-                break;
 
             //If this case is hit, it was not one of the buttons that was hit. Exit method
             default:

@@ -93,7 +93,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         else{
             for(int i = 0; i < 9; i++){
                 for(int j = 0; j < 9; j++){
-                    stonesArray[i][j] = new Stone((j * 110) + 65, (i * 100) + 90);
+                    stonesArray[i][j] = new Stone((j * 83) + 46, (i * 81) + 48);
                 }
             }
         }
@@ -102,7 +102,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         //offset each stone to place it directly on a liberty
         for (int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++){
-                stonesArray[i][j].draw(canvas,(j * 110) + 65, (i * 110) + 60);
+                stonesArray[i][j].draw(canvas,(j * 83) + 46, (i * 81) + 48);
 
             }
         }

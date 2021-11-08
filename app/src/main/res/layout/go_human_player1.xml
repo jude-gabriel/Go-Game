@@ -75,19 +75,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/networkButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
-            android:gravity="right"
-            android:paddingLeft="20dp"
-            android:text="@string/network_play"
-            android:textColor="#FBFBFB" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:id="@+id/playerTurnLayout"
@@ -136,7 +124,7 @@
         android:layout_width="880dp"
         android:layout_height="75dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="700dp"
+        android:layout_marginTop="620dp"
         android:layout_marginEnd="200dp"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
