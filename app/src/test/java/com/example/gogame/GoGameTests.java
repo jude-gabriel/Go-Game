@@ -171,6 +171,8 @@ public class GoGameTests {
      * TODO: Verify this test works
      *
      * @author Natalie Tashchuk
+     * @author Jude Gabriel
+     *
      */
     @Test
     public void test_CopyConstructorOfState_Full(){
