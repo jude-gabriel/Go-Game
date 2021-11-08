@@ -82,7 +82,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         //Create a bitmap of the board image. Pass in resources and ID
         //Bitmap gameBoard = BitmapFactory.decodeResource(getResources(), );
         Bitmap gameBoardImage;
-        gameBoardImage = BitmapFactory.decodeResource(getResources(), R.drawable.boardorangecopy);
+        gameBoardImage = BitmapFactory.decodeResource(getResources(), R.drawable.gameboard);
         //Draw the board onto the sv
         canvas.drawBitmap(gameBoardImage, 0.f, 0.f, null);
 
