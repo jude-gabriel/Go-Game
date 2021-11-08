@@ -50,7 +50,16 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	// instantiate a variable to track the current board
 	private Stone[][] gameBoard;
 
-	// set the win score to an impossible score initially
+	// instantiate a variable to hold the current game state
+	private GoGameState goGS;
+
+	// instantiate a variable to hold whether the AI is player 0 or 1
+	private boolean isPlayer1;
+
+	// instantiate a variable that tracks the current stone color
+	Stone.StoneColor currStoneColor;
+
+	// set the win score to an impossible score initially (representing infinity)
 	private static final int winningScore = 100000000;
 
 	/**
@@ -59,6 +68,30 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param name the player's name (e.g., "John")
 	 */
 	public GoSmartComputerPlayer(String name) { super(name); }
+
+	/**
+	 * //TODO write what this function does
+	 *
+	 * @param info the current information of the game
+	 */
+	@Override
+	protected void receiveInfo(GameInfo info) {
+		//TODO - verify this is the correct assertion
+		// verify this is a valid go game state
+		assert info != null;
+
+		// initialize the global game state variable
+		goGS = (GoGameState) info;
+
+		// determine which player the AI is
+		isPlayer1 = goGS.getPlayer() != 0;
+
+		// determine the current AI's color
+		if (isPlayer1) currStoneColor = Stone.StoneColor.WHITE;
+		else currStoneColor = Stone.StoneColor.BLACK;
+
+
+	}
 
 	/*
 	 * getter function for the winning score
@@ -73,18 +106,15 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * the other player (i.e. how likely the other player is to win
 	 * the game before the computer player_
 	 *
-	 * @param goGS the current state of the game
-	 * @param isPlayer1 the current playerID
-	 *
 	 * @return the score to be used in the Minimax algorithm
 	 */
-	public double evaluateBoard(GoGameState goGS, boolean isPlayer1) {
+	public double evaluateBoard() {
 		// get the current player
 		int player0Score = goGS.getPlayer1Score();
 		int player1Score = goGS.getPlayer1Score();
 
 		// determine if current player is black
-		if (goGS.getPlayer() == this.playerNum && this.playerNum == 0)
+		if (goGS.getPlayer() == this.playerNum && !isPlayer1)
 		{
 			// ensure the score for black is not 0 for division
 			if (player0Score == 0) player0Score = 1;
@@ -124,54 +154,48 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}//getScore
 
 	/*
-	 * calculates the board score in the horizontal direction
+	 * calculates the board score in the horizontal direction by determining
+	 * if a consecutive stone set is blocked by the opponent or the board border.
+	 * If both sides of a consecutive set are blocked, the blocks will be set to two.
+	 * If only a single side is blocked, the block variable will be set to one. Otherwise,
+	 * if the consecutive set is free and blocks will be zero. By default, the first cell
+	 * in a row is blocked by the left border of the board. If the first cell in a row
+	 * is empty, then the block count will be decremented by one and if there is another
+	 * empty cell after a consecutive stone set, the block count will also be decremented
+	 * by one.
 	 *
-	 * @param goGS  the current state of the game
-	 * @param forPlayer the current player to evaluate the score for
-	 * @param turn the current turn for the players
 	 *
 	 * @return  the horizontal board score for the specified player
 	 */
-	public int evaluateHorizontalScore(GoGameState goGS, boolean forPlayer, boolean turn)
-	{
+	public int evaluateHorizontalScore() {
+		// initialize the consecutive, blocks, and score variables
 		int consecutive = 0;
-		// blocks variable is used to check if a consecutive stone set is blocked by the opponent or
-		// the board border. If the both sides of a consecutive set is blocked, blocks variable will be 2
-
-		// If only a single side is blocked, blocks variable will be 1, and if both sides of the consecutive
-		// set is free, blocks count will be 0.
-
-		// By default, first cell in a row is blocked by the left border of the board.
-		// If the first cell is empty, block count will be decremented by 1.
-		// If there is another empty cell after a consecutive stones set, block count will again be
-		// decremented by 1.
 		int blocks = 2;
 		int score = 0;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
 
-		// iterate through the rows
+		// iterate through each index in each row
 		for (int row = 0; row < boardSize; row++) {
-
-			// iterate through each index in the row
 			for (int index = 0; index < boardSize; index++) {
 
 				// get the current game board
 				Stone[][] gameBoard = goGS.getGameBoard();
-				//TODO determine how to verify which player it is
-				if (gameBoard[row][index] == forPlayer)
+
+				// increment the consecutive if AI has a stone in current cell
+				if (gameBoard[row][index].getStoneColor() == currStoneColor) consecutive++;
 
 				// check if the current index is empty
-				if (gameBoard[row][index].getStoneColor() == Stone.StoneColor.NONE) {
+				else if (gameBoard[row][index].getStoneColor() == Stone.StoneColor.NONE) {
 					// verify there were consecutive stones before this empty cell
 					if (consecutive > 0) {
 						// the consecutive set is not blocked by the opponent so
 						// decrement block count
 						blocks--;
+
 						// get the consecutive set score
-						//TODO -  create function
-						//score += getConsecutiveScore(consecutive, block, forPlayer == turn);
+						score += getConsecutiveSetScore(consecutive, blocks);
 
 						// reset the consecutive stone count
 						consecutive = 0;
@@ -186,11 +210,26 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				}
 				// if the cell is occupied by the opponent, check if there were any consecutive stones
 				// are before this empty cell
-				else if ()
-			}
+				else if (consecutive > 0)
+				{
+					// get the consecutive set score
+					score += getConsecutiveSetScore(consecutive, blocks);
 
+					// reset consecutive to zero
+					consecutive = 0;
 
-		}
+					// current cell blocked by opponent, may have 2 blocked sides
+					blocks = 2;
+				}
+				// current cell blocked by opponent, may have 2 blocked sides
+				else blocks = 2;
+			}//index loop
+			// at the end of the row check if any consecutive stones reached right border
+			if (consecutive > 0 ) score += getConsecutiveSetScore(consecutive, blocks);
+		}//row loop
+
+		// return the score
+		return score;
 	}
 
 	/**
@@ -427,23 +466,18 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	/** getConsecutiveSetScore
 	 * This function determines the score from a given consecutive set
 	 *
-	 * @param count - the current instance of the game board
-	 * @param blocks - whether evaluating for player 0
-	 * @param currentTurn - which player it is
+	 * @param count - the current count
+	 * @param blocks - the number of blocks
 	 * @return the score
 	 *
 	 * //TODO FINISH
 	 */
-	public static int getConsecutiveSetScore(int count, int blocks, boolean currentTurn)
-	{
+	public static int getConsecutiveSetScore(int count, int blocks) {
 		return -1; // dummy
 	}
-
-	@Override
-	protected void receiveInfo(GameInfo info) {
-
-	}
 }
+
+
 
 // OLD CODE - MAY NEED LATER
 /*
