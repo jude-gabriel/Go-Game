@@ -129,7 +129,7 @@ public class GoGameState extends GameState {
         //Initialize the stones to a certain color
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                tempBoard[i][j] = new Stone((j * 110) + 65, (i * 110) + 70);
+                tempBoard[i][j] = new Stone((j * 83) + 46, (i * 80) + 60);
             }
         }
 
