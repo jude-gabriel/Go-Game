@@ -93,7 +93,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         else{
             for(int i = 0; i < 9; i++){
                 for(int j = 0; j < 9; j++){
-                    stonesArray[i][j] = new Stone((j * 83) + 46, (i * 45) + 30);
+                    stonesArray[i][j] = new Stone((j * 83) + 46, (i * 81) + 48);
                 }
             }
         }
