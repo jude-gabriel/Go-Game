@@ -289,6 +289,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     public void onClick(View v) {
         //Get the ID of the object clicked
         int viewID = v.getId();
+        if(game == null) return;
         switch (viewID){
 
             //Case 1: It was the skip turn button, send a skip turn action
