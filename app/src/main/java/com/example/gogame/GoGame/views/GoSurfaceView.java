@@ -35,7 +35,7 @@ public class GoSurfaceView extends FlashSurfaceView {
      * @author Natalie Tashchuk
      */
     public GoSurfaceView(Context context, AttributeSet attrs) {
-
+        //Initialize surface view by calling super
         super(context, attrs);
         init();
 
@@ -47,6 +47,8 @@ public class GoSurfaceView extends FlashSurfaceView {
         blackPaint.setARGB(255, 0, 0, 0);
         whitePaint = new Paint();
         whitePaint.setARGB(255, 255, 255, 255);
+
+        //Set the radius
         radius = 25;
     }
 
@@ -59,13 +61,20 @@ public class GoSurfaceView extends FlashSurfaceView {
     }// init
 
     /**
+     * Set's the background color
+     *
      * @return the color to set the background
      */
     public int backgroundColor() {
         return Color.BLUE;
     }
 
-
+    /**
+     * Setter for the state
+     *
+     * @param state
+     * @author Natalie Tashchuk
+     */
     public void setState(GoGameState state) {
         this.state = state;
     }
@@ -73,7 +82,6 @@ public class GoSurfaceView extends FlashSurfaceView {
 
     /**
      * onDraw
-     *
      *
      * @author Natalie Tashchuk
      */
@@ -93,7 +101,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         else{
             for(int i = 0; i < 9; i++){
                 for(int j = 0; j < 9; j++){
-                    stonesArray[i][j] = new Stone((j * 110) + 65, (i * 100) + 90);
+                    stonesArray[i][j] = new Stone((j * 83) + 46, (i * 81) + 48);
                 }
             }
         }
@@ -102,11 +110,12 @@ public class GoSurfaceView extends FlashSurfaceView {
         //offset each stone to place it directly on a liberty
         for (int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++){
-                stonesArray[i][j].draw(canvas,(j * 110) + 65, (i * 110) + 60);
+                stonesArray[i][j].draw(canvas,(j * 83) + 46, (i * 81) + 48);
 
             }
         }
     } //onDraw
+
 
     /**
      * findStone
@@ -129,6 +138,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         int boardSize = state.getBoardSize();
         Stone[][] gameBoard = state.getGameBoard();
 
+        //Iterate through the stones and find which one was clicked
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if ((x < gameBoard[i][j].getxRight() + 20) && (x > gameBoard[i][j].getxLeft() - 20)) {

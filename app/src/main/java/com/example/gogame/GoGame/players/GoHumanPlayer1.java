@@ -41,10 +41,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
-    private Button twoPlayerButton      = null;
     private Button dumbAIButton         = null;
     private Button smartAIButton        = null;
-    private Button networkPlay          = null;
     private Button quitGameButton       = null;
 
     //Tag for logging
@@ -66,9 +64,11 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @author Jude Gabriel
      */
     public GoHumanPlayer1(String name, int layoutID){
+        //Initialize instance variables
         super(name);
         this.layoutId = layoutID;
     }
+
 
     /**
      * Has player receive the current game info
@@ -76,21 +76,21 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      *
      * @author Jude Gabriel
      *
-     * TODO: This is where we will change all the view objects and update them
-     * to reflect the stuff we need to show. i.e. timer, score etc. Check
-     * PigHumanplayer for reference
+     * TODO: Add support for timer and test
      */
     @Override
     public void receiveInfo(GameInfo info) {
+        //Create variables for the gamestate info
         int p1Score;
         int p2Score;
         int elapsedMin;
         int elapsedSec;
         int playerTurn;
 
-        Logger.log(TAG, "Hit recieveInfo : " + info.getClass());
-
-
+        //Error check if the surface view exists
+        if(goSurfaceView == null){
+            return;
+        }
 
         /** Update the view objects?? **/
         if(info instanceof GoGameState){
@@ -98,27 +98,29 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             p2Score = ((GoGameState) info).getPlayer2Score();
             playerTurn = ((GoGameState) info).getPlayer();
 
+            //Check that all GUI objects exist
             if(player1ScoreText != null && playerTurnText != null && timerText != null) {
+                //Update the scores
                 player1ScoreText.setText("Player 1 Score: " + p1Score);
                 player2ScoreText.setText("Player 2 Score: " + p2Score);
+
+                //Update who's turn it is
                 playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
-                handicapButton.setText("HANDICAP");
-                timerText.setText("TIMER");
-                timerText.setText("Timer " + ((GoGameState) info).getTime());
+
+                //Calculate the time and display
+                elapsedSec = ((GoGameState) info).getTime();
+                elapsedMin = elapsedSec / 60;
+                elapsedSec = elapsedSec % 60;
+                timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+
+                //Remove handicap button after the first move
                 if(((GoGameState) info).getTotalMoves() > 0){
                     handicapButton.setVisibility(View.GONE);
                 }
-                Logger.log(TAG, "TIMER");
+
+                //Update the surface view
                 goSurfaceView.invalidate();
-
             }
-
-            //What should be done for the timer????
-        }
-
-        //Error check if the surface view exists
-        if(goSurfaceView == null){
-            return;
         }
 
         //Check if the move was valid. If it wasn't produce an error message.
@@ -136,17 +138,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             validMoveText.setBackgroundColor(Color.RED);
         }
 
-        //Check if it was a timer action, if so update the timer
-        else if(info instanceof TimerInfo){
-//            GameTimer timer = ((TimerInfo) info).getTimer();
-//            elapsedSec = timer.getTicks();
-//            elapsedMin = elapsedSec / 60;
-//            elapsedSec = elapsedSec % 60;
-//            timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
-//            Logger.log(TAG, "TIMER");
-
-        }
-
         //If we hit here and do not have a gamestate action, exit
         else if(!(info instanceof GoGameState)){
             return;
@@ -160,6 +151,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
     }
 
+
     /**
      * Updates the activity GUI to be the player
      *
@@ -167,7 +159,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      *
      * @author Jude Gabriel
      *
-     * TODO: Gather all buttons and texts here
+     * TODO: Requires Testing
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
@@ -184,10 +176,9 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
             this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
             this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
-            this.twoPlayerButton = (Button) activity.findViewById(R.id.twoPlayerButton);
             this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
             this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
-            this.networkPlay = (Button) activity.findViewById(R.id.networkButton);
+
             this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
         }
 
@@ -199,10 +190,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         skipButton.setOnClickListener(this);
         handicapButton.setOnClickListener(this);
         this.forfeitButton.setOnClickListener(this);
-        this.twoPlayerButton.setOnClickListener(this);
         this.dumbAIButton.setOnClickListener(this);
         this.smartAIButton.setOnClickListener(this);
-        this.networkPlay.setOnClickListener(this);
         this.quitGameButton.setOnClickListener(this);
     }
 
@@ -226,6 +215,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * info is received
      *
      * @author Jude Gabriel
+     *
      */
     public void initAfterReady(){
         //Initialize the title
@@ -242,6 +232,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @return          true after the event has been handled
      *
      * @author Jude Gabriel
+     *
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -273,6 +264,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
             //Update the valid move text since the move was valid
             validMoveText.setText("VALID MOVE");
+            validMoveText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             validMoveText.setBackgroundColor(Color.GREEN);
 
             //Update the surface view
@@ -290,6 +282,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @param v the current view
      *
      * @author Jude Gabriel
+     *
+     * TODO: Requires Testing
      */
     @Override
     public void onClick(View v) {
@@ -327,20 +321,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 game.sendAction(new GoSmartAIAction(this));
                 break;
 
-            //Case 7: It was the 2-player button, send a 2-player action
-            case R.id.twoPlayerButton:
-                game.sendAction(new GoTwoPlayerAction(this));
-                break;
-
-            //Case 8: It was the network play button, send a network play action
-            case R.id.networkButton:
-                game.sendAction(new GoNetworkPlayAction(this));
-                break;
 
             //If this case is hit, it was not one of the buttons that was hit. Exit method
             default:
                 return;
         }
+
+        //Invalidate the surface view
+        goSurfaceView.invalidate();
 
         //Error if we hit here
         return;
