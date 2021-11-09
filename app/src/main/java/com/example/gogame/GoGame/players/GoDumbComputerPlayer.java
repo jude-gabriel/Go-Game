@@ -65,7 +65,7 @@ public class GoDumbComputerPlayer extends GameComputerPlayer {
 
         //Always agree to a handicap if the human does
         GoGameState goGameState = (GoGameState) info;
-        if(goGameState.getTotalMoves() == 0 && goGameState.getPlayer() == 1){
+        if(goGameState.getTotalMoves() == 0){
             game.sendAction(new GoHandicapAction(this));
         }
 

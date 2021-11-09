@@ -372,13 +372,30 @@ public class GoGameState extends GameState {
                 if (gameBoard[i][j].getStoneColor() == Stone.StoneColor.NONE) {
                     //Verify the stone cannot be captured
                     if (gameBoard[i][j].getCheckedStone() == Stone.CheckedStone.FALSE) {
+                        checkCapture(i, j, capCol, checkCol);
+                    }
+                }
+            }
+        }
+
+        //Check if the person placing a stone can capture first
+        commenceCapture(checkCol);
+        resetCapture();
+
+        //Iterate through the board
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                //Verify the stone is empty
+                if (gameBoard[i][j].getStoneColor() == Stone.StoneColor.NONE) {
+                    //Verify the stone cannot be captured
+                    if (gameBoard[i][j].getCheckedStone() == Stone.CheckedStone.FALSE) {
                         checkCapture(i, j, checkCol, capCol);
                     }
                 }
             }
         }
 
-        //Capture possible stones and reset capture enum
+        //See if the opposing player can capture the person making the move
         commenceCapture(capCol);
         resetCapture();
 
