@@ -11,6 +11,7 @@ import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.GoLocalGame;
 import com.example.gogame.GoGame.GoMainActivity;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
@@ -438,6 +439,56 @@ public class GoGameTests {
      */
     @Test
     public void testHandicap(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //new local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
+        assertTrue(goLocalGame != null);
+        assertTrue(handicapButton != null);
+
+        //get players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        // create player 1 and 2
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        //send handicap button action to local game
+        // both players have to agree to handicap
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+
+        GoGameState goGameState = new GoGameState();
+
+        // stone array that contains stones in position 2,2 and 6,6 for expected result
+        Stone[][] expectedStones = new Stone[9][9];
+
+        //create two stones in position 2,2 and 6,6 that are white
+        Stone whiteStone1 = new Stone(2.0f, 2.0F);
+        Stone whiteStone2 = new Stone(6.0f, 6.0F);
+
+        whiteStone1.setStoneColor(Stone.StoneColor.WHITE);
+        whiteStone2.setStoneColor(Stone.StoneColor.WHITE);
+
+        // add the stones to array
+        expectedStones[2][2] = whiteStone1;
+        expectedStones[6][6] = whiteStone2;
+
+
+        //check to see stones appear on the board
+        assertEquals("Stones are on positions 2,2 and 6,6", expectedStones, goGameState.getGameBoard());
 
     }
 
