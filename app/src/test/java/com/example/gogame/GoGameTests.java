@@ -60,8 +60,13 @@ public class GoGameTests {
         View forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
         View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
 
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
         //Get the created game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
 
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
