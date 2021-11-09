@@ -2,6 +2,7 @@ package com.example.gogame.GoGame;
 
 import com.example.gogame.GameFramework.GameMainActivity;
 import com.example.gogame.GameFramework.LocalGame;
+import com.example.gogame.GameFramework.ProxyGame;
 import com.example.gogame.GameFramework.gameConfiguration.GameConfig;
 import com.example.gogame.GameFramework.gameConfiguration.GamePlayerType;
 import com.example.gogame.GameFramework.infoMessage.GameState;
@@ -98,6 +99,7 @@ public class GoMainActivity extends GameMainActivity {
         //Return the local game
         return new GoLocalGame((GoGameState) gameState);
     }
+
 
     /**
      * saveGame, adds this games prepend to the filename
