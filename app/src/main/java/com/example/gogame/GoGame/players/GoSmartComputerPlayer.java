@@ -42,9 +42,8 @@ import java.util.ArrayList;
  * @source https://www.moderndescartes.com/essays/implementing_go/
  */
 public class GoSmartComputerPlayer extends GameComputerPlayer {
-	/** LOGGING TAGS **/
+	/* LOGGING TAGS */
 	private static final String TAG = "GoSmartComputerPlayer";
-
 
 	/* INSTANCE / MEMBER VARIABLES */
 	// instantiate a variable to track the current board
@@ -93,7 +92,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	}
 
-	/*
+	/* HELPER FUNCTIONS */
+
+	/* getWinningScore
 	 * getter function for the winning score
 	 *
 	 * @return  If a winning move was found, a Point object containing
@@ -101,136 +102,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public static int getWinningScore() { return winningScore; }//getWinningScore
 
-	/**
-	 * calculates the board score of the specified player
-	 * (i.e. How good a player's general standing on the board by considering how many
-	 * consecutive 2's, 3's, 4's it has, how many of them are blocked etc...)
-	 *
-	 * @param goGS  the current state of the game
-	 *
-	 * @return  the board score for the specified player
-	 */
-	public int getScore(GoGameState goGS) {
-		// calculate the score
-		// TODO - come back to this with evaluation functions
-		return  0;
-	}//getScore
-
-	/**
-	 * finds a winning move for a player
-	 *
-	 * @param state    the state of the game
-	 * @param thePiece the piece we're trying to place ('X' or 'O') for a
-	 *                 win
-	 * @return If a winning move was found, a Point object containing
-	 * the coordinates.  If no winning move was found, null.
-	 */
-	/*private Point findWin(GoGameState state, char thePiece) {
-
-		// the winning move--initialized to null because we haven't found
-		// one yet
-		Point found = null;
-
-		// iterate through each of the positions 0, 1 and 2, examining a
-		// vertical, horizontal and diagonal on each iteration
-		//
-		for (int i = 0; i < 3; i++) {
-
-			// winning value we found, if any
-			Point temp = null;
-
-			// examine row that begins at (i, 0)
-			if ((temp = helpFindWin(state, thePiece, i, 0, 0, 1)) != null) {
-				found = temp;
-			}
-
-			// examine column that begins at (0, i)
-			if ((temp = helpFindWin(state, thePiece, 0, i, 1, 0)) != null) {
-				found = temp;
-			}
-
-			// examine diagonal that beings at (i, 0).  (When i = 1, we'll
-			// actually be redundantly examining a row.)
-			if ((temp = helpFindWin(state, thePiece, i, 0, 1 - i, 1)) != null) {
-				found = temp;
-			}
-		}
-
-		// return whatever we've found--either a winning move or null
-		return found;
-	}// findWin*/
-
-	/**
-	 * examines a particular row, column or diagonal to see if a move there
-	 * would cause a given player to win.  <p>
-	 * <p>
-	 * We can examine row by specifying rowDelta=0 and colDelta=1.  We can
-	 * examine a column by specifying rowDelta=1 and colDelta=0.  We can
-	 * examine a diagonal by specifying rowDelta=1 and colDelta=-1 or
-	 * vice versa.
-	 *
-	 * @param state    the state of the game
-	 * @param thePiece the piece that we would place to achieve the win
-	 * @param rowStart the row-position of first square in the row/col
-	 *                 we're examining
-	 * @param colStart the columnPosition of the first square in the row/col
-	 *                 we're examining
-	 * @param rowDelta the amount to change the row-position to get to the
-	 *                 next square we're examining
-	 * @param colDelta the amount to change the column-position to get to
-	 *                 the next square we're examining
-	 * @return If a winning move was found, a Point object containing
-	 * the coordinates.  If no winning move was found, null.
-	 */
-	// helper method to find a winning move
-	/*private Point helpFindWin(GoGameState state, char thePiece, int rowStart,
-							  int colStart, int rowDelta, int colDelta) {
-
-		// our starting position
-		int row = rowStart;
-		int col = colStart;
-
-		// number of pieces we've found so far on our line
-		int matchingPieceCount = 0;
-
-		// the last spot we've found that contains a blank, if any
-		Point blankSpot = null;
-
-		// determine if the three squares in question contain exactly two
-		// square of the given piece and one square of that is blank
-		//
-		for (int i = 0; i < 3; i++) {
-
-			// get the piece at the position
-			//char pc = state.getPiece(row, col);
-
-			// if we match the given piece, bump the matching piece-count; otherwise,
-			// if we match a blank, set the blank-spot
-			if (pc == thePiece) {
-				matchingPieceCount++;
-			} else if (pc == ' ') {
-				blankSpot = new Point(col, row);
-			}
-
-			// bump row and column positions for next iteration
-			row += rowDelta;
-			col += colDelta;
-		}
-
-		// at this point, we've examined all three squares.  We have a
-		// candidate for a "win" if we matched two pieces and had one blank
-		// (i.e., pieceCount and blankSpot is non-null)
-		if (matchingPieceCount == 2 && blankSpot != null) {
-			// have a winning move
-			return blankSpot;
-		} else {
-			// no winner this time
-			return null;
-		}
-	}// helpFindWin*/
-
-
-	/* HELPER FUNCTIONS */
 	/** evaluateBoard
 	 *
 	 * calculates the relative score of the computer player against
@@ -268,6 +139,19 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		else return 0;
 	}//evaluateBoard
 
+	/** getScore
+	 * calculates the board score of the specified player
+	 * (i.e. How good a player's general standing on the board by considering how many
+	 * consecutive 2's, 3's, 4's it has, how many of them are blocked etc...)
+	 *
+	 * @return  the board score for the specified player
+	 */
+	public int getScore() {
+		// calculate the score in each direction
+		/////TODO add in vertical and diagonal
+		return evaluateHorizontalScore();
+	}//getScore
+
 	/** calculateNextMove
 	 * This function calculates the next move given the current depth of the board.
 	 *
@@ -292,15 +176,20 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * and returns the score for moves at 0 and 1.
 	 *
 	 * @param depth - the current depth to perform the search on
-	 * @param gameBoard - the current instance of the game board
 	 * @param alpha - the best AI move (maximizing player)
 	 * @param beta - the best player move (minimizing player)
 	 * @return the score and moves (an object with {score, move[0], move[1]}
 	 *
 	 * //TODO FINISH
 	 */
-	private static Object[] miniMaxSearchAB (int depth, Stone[][] gameBoard, boolean max, double alpha, double beta)
+	private Object[] miniMaxSearchAB (int depth, boolean max, double alpha, double beta)
 	{
+		// if at terminal node, return the score, move[0], and move[1]
+		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
+
+
+
+
 		return null; // dummy
 	}
 
@@ -336,6 +225,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * is empty, then the block count will be decremented by one and if there is another
 	 * empty cell after a consecutive stone set, the block count will also be decremented
 	 * by one.
+	 * TODO - testing
 	 *
 	 * @return the score
 	 */
@@ -345,16 +235,15 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int blocks = 2;
 		int score = 0;
 
+		// get the current game board
+		Stone[][] gameBoard = goGS.getGameBoard();
+
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
 
 		// iterate through each index in each row
 		for (int row = 0; row < boardSize; row++) {
 			for (int index = 0; index < boardSize; index++) {
-
-				// get the current game board
-				Stone[][] gameBoard = goGS.getGameBoard();
-
 				// increment the consecutive if AI has a stone in current cell
 				if (gameBoard[row][index].getStoneColor() == currStoneColor) consecutive++;
 
@@ -446,7 +335,84 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	public static int getConsecutiveSetScore(int count, int blocks) {
 		return -1; // dummy
 	}
-}
+
+	/** generateMoves
+	 *
+	 * generates moves given the current board state
+	 *
+	 * @return the list of moves
+	 */
+	public ArrayList<int[]> generateMoves() {
+		// initialize the a list of different moves
+		ArrayList<int[]> moveList = new ArrayList<int[]>();
+
+		// get the current game board
+		Stone[][] gameBoard = goGS.getGameBoard();
+
+		// determine the board size (row = col so will be the same)
+		int boardSize = goGS.getBoardSize();
+
+		// look for cells that has at least one stone in an adjacent cell
+		for (int row = 0; row < boardSize; row++) {
+			for (int col = 0; col < boardSize; col++) {
+
+				// verify there is at least one adjacent cell
+				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
+					continue;
+
+				if (row > 0) {
+					if (col > 0) {
+						if (gameBoard[row-1][col-1].getStoneColor() != Stone.StoneColor.NONE ||
+						   gameBoard[row][col-1].getStoneColor() != Stone.StoneColor.NONE) {
+							int[] move = {row,col};
+							moveList.add(move);
+							continue;
+						}
+					}
+					if (col < boardSize - 1) {
+						if (gameBoard[row - 1][col + 1].getStoneColor() != Stone.StoneColor.NONE ||
+						   gameBoard[row][col + 1].getStoneColor() != Stone.StoneColor.NONE) {
+							int[] move = {row,col};
+							moveList.add(move);
+							continue;
+						}
+					}
+					if (gameBoard[row - 1][col].getStoneColor() != Stone.StoneColor.NONE) {
+						int[] move = {row,col};
+						moveList.add(move);
+						continue;
+					}
+				}
+				if (row < boardSize - 1) {
+					if(col > 0) {
+						if(gameBoard[row + 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
+						   gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
+							int[] move = {row,col};
+							moveList.add(move);
+							continue;
+						}
+					}
+					if(col < boardSize - 1)
+					{
+						if(gameBoard[row + 1][col + 1].getStoneColor() != Stone.StoneColor.NONE ||
+						   gameBoard[row][col + 1].getStoneColor() != Stone.StoneColor.NONE)
+						{
+							int[] move = {row, col};
+							moveList.add(move);
+							continue;
+						}
+					}
+					if(gameBoard[row + 1][col].getStoneColor() != Stone.StoneColor.NONE) {
+						int[] move = {row,col};
+						moveList.add(move);
+						continue;
+					}
+				}
+			}//endCol
+		}//endRow
+
+		return moveList;
+	}
 
 
 
@@ -562,3 +528,115 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}
 		}
 	}// receiveInfo*/
+	/**
+	 * finds a winning move for a player
+	 *
+	 * @param state    the state of the game
+	 * @param thePiece the piece we're trying to place ('X' or 'O') for a
+	 *                 win
+	 * @return If a winning move was found, a Point object containing
+	 * the coordinates.  If no winning move was found, null.
+	 */
+	/*private Point findWin(GoGameState state, char thePiece) {
+
+		// the winning move--initialized to null because we haven't found
+		// one yet
+		Point found = null;
+
+		// iterate through each of the positions 0, 1 and 2, examining a
+		// vertical, horizontal and diagonal on each iteration
+		//
+		for (int i = 0; i < 3; i++) {
+
+			// winning value we found, if any
+			Point temp = null;
+
+			// examine row that begins at (i, 0)
+			if ((temp = helpFindWin(state, thePiece, i, 0, 0, 1)) != null) {
+				found = temp;
+			}
+
+			// examine column that begins at (0, i)
+			if ((temp = helpFindWin(state, thePiece, 0, i, 1, 0)) != null) {
+				found = temp;
+			}
+
+			// examine diagonal that beings at (i, 0).  (When i = 1, we'll
+			// actually be redundantly examining a row.)
+			if ((temp = helpFindWin(state, thePiece, i, 0, 1 - i, 1)) != null) {
+				found = temp;
+			}
+		}
+
+		// return whatever we've found--either a winning move or null
+		return found;
+	}// findWin*/
+
+	/**
+	 * examines a particular row, column or diagonal to see if a move there
+	 * would cause a given player to win.  <p>
+	 * <p>
+	 * We can examine row by specifying rowDelta=0 and colDelta=1.  We can
+	 * examine a column by specifying rowDelta=1 and colDelta=0.  We can
+	 * examine a diagonal by specifying rowDelta=1 and colDelta=-1 or
+	 * vice versa.
+	 *
+	 * @param state    the state of the game
+	 * @param thePiece the piece that we would place to achieve the win
+	 * @param rowStart the row-position of first square in the row/col
+	 *                 we're examining
+	 * @param colStart the columnPosition of the first square in the row/col
+	 *                 we're examining
+	 * @param rowDelta the amount to change the row-position to get to the
+	 *                 next square we're examining
+	 * @param colDelta the amount to change the column-position to get to
+	 *                 the next square we're examining
+	 * @return If a winning move was found, a Point object containing
+	 * the coordinates.  If no winning move was found, null.
+	 */
+	// helper method to find a winning move
+	/*private Point helpFindWin(GoGameState state, char thePiece, int rowStart,
+							  int colStart, int rowDelta, int colDelta) {
+
+		// our starting position
+		int row = rowStart;
+		int col = colStart;
+
+		// number of pieces we've found so far on our line
+		int matchingPieceCount = 0;
+
+		// the last spot we've found that contains a blank, if any
+		Point blankSpot = null;
+
+		// determine if the three squares in question contain exactly two
+		// square of the given piece and one square of that is blank
+		//
+		for (int i = 0; i < 3; i++) {
+
+			// get the piece at the position
+			//char pc = state.getPiece(row, col);
+
+			// if we match the given piece, bump the matching piece-count; otherwise,
+			// if we match a blank, set the blank-spot
+			if (pc == thePiece) {
+				matchingPieceCount++;
+			} else if (pc == ' ') {
+				blankSpot = new Point(col, row);
+			}
+
+			// bump row and column positions for next iteration
+			row += rowDelta;
+			col += colDelta;
+		}
+
+		// at this point, we've examined all three squares.  We have a
+		// candidate for a "win" if we matched two pieces and had one blank
+		// (i.e., pieceCount and blankSpot is non-null)
+		if (matchingPieceCount == 2 && blankSpot != null) {
+			// have a winning move
+			return blankSpot;
+		} else {
+			// no winner this time
+			return null;
+		}
+	}// helpFindWin*/
