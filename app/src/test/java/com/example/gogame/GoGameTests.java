@@ -4,16 +4,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 import com.example.gogame.GameFramework.Game;
+import com.example.gogame.GameFramework.actionMessage.MyNameIsAction;
 import com.example.gogame.GameFramework.actionMessage.ReadyAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.GoLocalGame;
 import com.example.gogame.GoGame.GoMainActivity;
+import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 import android.view.View;
+import android.widget.Button;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,11 +65,20 @@ public class GoGameTests {
         View forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
         View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
 
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
         //Get the created game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
 
+        assertTrue(goLocalGame != null);
+
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
 
         //Send the names of the players to the game
         for(GamePlayer gamePlayer : gamePlayers){
@@ -84,6 +98,7 @@ public class GoGameTests {
         //TODO: NEED TO ACCESS THE GAMEBOARD HERE, i think i did that, recheck
         Stone[][] gBoard = goGameState.getGameBoard();
         gBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
+        gBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
 
 
         //Testing that two moves in a row wasn't possible
@@ -335,14 +350,22 @@ public class GoGameTests {
      */
     @Test
     public void testForfeit(){
-        //create button for Forfeit
-        View forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
 
         //create a local game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertTrue(goLocalGame != null);
+        Button forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
+        assertTrue(forfeitButton != null);
 
         // Get the players
         GamePlayer[] gamePlayers = goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
 
         // Send players to the game
         for(GamePlayer gamePlayer: gamePlayers){
@@ -353,14 +376,13 @@ public class GoGameTests {
         GamePlayer player1 = gamePlayers[0];
         GamePlayer player2 = gamePlayers[1];
 
-        goMainActivity.onClick(forfeitButton);
+        goLocalGame.sendAction(new GoForfeitAction(player1));
 
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
         boolean didForfeit = goGameState.forfeit();
 
         assertEquals("Turn did not forfeit", true, didForfeit);
-
     }
 
     /**
@@ -373,15 +395,22 @@ public class GoGameTests {
      */
     @Test
     public void testSkipTurn(){
-        //Create the button for skipping
-        View skipButton = goMainActivity.findViewById(R.id.skipTurnButton);
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
 
         //Initialize a local game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
 
+        View skipButton = goMainActivity.findViewById(R.id.skipTurnButton);
+        assertTrue(goLocalGame != null);
+        assertTrue(skipButton != null);
 
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
 
         //Send the names of the players to the game
         for(GamePlayer gamePlayer : gamePlayers){
@@ -392,12 +421,15 @@ public class GoGameTests {
         GamePlayer player1 = gamePlayers[0];
         GamePlayer player2 = gamePlayers[1];
 
-        goMainActivity.onClick(skipButton);
+        //Check if two moves in a row is possible
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 2));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
 
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
         int thePlayer = goGameState.getPlayer();
-        assertEquals("Turn did not skip", 2, thePlayer);
+        assertEquals("Turn did not skip", 1, thePlayer);
     }
 
 
@@ -425,6 +457,56 @@ public class GoGameTests {
      */
     @Test
     public void testHandicap(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //new local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
+        assertTrue(goLocalGame != null);
+        assertTrue(handicapButton != null);
+
+        //get players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        // create player 1 and 2
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        //send handicap button action to local game
+        // both players have to agree to handicap
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+
+        GoGameState goGameState = new GoGameState();
+
+        // stone array that contains stones in position 2,2 and 6,6 for expected result
+        Stone[][] expectedStones = new Stone[9][9];
+
+        //create two stones in position 2,2 and 6,6 that are white
+        Stone whiteStone1 = new Stone(2.0f, 2.0F);
+        Stone whiteStone2 = new Stone(6.0f, 6.0F);
+
+        whiteStone1.setStoneColor(Stone.StoneColor.WHITE);
+        whiteStone2.setStoneColor(Stone.StoneColor.WHITE);
+
+        // add the stones to array
+        expectedStones[2][2] = whiteStone1;
+        expectedStones[6][6] = whiteStone2;
+
+
+        //check to see stones appear on the board
+        assertEquals("Stones are on positions 2,2 and 6,6", expectedStones, goGameState.getGameBoard());
 
     }
 
