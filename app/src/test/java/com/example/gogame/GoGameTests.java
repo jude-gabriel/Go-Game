@@ -479,26 +479,27 @@ public class GoGameTests {
         goLocalGame.sendAction(new GoHandicapAction(player1));
         goLocalGame.sendAction(new GoHandicapAction(player2));
 
-        GoGameState goGameState = new GoGameState();
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
         // stone array that contains stones in position 2,2 and 6,6 for expected result
         Stone[][] expectedStones = new Stone[9][9];
 
-        //create two stones in position 2,2 and 6,6 that are white
-        Stone whiteStone1 = new Stone(2.0f, 2.0F);
-        Stone whiteStone2 = new Stone(6.0f, 6.0F);
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                expectedStones[i][j] = new Stone(i, j);
+            }
+        }
 
-        whiteStone1.setStoneColor(Stone.StoneColor.WHITE);
-        whiteStone2.setStoneColor(Stone.StoneColor.WHITE);
+        expectedStones[2][2].setStoneColor(Stone.StoneColor.WHITE);
+        expectedStones[6][6].setStoneColor(Stone.StoneColor.WHITE);
 
         // add the stones to array
-        expectedStones[2][2] = whiteStone1;
-        expectedStones[6][6] = whiteStone2;
+        ///expectedStones[2][2] = whiteStone1;
+        //expectedStones[6][6] = whiteStone2;
 
 
-        //check to see stones appear on the board
-        assertEquals("Stones are on positions 2,2 and 6,6", expectedStones, goGameState.getGameBoard());
-
+        assertEquals(Stone.StoneColor.WHITE, goGameState.getGameBoard()[2][2].getStoneColor());
+        assertEquals(Stone.StoneColor.WHITE, goGameState.getGameBoard()[6][6].getStoneColor());
     }
 
 
@@ -508,7 +509,7 @@ public class GoGameTests {
      * TODO: Write method
      * TODO: Verify that it works
      *
-     * @author Jude Gabriel
+     * @author
      */
     @Test
     public void testRepeatedPosition(){
