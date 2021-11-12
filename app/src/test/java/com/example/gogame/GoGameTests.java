@@ -500,7 +500,7 @@ public class GoGameTests {
      * TODO: Write method
      * TODO: Verify that it works
      *
-     * @author Jude Gabriel
+     * @author
      */
     @Test
     public void testRepeatedPosition(){
