@@ -10,6 +10,7 @@ import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.GoLocalGame;
 import com.example.gogame.GoGame.GoMainActivity;
+import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
@@ -418,23 +419,59 @@ public class GoGameTests {
     /**
      * Test that a game over happens correctly
      *
-     * TODO: Write method
-     * TODO: Verify it works
+     * STATUS: PASSED
      *
      * @author Brynn Harrington
      */
     @Test
     public void testGameOver(){
+        /* CHECK AT THE BEGINNING OF A GAME */
         // initialize a game state
-        GoGameState goGameState = new GoGameState();
+        GoGameState boardEmpty = new GoGameState();
 
         // have each player skip their turn
-        for (int i = 0; i < 2; i++) goGameState.skipTurn();
+        for (int i = 0; i < 2; i++) boardEmpty.skipTurn();
 
         // verify the game is over
-        assertTrue(goGameState.isGameOver());
+        assertTrue(boardEmpty.isGameOver());
 
+        /* CHECK IN THE MIDDLE OF A GAME */
+        // initialize a game state
+        GoGameState boardMid = new GoGameState();
 
+        // place moves onto the board
+        for (int white = 0; white < boardMid.getBoardSize(); white++) {
+            for (int black = 1; black < boardMid.getBoardSize() - 1; black++) {
+                // place stones on the board
+                if (white % 4 == 0) boardMid.playerMove(white, black);
+                if (black % 3 == 0) boardMid.playerMove(white, black);
+            }
+        }
+
+        // have each player skip their turn
+        for (int i = 0; i < 2; i++) boardEmpty.skipTurn();
+
+        // verify the game is over
+        assertTrue(boardEmpty.isGameOver());
+
+        /* CHECK THE END OF A GAME */
+        // initialize a game state
+        GoGameState boardEnd = new GoGameState();
+
+        // place moves onto the board
+        for (int white = 0; white < boardEnd.getBoardSize(); white++) {
+            for (int black = 0; black < boardEnd.getBoardSize(); black++) {
+                // place stones on the board
+                if (white % 2 == 0) boardMid.playerMove(white, black);
+                if (black % 2 == 1) boardMid.playerMove(white, black);
+            }
+        }
+
+        // have each player skip their turn
+        for (int i = 0; i < 2; i++) boardEmpty.skipTurn();
+
+        // verify the game is over
+        assertTrue(boardEmpty.isGameOver());
     }
 
 
@@ -509,7 +546,7 @@ public class GoGameTests {
      * TODO: Write method
      * TODO: Verify that it works
      *
-     * @author
+     * @author TBD
      */
     @Test
     public void testRepeatedPosition(){
@@ -531,7 +568,7 @@ public class GoGameTests {
         GoGameState equalsState = new GoGameState();
 
         //Checks if they are equal
-        assertTrue("Equals method lists gamestates as not equal", goGameState.equals(equalsState));
+        assertTrue("Equals method lists game states as not equal", goGameState.equals(equalsState));
     }
 
 
