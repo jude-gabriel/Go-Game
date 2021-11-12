@@ -376,7 +376,37 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * <p>
 	 * //TODO FINISH
 	 */
-	public static int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
+	public int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
+		// initialize the consecutive, blocks, and score variables
+		int consecutive = 0;
+		int blocks = 2;
+		int score = 0;
+
+		// determine the board size (row = col so will be the same)
+		int boardSize = goGS.getBoardSize();
+
+		// iterate thorugh the diagonoal moves
+		for (int diagonal = 0; diagonal < boardSize; diagonal++) {
+
+		// initiQalize the consecutive, blocks, and score variables
+		int start = 0;
+		int end = 2;
+
+		// iterate through the diaganols
+			for (int diag = 0; diag < boardSize; diag++) {
+
+				
+			}
+
+
+		}
+
+
+
+
+
+
+
 		return -1; // dummy
 	}
 
