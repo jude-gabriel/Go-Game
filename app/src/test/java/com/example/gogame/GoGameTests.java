@@ -425,6 +425,15 @@ public class GoGameTests {
      */
     @Test
     public void testGameOver(){
+        // initialize a game state
+        GoGameState goGameState = new GoGameState();
+
+        // have each player skip their turn
+        for (int i = 0; i < 2; i++) goGameState.skipTurn();
+
+        // verify the game is over
+        assertTrue(goGameState.isGameOver());
+
 
     }
 
