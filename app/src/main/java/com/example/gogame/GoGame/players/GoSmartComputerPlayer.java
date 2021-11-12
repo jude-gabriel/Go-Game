@@ -66,7 +66,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @param name the player's name (e.g., "John")
 	 */
-	public GoSmartComputerPlayer(String name) { super(name); }
+	public GoSmartComputerPlayer(String name) {
+		super(name);
+	}
 
 	/**
 	 * //TODO write what this function does
@@ -100,10 +102,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @return  If a winning move was found, a Point object containing
 	 *   the coordinates.  If no winning move was found, null.
 	 */
-	public static int getWinningScore() { return winningScore; }//getWinningScore
+	public static int getWinningScore() {
+		return winningScore;
+	}//getWinningScore
 
-	/** evaluateBoard
-	 *
+	/**
+	 * evaluateBoard
+	 * <p>
 	 * calculates the relative score of the computer player against
 	 * the other player (i.e. how likely the other player is to win
 	 * the game before the computer player_
@@ -116,8 +121,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int player1Score = goGS.getPlayer1Score();
 
 		// determine if current player is black
-		if (goGS.getPlayer() == this.playerNum && !isPlayer1)
-		{
+		if (goGS.getPlayer() == this.playerNum && !isPlayer1) {
 			// ensure the score for black is not 0 for division
 			if (player0Score == 0) player0Score = 1;
 
@@ -126,8 +130,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		}
 
 		// otherwise, the current player is white
-		else if (goGS.getPlayer() == this.playerNum && this.playerNum == 1)
-		{
+		else if (goGS.getPlayer() == this.playerNum && this.playerNum == 1) {
 			// ensure the score for black is not 0 for division
 			if (player0Score == 0) player0Score = 1;
 
@@ -139,12 +142,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		else return 0;
 	}//evaluateBoard
 
-	/** getScore
+	/**
+	 * getScore
 	 * calculates the board score of the specified player
 	 * (i.e. How good a player's general standing on the board by considering how many
 	 * consecutive 2's, 3's, 4's it has, how many of them are blocked etc...)
 	 *
-	 * @return  the board score for the specified player
+	 * @return the board score for the specified player
 	 */
 	public int getScore() {
 		// calculate the score in each direction
@@ -152,12 +156,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return evaluateHorizontalScore();
 	}//getScore
 
-	/** calculateNextMove
+	/**
+	 * calculateNextMove
 	 * This function calculates the next move given the current depth of the board.
 	 *
 	 * @param depth - the current depth we are searching for the best move at
 	 * @return an integer array for the best move
-	 *
+	 * <p>
 	 * //TODO FINISH
 	 */
 	public int[] calculateNextMove(int depth) {
@@ -171,38 +176,36 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return move;
 	}
 
-	/** miniMaxSearchAB
+	/**
+	 * miniMaxSearchAB
 	 * This function takes the best possible AI move (the maximum), the best player move (min),
 	 * and returns the score for moves at 0 and 1.
 	 *
 	 * @param depth - the current depth to perform the search on
 	 * @param alpha - the best AI move (maximizing player)
-	 * @param beta - the best player move (minimizing player)
+	 * @param beta  - the best player move (minimizing player)
 	 * @return the score and moves (an object with {score, move[0], move[1]}
-	 *
+	 * <p>
 	 * //TODO FINISH
 	 */
-	private Object[] miniMaxSearchAB (int depth, boolean max, double alpha, double beta)
-	{
+	private Object[] miniMaxSearchAB(int depth, boolean max, double alpha, double beta) {
 		// if at terminal node, return the score, move[0], and move[1]
 		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
-
-
 
 
 		return null; // dummy
 	}
 
-	/** searchWinningMove
+	/**
+	 * searchWinningMove
 	 * This function looks for a move that can win the game
 	 *
 	 * @param gameBoard - the current instance of the game board
 	 * @return the winning move
-	 *
+	 * <p>
 	 * //TODO FINISH
 	 */
-	private static Object[] searchWinningMove(Stone[][] gameBoard)
-	{
+	private static Object[] searchWinningMove(Stone[][] gameBoard) {
 		// initialize a new array list for all possible moves
 		// TODO - write generate moves function
 		//ArrayList<Integer> allPossibleMoves = gameBoard.generateMoves();
@@ -213,9 +216,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return null;
 	}
 
-	/** evaluateHorizontal
+	/**
+	 * evaluateHorizontal
 	 * This function calculates the score by evaluating stone horizontal positions
-	 *
+	 * <p>
 	 * ALGORITHMIC IDEA:
 	 * If a consecutive stone set is blocked by the opponent or the board border.
 	 * If both sides of a consecutive set are blocked, the blocks will be set to two.
@@ -247,7 +251,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				// increment the consecutive if AI has a stone in current cell
 				if (gameBoard[row][index].getStoneColor() == currStoneColor) consecutive++;
 
-				// check if the current index is empty
+					// check if the current index is empty
 				else if (gameBoard[row][index].getStoneColor() == Stone.StoneColor.NONE) {
 					// verify there were consecutive stones before this empty cell
 					if (consecutive > 0) {
@@ -271,8 +275,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				}
 				// if the cell is occupied by the opponent, check if there were any consecutive stones
 				// are before this empty cell
-				else if (consecutive > 0)
-				{
+				else if (consecutive > 0) {
 					// get the consecutive set score
 					score += getConsecutiveSetScore(consecutive, blocks);
 
@@ -286,58 +289,60 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				else blocks = 2;
 			}//index loop
 			// at the end of the row check if any consecutive stones reached right border
-			if (consecutive > 0 ) score += getConsecutiveSetScore(consecutive, blocks);
+			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
 		}//row loop
 
 		// return the score
 		return score;
 	}
 
-	/** evaluateVertical
+	/**
+	 * evaluateVertical
 	 * This function calculates the score by evaluating stone horizontal positions
 	 *
-	 * @param gameBoard - the current instance of the game board
-	 * @param forPlayer0 - whether evaluating for player 0
+	 * @param gameBoard   - the current instance of the game board
+	 * @param forPlayer0  - whether evaluating for player 0
 	 * @param playersTurn - which player it is
 	 * @return the score
-	 *
+	 * <p>
 	 * //TODO FINISH
 	 */
-	public static int evaluateVertical(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn)
-	{
+	public static int evaluateVertical(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
 		return -1; // dummy
 	}
 
-	/** evaluateDiagonal
+	/**
+	 * evaluateDiagonal
 	 * This function calculates the score by evaluating stone horizontal positions
 	 *
-	 * @param gameBoard - the current instance of the game board
-	 * @param forPlayer0 - whether evaluating for player 0
+	 * @param gameBoard   - the current instance of the game board
+	 * @param forPlayer0  - whether evaluating for player 0
 	 * @param playersTurn - which player it is
 	 * @return the score
-	 *
+	 * <p>
 	 * //TODO FINISH
 	 */
-	public static int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn)
-	{
+	public static int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
 		return -1; // dummy
 	}
 
-	/** getConsecutiveSetScore
+	/**
+	 * getConsecutiveSetScore
 	 * This function determines the score from a given consecutive set
 	 *
-	 * @param count - the current count
+	 * @param count  - the current count
 	 * @param blocks - the number of blocks
 	 * @return the score
-	 *
+	 * <p>
 	 * //TODO FINISH
 	 */
 	public static int getConsecutiveSetScore(int count, int blocks) {
 		return -1; // dummy
 	}
 
-	/** generateMoves
-	 *
+	/**
+	 * generateMoves
+	 * <p>
 	 * generates moves given the current board state
 	 *
 	 * @return the list of moves
@@ -360,59 +365,101 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
 					continue;
 
+				// determine the row and column are in bounds
 				if (row > 0) {
 					if (col > 0) {
-						if (gameBoard[row-1][col-1].getStoneColor() != Stone.StoneColor.NONE ||
-						   gameBoard[row][col-1].getStoneColor() != Stone.StoneColor.NONE) {
-							int[] move = {row,col};
+						// verify the liberty is not empty
+						if (gameBoard[row - 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
+								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
+
+							// create a move on the free space
+							int[] move = {row, col};
+
+							// add the move to the list
 							moveList.add(move);
+
+							// continue to determine if more moves
 							continue;
 						}
 					}
+
+					// verify the liberty is not empty
 					if (col < boardSize - 1) {
 						if (gameBoard[row - 1][col + 1].getStoneColor() != Stone.StoneColor.NONE ||
-						   gameBoard[row][col + 1].getStoneColor() != Stone.StoneColor.NONE) {
-							int[] move = {row,col};
+								gameBoard[row][col + 1].getStoneColor() != Stone.StoneColor.NONE) {
+							// create a move on the free space
+							int[] move = {row, col};
+
+							// add the move to the list
 							moveList.add(move);
+
+							// continue to determine if more moves
 							continue;
 						}
 					}
+
+					// verify the liberty is not empty
 					if (gameBoard[row - 1][col].getStoneColor() != Stone.StoneColor.NONE) {
-						int[] move = {row,col};
-						moveList.add(move);
-						continue;
+						// create a move on the free space
+							int[] move = {row, col};
+
+							// add the move to the list
+							moveList.add(move);
+
+							// continue to determine if more moves
+							continue;
 					}
 				}
+
+				// verify the liberties are in bounds
 				if (row < boardSize - 1) {
-					if(col > 0) {
-						if(gameBoard[row + 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
-						   gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
-							int[] move = {row,col};
-							moveList.add(move);
-							continue;
-						}
-					}
-					if(col < boardSize - 1)
-					{
-						if(gameBoard[row + 1][col + 1].getStoneColor() != Stone.StoneColor.NONE ||
-						   gameBoard[row][col + 1].getStoneColor() != Stone.StoneColor.NONE)
-						{
+					if (col > 0) {
+						// verify the liberty is not empty
+						if (gameBoard[row + 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
+								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
+
+							// create a move on the free space
 							int[] move = {row, col};
+
+							// add the move to the list
 							moveList.add(move);
+
+							// continue to determine if more moves
 							continue;
 						}
 					}
-					if(gameBoard[row + 1][col].getStoneColor() != Stone.StoneColor.NONE) {
-						int[] move = {row,col};
-						moveList.add(move);
-						continue;
+
+					// verify the liberty is not empty
+					if (col < boardSize - 1) {
+						if (gameBoard[row + 1][col + 1].getStoneColor() != Stone.StoneColor.NONE ||
+								gameBoard[row][col + 1].getStoneColor() != Stone.StoneColor.NONE) {
+							// create a move on the free space
+							int[] move = {row, col};
+
+							// add the move to the list
+							moveList.add(move);
+
+							// continue to determine if more moves
+							continue;
+						}
+					}
+
+					// verify the liberty is not empty
+					if (gameBoard[row + 1][col].getStoneColor() != Stone.StoneColor.NONE) {
+						// create a move on the free space
+							int[] move = {row, col};
+
+							// add the move to the list
+							moveList.add(move);
 					}
 				}
 			}//endCol
 		}//endRow
 
+		// return the move list
 		return moveList;
 	}
+}
 
 
 
