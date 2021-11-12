@@ -440,11 +440,13 @@ public class GoGameTests {
         GoGameState boardMid = new GoGameState();
 
         // place moves onto the board
-        for (int white = 0; white < boardMid.getBoardSize(); white++) {
-            for (int black = 1; black < boardMid.getBoardSize() - 1; black++) {
+        for (int row = 0; row < boardMid.getBoardSize(); row++) {
+            for (int col = 1; col < boardMid.getBoardSize() - 1; col++) {
                 // place stones on the board
-                if (white % 4 == 0) boardMid.playerMove(white, black);
-                if (black % 3 == 0) boardMid.playerMove(white, black);
+                if (row % 4 == 0)
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.WHITE);
+                if (col % 3 == 0) boardMid.playerMove(row, col);
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.BLACK);
             }
         }
 
@@ -459,11 +461,13 @@ public class GoGameTests {
         GoGameState boardEnd = new GoGameState();
 
         // place moves onto the board
-        for (int white = 0; white < boardEnd.getBoardSize(); white++) {
-            for (int black = 0; black < boardEnd.getBoardSize(); black++) {
+        for (int row = 0; row < boardEnd.getBoardSize(); row++) {
+            for (int col = 0; col < boardEnd.getBoardSize(); col++) {
                 // place stones on the board
-                if (white % 2 == 0) boardMid.playerMove(white, black);
-                if (black % 2 == 1) boardMid.playerMove(white, black);
+                if (row % 2 == 0)
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.WHITE);
+                if (col % 2 == 1)
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.BLACK);
             }
         }
 
