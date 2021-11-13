@@ -362,7 +362,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			consecutive = 0;
 			blocks = 2;
 		}
-		return -1; // dummy
+
+		// return the score
+		return score;
 	}
 
 	/**
@@ -373,7 +375,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param forPlayer0  - whether evaluating for player 0
 	 * @param playersTurn - which player it is
 	 * @return the score
-	 * <p>
+	 *
 	 * //TODO FINISH
 	 */
 	public int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
@@ -385,34 +387,71 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
 
-		// iterate thorugh the diagonoal moves
-		for (int diagonal = 0; diagonal < boardSize; diagonal++) {
+		// iterate through the diagonal moves
+		for (int row = 0; row < boardSize; row++) {
+			for (int col = 0; col < boardSize; col++) {
+				// increment the consecutive if AI has a stone in current cell
+				if (gameBoard[row][col].getStoneColor() == currStoneColor) consecutive++;
 
-		// initiQalize the consecutive, blocks, and score variables
-		int start = 0;
-		int end = 2;
+				// determine if current index is empty
+				else if(gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
+				{
+					// verify consecutive is greater than zero
+					if (consecutive > 0) {
+						// decrement the blocks
+						blocks--;
 
-		// iterate through the diaganols
-			for (int diag = 0; diag < boardSize; diag++) {
+						// increment the score
+						score += getConsecutiveSetScore(consecutive, blocks);
 
-				
+						// reset consecutive
+						consecutive = 0;
+
+						// set blocks to one
+						//TODO - SEE WHETHER DECREMENT OR SET BLOCKS TO ONE
+						// ALSO DETERMINE WHETHER THE EARLIER EVAL NEEDS IT
+						blocks = 1;
+					}
+
+					// otherwise there's a block
+					else blocks = 1;
+				}
+
+				// determine if consecutive moves are greater than zero
+				else if (consecutive > 0)
+				{
+					// increment the consecutive set score
+					score += getConsecutiveSetScore(consecutive, blocks);
+
+					// reset consecutive to zero
+					consecutive = 0;
+
+					// set blocks to two
+					blocks = 2;
+				}
+
+				// otherwise blocked by two
+				else blocks = 2;
 			}
 
+			// determine if consecutive is greater than zero, increment score
+			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
 
+			// reset the consecutive and blocks value to zero and two
+			consecutive = 0;
+			blocks = 2;
 		}
 
-
-
-
-
-
-
-		return -1; // dummy
+		// iterate from top-left to the bottom-right across the board diagonally
+		// return the score
+		return score;
 	}
+
 
 	/**
 	 * getConsecutiveSetScore
-	 * This function determines the score from a given consecutive set
+	 *
+	 * this function determines the score from a given consecutive set
 	 *
 	 * @param count  - the current count
 	 * @param blocks - the number of blocks
@@ -426,7 +465,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	/**
 	 * generateMoves
-	 * <p>
+	 *
 	 * generates moves given the current board state
 	 *
 	 * @return the list of moves
