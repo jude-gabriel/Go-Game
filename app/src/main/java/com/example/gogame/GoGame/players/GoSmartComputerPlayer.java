@@ -443,6 +443,15 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		}
 
 		// iterate from top-left to the bottom-right across the board diagonally
+		for (int diagonalRow = 1 - boardSize; diagonalRow < boardSize; diagonalRow++) {
+			// initialize a the start and end for a diagonal row
+			int diagonalRowStart = Math.max(0, diagonalRow);
+			int diagonalRowEnd = Math.min(boardSize + diagonalRow - 1, boardSize - 1);
+
+			// utilize
+
+		}
+
 		// return the score
 		return score;
 	}
