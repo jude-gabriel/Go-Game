@@ -39,8 +39,6 @@ public class GoGameTests {
      *
      * @throws Exception
      *
-     * TODO: Verify the game gets set up correctly with this test
-     *
      * @author Jude Gabriel
      */
     @Before
@@ -51,9 +49,6 @@ public class GoGameTests {
 
     /**
      * This method verifies a normal game play
-     *
-     * TODO: Verify these tests are accurate
-     * TODO: Add tests for capturing, repeated boards, etc...
      *
      * @author Jude Gabriel
      */
@@ -96,25 +91,24 @@ public class GoGameTests {
 
         //Set expected result
         GoGameState goGameState = new GoGameState();
-        //TODO: NEED TO ACCESS THE GAMEBOARD HERE, i think i did that, recheck
         Stone[][] gBoard = goGameState.getGameBoard();
         gBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
         gBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
 
 
         //Testing that two moves in a row wasn't possible
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states equal", !((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Can we place a stone in a place that already has a stone
         goLocalGame.sendAction(new GoMoveAction(player2, 0, 0));
 
         //Make sure nothing changed
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were equal", !((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
 
         //Make sure turns do work
-        goLocalGame.sendAction(new GoMoveAction(player1, 0, 1));
-        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 0, 1));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
 
         //Change the actual board to the expected output
         gBoard[0][1].setStoneColor(Stone.StoneColor.WHITE);
@@ -124,8 +118,8 @@ public class GoGameTests {
         assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Get to a game over
-        goLocalGame.sendAction(new GoSkipTurnAction(player1));
         goLocalGame.sendAction(new GoSkipTurnAction(player2));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
 
         //Set the GameState to being over
         goGameState.setGameOver(true);
@@ -135,7 +129,7 @@ public class GoGameTests {
 
         //Player 1 should win
         //TODO: Verify this test!!
-        assertEquals("Player 1 did not win", 0, goLocalGame.whoWon());
+        assertEquals("Player 1 did not win", 1, goLocalGame.whoWon());
 
         //Check if you can move after game over
         goLocalGame.sendAction(new GoMoveAction(player1, 2, 2));
@@ -148,7 +142,6 @@ public class GoGameTests {
     /**
      * Tests if an empty constructor gets copied correctly
      *
-     * TODO: Verify that this test works
      *
      * @author Jude Gabriel
      */
@@ -164,7 +157,6 @@ public class GoGameTests {
     /**
      * Tests if a game in progress gets copied correctly
      *
-     * TODO: Verify that these tests work
      *
      * @author Jude Gabriel
      */
@@ -184,7 +176,6 @@ public class GoGameTests {
     /**
      * Tests if a full board copies over correctly
      *
-     * TODO: Verify this test works
      *
      * @author Jude Gabriel
      */
@@ -326,9 +317,6 @@ public class GoGameTests {
     /**
      * Tests that a forfeit works correctly
      *
-     * TODO: Write method
-     * TODO: Verify it works
-     *
      * @author Mia Anderson
      */
     @Test
@@ -370,9 +358,6 @@ public class GoGameTests {
 
     /**
      * Tests that a turn can be skipped successfully
-     *
-     * TODO: Write method
-     * TODO: Verify it works
      *
      * @author Jude Gabriel
      */
@@ -482,9 +467,6 @@ public class GoGameTests {
     /**
      * Tests that a handicap gets placed correctly
      *
-     * TODO: Write method
-     * TODO: Verify that it works
-     *
      * @author Mia Anderson
      */
     @Test
@@ -550,10 +532,51 @@ public class GoGameTests {
      * TODO: Write method
      * TODO: Verify that it works
      *
-     * @author TBD
+     * @author Jude Gabriel
      */
     @Test
     public void testRepeatedPosition(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //new local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertTrue(goLocalGame != null);
+
+        //get players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+
+        //Set up the board and make the two successive captures
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        goGameState.testRepeatedPosition();
+        goGameState.playerMove(2, 1);
+        goGameState.playerMove(0, 2);
+        goGameState.playerMove(1, 2);
+        goGameState.playerMove(1, 1);
+
+
+        //Generate the expected output
+        GoGameState gsTest = new GoGameState();
+        gsTest.testRepeatedPosition();
+        gsTest.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
+        gsTest.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.BLACK);
+        gsTest.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.WHITE);
+        gsTest.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.NONE);
+        gsTest.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
+
+
+
+        assertTrue("Game states were not equal", goGameState.equals(gsTest));
 
     }
 
