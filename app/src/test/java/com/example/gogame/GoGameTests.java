@@ -93,17 +93,17 @@ public class GoGameTests {
         GoGameState goGameState = new GoGameState();
         Stone[][] gBoard = goGameState.getGameBoard();
         gBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
-        gBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
+
 
 
         //Testing that two moves in a row wasn't possible
-        assertTrue("Game states equal", !((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Can we place a stone in a place that already has a stone
         goLocalGame.sendAction(new GoMoveAction(player2, 0, 0));
 
         //Make sure nothing changed
-        assertTrue("Game states were equal", !((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
 
         //Make sure turns do work
@@ -140,6 +140,8 @@ public class GoGameTests {
 
     /**
      * Tests the copy constructor for an empty constructor
+     *
+     * @author Jude Gabriel
      */
     @Test
     public void Test_CopyConstructor_Empty(){
@@ -167,9 +169,11 @@ public class GoGameTests {
         GamePlayer player1 = gamePlayers[0];
         GamePlayer player2 = gamePlayers[1];
 
+        //Create constructor and copy constructor
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
         GoGameState copyState = new GoGameState(goGameState);
 
+        //Check if they are equal
         assertTrue(goGameState.testCopyConstructor(copyState));
     }
 
@@ -550,8 +554,10 @@ public class GoGameTests {
         goLocalGame.sendAction(new GoMoveAction(player2, 1, 2));
         goLocalGame.sendAction(new GoSkipTurnAction(player1));
 
+        //Get the gamestate
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
+        //Assert it is player 2's turn
         int thePlayer = goGameState.getPlayer();
         assertEquals("Turn did not skip", 1, thePlayer);
     }
