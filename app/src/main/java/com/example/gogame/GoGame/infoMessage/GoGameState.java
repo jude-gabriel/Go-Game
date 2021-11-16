@@ -33,6 +33,7 @@ public class GoGameState extends GameState {
     private boolean player1Forfeit;         //Tracks if Player 1 forfeits
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
+    private int[] mostRecentMove;           //Tracks the most recent move made in the game
 
     /**
      * GoGameState
@@ -77,7 +78,13 @@ public class GoGameState extends GameState {
         player1Forfeit = false;
         player2Forfeit = false;
 
+        //Initialize the time
         time = 0;
+
+        //Initialize the most recent move array
+        mostRecentMove = new int[2];
+        mostRecentMove[0] = -1;
+        mostRecentMove[1] = -1;
     }
 
 
@@ -111,6 +118,9 @@ public class GoGameState extends GameState {
         this.player1Forfeit = gs.player1Forfeit;
         this.player2Forfeit = gs.player2Forfeit;
         this.time = gs.time;
+        this.mostRecentMove = new int[2];
+        this.mostRecentMove[0] = gs.mostRecentMove[0];
+        this.mostRecentMove[1] = gs.mostRecentMove[1];
     }
 
 
@@ -204,6 +214,10 @@ public class GoGameState extends GameState {
 
             //Reset the number of skipped turns to zero since valid move played
             numSkips = 0;
+
+            //Store the most recent move
+            mostRecentMove[0] = x;
+            mostRecentMove[1] = y;
 
             //Return true since valid move was made by player
             return true;
@@ -306,6 +320,9 @@ public class GoGameState extends GameState {
         //Initialize a variable to track if able to capture
         boolean capCheck = false;
 
+        //Initialize a variable to track if repeated position
+        boolean repeated = false;
+
         //Initialize a variable to track current player's stone color
         //and the opponent's stone color
         Stone.StoneColor currStoneColor;
@@ -334,14 +351,19 @@ public class GoGameState extends GameState {
         //Verify the player will not capture themselves
         capCheck = selfCapture(iIndex, jIndex, oppStoneColor, currStoneColor);
 
+        //Verify the board is not a repeated position
+        if(totalMoves >= 2) {
+            repeated = checkRepeatedPosition(iIndex, jIndex);
+        }
+
         //Set the game board to the deep copy with new position
         gameBoard = deepCopyArray(copyArr);
 
         //If self capture, return false
         if (capCheck) return false;
 
-        //If total moves is greater than 2 and is repeated position return false
-        if (totalMoves >= 2 && checkRepeatedPosition(iIndex, jIndex)) return false;
+        //If it is repeated position return false
+        if (repeated) return false;
 
         //Reset the capture
         resetCapture();
@@ -486,12 +508,13 @@ public class GoGameState extends GameState {
      * @return true if the board position is repeated
      * @author Jude Gabriel
      */
-    public boolean checkRepeatedPosition(int x, int y) {
+    public boolean checkRepeatedPosition(int x, int y){// Stone.StoneColor checkCol, Stone.StoneColor capCol) {
         //Set a truth counter to zero
         int count = 0;
 
         //Create a deep copy of the copy array
         Stone[][] copyArray = deepCopyArray(gameBoard);
+
 
         //Determine the current color
         Stone.StoneColor oppStoneColor;
@@ -593,6 +616,17 @@ public class GoGameState extends GameState {
      */
     public Stone[][] getGameBoard(){
         return gameBoard;
+    }
+
+
+    /**
+     * Getter for the number of skips
+     *
+     * @return number of skips made
+     * @author Jude Gabriel
+     */
+    public int getNumSkips(){
+        return numSkips;
     }
 
 
@@ -795,6 +829,39 @@ public class GoGameState extends GameState {
 
 
     /**
+     * Getter for the coordinates of the most recent move
+     *
+     * @return an array with the most recent moves coordinates
+     * @author Jude Gabriel
+     */
+    public int[] getMostRecentMove(){
+        return mostRecentMove;
+    }
+
+
+    /**
+     * Getter for the player 1 handicap value
+     *
+     * @return true if player 1 agrees to a handicap
+     * @author Jude Gabriel
+     */
+    public boolean getP1Handicap(){
+        return p1Handicap;
+    }
+
+
+    /**
+     * Getter for the player 2 handicap value
+     *
+     * @return true if player 2 agrees to a handicap
+     * @author Jude Gabriel
+     */
+    public boolean getP2Handicap(){
+        return p2Handicap;
+    }
+
+
+    /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
      * if so.
@@ -862,18 +929,6 @@ public class GoGameState extends GameState {
             }
         }
 
-        if(this.getPlayer() != goGameState.getPlayer()){
-            return false;
-        }
-
-        if(this.getPlayer1Score() != goGameState.getPlayer2Score()){
-            return false;
-        }
-
-        if(this.getPlayer2Score() != goGameState.getPlayer2Score()){
-            return false;
-        }
-
         return true;
 
     }
@@ -909,11 +964,11 @@ public class GoGameState extends GameState {
         //Set up the triangle of black stones
         gameBoard[0][1].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[1][0].setStoneColor(Stone.StoneColor.BLACK);
-        gameBoard[1][2].setStoneColor(Stone.StoneColor.BLACK);
+
 
 
         //Set up the triangle of whiteStones
-        gameBoard[0][2].setStoneColor(Stone.StoneColor.WHITE);
+
         gameBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[1][3].setStoneColor(Stone.StoneColor.WHITE);
