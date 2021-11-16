@@ -472,23 +472,6 @@ public class GoGameTests {
 
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
-        // stone array that contains stones in position 2,2 and 6,6 for expected result
-        Stone[][] expectedStones = new Stone[9][9];
-
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
-                expectedStones[i][j] = new Stone(i, j);
-            }
-        }
-
-        expectedStones[2][2].setStoneColor(Stone.StoneColor.WHITE);
-        expectedStones[6][6].setStoneColor(Stone.StoneColor.WHITE);
-
-        // add the stones to array
-        ///expectedStones[2][2] = whiteStone1;
-        //expectedStones[6][6] = whiteStone2;
-
-
         assertEquals(Stone.StoneColor.WHITE, goGameState.getGameBoard()[2][2].getStoneColor());
         assertEquals(Stone.StoneColor.WHITE, goGameState.getGameBoard()[6][6].getStoneColor());
     }
@@ -534,6 +517,24 @@ public class GoGameTests {
      */
     @Test
     public void test_equals_state_inProgress(){
+        // Create two game states
+        GoGameState goGameState = new GoGameState();
+        goGameState.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameState.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameState.getGameBoard()[3][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameState.getGameBoard()[1][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameState.getGameBoard()[2][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameState.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.BLACK);
+        GoGameState goGameStateOther = new GoGameState();
+        goGameStateOther.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameStateOther.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameStateOther.getGameBoard()[3][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameStateOther.getGameBoard()[1][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameStateOther.getGameBoard()[2][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameStateOther.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.BLACK);
+        assertTrue("Equals method did not agree states were equal", goGameState.equals(goGameStateOther));
+
+
 
     }
 
