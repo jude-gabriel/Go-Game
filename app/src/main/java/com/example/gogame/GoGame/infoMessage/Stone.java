@@ -75,6 +75,7 @@ public class Stone implements Serializable {
 
         //Set checked stone to false
         checkedStone = CheckedStone.FALSE;
+
     }
 
 
@@ -87,9 +88,7 @@ public class Stone implements Serializable {
      * @author Jude Gabriel
      */
     public void draw(Canvas canvas, int x, int y){
-        //Create a new paint
         Paint paint = new Paint();
-
         //Case 1: The stone color is none, make the paint transparent
         if(stoneColor == StoneColor.NONE){
             paint.setARGB(0, 0, 0, 0);
@@ -299,4 +298,5 @@ public class Stone implements Serializable {
     public void setCheckedStone(CheckedStone checkVal){
         checkedStone = checkVal;
     }
+
 }

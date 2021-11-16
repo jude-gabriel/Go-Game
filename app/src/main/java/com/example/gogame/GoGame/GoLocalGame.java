@@ -93,6 +93,34 @@ public class GoLocalGame extends LocalGame {
 		// initialize the current instance of the go game state
 		GoGameState state = (GoGameState) super.state;
 
+
+
+
+		//Check if there are any moves left
+		if(state.getTotalMoves() > 2) {
+			boolean gameOver = state.isOver();
+			if (gameOver) {
+				int p1Score = state.getPlayer1Score();
+				int p2Score = state.getPlayer2Score();
+				if (p1Score > p2Score) {
+					return playerNames[0] + " is the winner";
+				} else if (p2Score > p1Score) {
+					return playerNames[1] + " is the winner";
+				} else {
+					return "Tie game!";
+				}
+			}
+		}
+
+
+
+
+
+
+
+
+
+
 		// check if the game is over, if its not return null
         if (!state.isGameOver()) return null;
 

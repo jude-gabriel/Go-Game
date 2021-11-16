@@ -128,7 +128,6 @@ public class GoGameTests {
         assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Player 1 should win
-        //TODO: Verify this test!!
         assertEquals("Player 1 did not win", 1, goLocalGame.whoWon());
 
         //Check if you can move after game over
@@ -140,13 +139,170 @@ public class GoGameTests {
 
 
     /**
+     * Tests the copy constructor for an empty constructor
+     */
+    @Test
+    public void Test_CopyConstructor_Empty(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //Get the created game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Start making moves */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        GoGameState copyState = new GoGameState(goGameState);
+
+        assertTrue(goGameState.testCopyConstructor(copyState));
+    }
+
+
+    /**
+     * Tests the copy constructor for a partially full constructor
+     *
+     * @author Jude Gabriel
+     */
+    @Test
+    public void Test_CopyConstructor_MidGame(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //Get the created game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Start making moves */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 5, 4));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 4));
+
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        GoGameState copyState = new GoGameState(goGameState);
+
+        //copyState.setTime(15);  //Used to test when false!
+        boolean isTrue = goGameState.testCopyConstructor(copyState);
+
+        assertEquals("Constructors are equal", true, isTrue);
+    }
+
+    /**
+     * Tests the copy constructor for a finished game
+     *
+     * @author Jude Gabriel
+     */
+    @Test
+    public void Test_CopyConstructor_GameOver(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //Get the created game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Assign the players */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        /* Make a bunch of moves */
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 5, 4));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 6));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 7));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 8));
+        goLocalGame.sendAction(new GoMoveAction(player1, 6, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 6, 2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 6, 4));
+        goLocalGame.sendAction(new GoMoveAction(player2, 6, 4));
+
+        /* Both player skip to end the game */
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player2));
+
+        /* Get the gamestate and copy it */
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        GoGameState copyState = new GoGameState(goGameState);
+
+        //copyState.setTime(15);  //Used to test when false!
+
+        //Check if the copies are equal
+        boolean isTrue = goGameState.testCopyConstructor(copyState);
+
+        //Assert message passes
+        assertEquals("Constructors are equal", true, isTrue);
+    }
+
+
+
+    /**
      * Tests if an empty constructor gets copied correctly
      *
      *
      * @author Jude Gabriel
      */
     @Test
-    public void test_CopyConstructorOfState_Empty(){
+    public void test_CopyArray_Empty(){
         GoGameState goGameState = new GoGameState();
         GoGameState copyState = new GoGameState(goGameState);
 
@@ -161,7 +317,7 @@ public class GoGameTests {
      * @author Jude Gabriel
      */
     @Test
-    public void test_CopyConstructorOfState_InProgress(){
+    public void test_CopyArray_InProgress(){
         GoGameState goGameState = new GoGameState();
         goGameState.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.WHITE);
         goGameState.getGameBoard()[3][4].setStoneColor(Stone.StoneColor.BLACK);
@@ -180,7 +336,7 @@ public class GoGameTests {
      * @author Jude Gabriel
      */
     @Test
-    public void test_CopyConstructorOfState_Full(){
+    public void test_CopyArray_Full(){
         GoGameState goGameState = new GoGameState();
 
         //Set the first row
@@ -512,9 +668,6 @@ public class GoGameTests {
     /**
      * Tests that a repeated position does not work
      *
-     * TODO: Write method
-     * TODO: Verify that it works
-     *
      * @author Jude Gabriel
      */
     @Test
@@ -567,8 +720,6 @@ public class GoGameTests {
     /**
      * Tests that empty states are equal
      *
-     * TODO: Verify that it works
-     *
      * @author Jude Gabriel
      */
     @Test
@@ -585,8 +736,6 @@ public class GoGameTests {
     /**
      *  Tests that states in progress are equal
      *
-     * TODO: Write method
-     * TODO: Verify that it works
      */
     @Test
     public void test_equals_state_inProgress(){
