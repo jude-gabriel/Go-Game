@@ -14,8 +14,11 @@ package com.example.gogame.GoGame.infoMessage;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Stone {
+import java.io.Serializable;
 
+public class Stone implements Serializable {
+
+    private static final long serialVersionUID = 7552321013487624386L;
 
     /**
      * Enum's for the Stone's Color

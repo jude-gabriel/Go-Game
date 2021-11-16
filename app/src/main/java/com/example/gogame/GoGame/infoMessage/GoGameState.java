@@ -13,7 +13,9 @@ package com.example.gogame.GoGame.infoMessage;
 
 import com.example.gogame.GameFramework.infoMessage.GameState;
 
-public class GoGameState extends GameState {
+import java.io.Serializable;
+
+public class GoGameState extends GameState implements Serializable {
 
     /* Private Instance Variables */
     private final float userXClick;         //The x coordinate the user clicks
@@ -34,6 +36,7 @@ public class GoGameState extends GameState {
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
     private int[] mostRecentMove;           //Tracks the most recent move made in the game
+    private static final long serialVersionUID = 7552321013488624386L;
 
     /**
      * GoGameState
@@ -47,7 +50,7 @@ public class GoGameState extends GameState {
     public GoGameState() {
         //Initialize the board size and gameBoard array
         boardSize = 9;
-        gameBoard = new Stone[boardSize][boardSize];
+
         gameBoard = initializeArray();
 
         //Set isPlayer1 to true so that player 1 starts the game
@@ -67,8 +70,11 @@ public class GoGameState extends GameState {
         numSkips = 0;
 
         //Initialize the arrays that store former board positions
-        stoneCopiesFirst = new Stone[boardSize][boardSize];
-        stoneCopiesSecond = new Stone[boardSize][boardSize];
+
+
+
+        stoneCopiesFirst = initializeArray();
+        stoneCopiesSecond = initializeArray();
 
         //Initialize handicap
         p1Handicap = false;
@@ -105,7 +111,7 @@ public class GoGameState extends GameState {
         this.boardSize = gs.boardSize;
         this.userXClick = gs.userXClick;
         this.userYClick = gs.userYClick;
-        this.gameBoard = new Stone[boardSize][boardSize];
+
         this.gameBoard = deepCopyArray(gs.gameBoard);
         this.player1Score = gs.player1Score;
         this.player2Score = gs.player2Score;
@@ -121,6 +127,10 @@ public class GoGameState extends GameState {
         this.mostRecentMove = new int[2];
         this.mostRecentMove[0] = gs.mostRecentMove[0];
         this.mostRecentMove[1] = gs.mostRecentMove[1];
+
+        this.stoneCopiesFirst = deepCopyArray(gs.stoneCopiesFirst);
+
+        this.stoneCopiesSecond = deepCopyArray(gs.stoneCopiesSecond);
     }
 
 
