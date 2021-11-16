@@ -18,6 +18,7 @@ import java.io.Serializable;
 
 public class Stone implements Serializable {
 
+    //Network Play Tag
     private static final long serialVersionUID = 7552321013487624386L;
 
     /**

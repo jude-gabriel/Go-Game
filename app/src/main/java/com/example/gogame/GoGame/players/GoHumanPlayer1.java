@@ -109,9 +109,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                     playerTurn = 1;
                 }
 
+                //Check if the game has started and set text boxes to visible
                 if(((GoGameState) info).getTotalMoves() != 0) {
                     opponentMoveText.setVisibility(View.VISIBLE);
                     if (((GoGameState) info).getNumSkips() != 0) {
+
+                        //Find who's turn it is
                         int otherPlayer;
                         if(playerTurn == 0){
                             otherPlayer = 1;
@@ -119,13 +122,18 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                         else{
                             otherPlayer = 0;
                         }
+
+                        //Update the move text box based on the kind of move
                         opponentMoveText.setText(allPlayerNames[playerTurn] + " skipped their turn. " +
                                 allPlayerNames[otherPlayer] + ", press skip turn to end the game.");
-                    } else if (((GoGameState) info).getP1Handicap() == true) {
+                    }
+                    else if (((GoGameState) info).getP1Handicap() == true) {
                         opponentMoveText.setText(allPlayerNames[0] + " agrees to a handicap.");
-                    } else if (((GoGameState) info).getP2Handicap() == true) {
+                    }
+                    else if (((GoGameState) info).getP2Handicap() == true) {
                         opponentMoveText.setText(allPlayerNames[1] + " agrees to a handicap.");
-                    } else {
+                    }
+                    else {
                         int[] lastMove = ((GoGameState) info).getMostRecentMove();
                         int x = lastMove[0] + 1;
                         int y = lastMove[1] + 1;
@@ -134,6 +142,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                     }
                 }
                 else{
+                    //If this case is hit set visibility to invisible since game hasn't started
                     opponentMoveText.setVisibility(View.INVISIBLE);
                 }
 

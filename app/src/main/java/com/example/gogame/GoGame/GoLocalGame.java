@@ -93,10 +93,7 @@ public class GoLocalGame extends LocalGame {
 		// initialize the current instance of the go game state
 		GoGameState state = (GoGameState) super.state;
 
-
-
-
-		//Check if there are any moves left
+		//Check if a winning condition is still possible
 		if(state.getTotalMoves() > 2) {
 			boolean gameOver = state.isOver();
 			if (gameOver) {
@@ -111,15 +108,6 @@ public class GoLocalGame extends LocalGame {
 				}
 			}
 		}
-
-
-
-
-
-
-
-
-
 
 		// check if the game is over, if its not return null
         if (!state.isGameOver()) return null;
@@ -241,10 +229,6 @@ public class GoLocalGame extends LocalGame {
 			// get the row and column position of the player's move
 			int row = ((GoMoveAction) action).getX();
 			int col = ((GoMoveAction) action).getY();
-
-			// get the ID of the current player
-			//TODO determine if necessary
-			//int playerID = getPlayerIdx(action.getPlayer());
 
 			// place the player's stone at the selected liberty if possible
 			return state.playerMove(row, col);

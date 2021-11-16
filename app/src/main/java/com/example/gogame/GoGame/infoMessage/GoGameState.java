@@ -36,6 +36,8 @@ public class GoGameState extends GameState implements Serializable {
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
     private int[] mostRecentMove;           //Tracks the most recent move made in the game
+
+    //Network play ID Tag
     private static final long serialVersionUID = 7552321013488624386L;
 
     /**
@@ -50,7 +52,6 @@ public class GoGameState extends GameState implements Serializable {
     public GoGameState() {
         //Initialize the board size and gameBoard array
         boardSize = 9;
-
         gameBoard = initializeArray();
 
         //Set isPlayer1 to true so that player 1 starts the game
@@ -70,9 +71,6 @@ public class GoGameState extends GameState implements Serializable {
         numSkips = 0;
 
         //Initialize the arrays that store former board positions
-
-
-
         stoneCopiesFirst = initializeArray();
         stoneCopiesSecond = initializeArray();
 
@@ -111,7 +109,6 @@ public class GoGameState extends GameState implements Serializable {
         this.boardSize = gs.boardSize;
         this.userXClick = gs.userXClick;
         this.userYClick = gs.userYClick;
-
         this.gameBoard = deepCopyArray(gs.gameBoard);
         this.player1Score = gs.player1Score;
         this.player2Score = gs.player2Score;
@@ -127,11 +124,8 @@ public class GoGameState extends GameState implements Serializable {
         this.mostRecentMove = new int[2];
         this.mostRecentMove[0] = gs.mostRecentMove[0];
         this.mostRecentMove[1] = gs.mostRecentMove[1];
-
         this.stoneCopiesFirst = deepCopyArray(gs.stoneCopiesFirst);
-
         this.stoneCopiesSecond = deepCopyArray(gs.stoneCopiesSecond);
-
         super.currentSetupTurn = gs.currentSetupTurn;
         super.numSetupTurns = gs.numSetupTurns;
 
@@ -611,24 +605,50 @@ public class GoGameState extends GameState implements Serializable {
     }
 
 
+    /**
+     * Checks if a winning condition is not possible for a player
+     *
+     * @return true if a winning condition is not possible
+     * @author Jude Gabriel
+     */
     public boolean isOver() {
+        //Set count to zero
         int count = 0;
+
+        //Iterate through the board and find empty liberties
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if(gameBoard[i][j].getStoneColor() == Stone.StoneColor.NONE){
+                    //Check if empty liberties have empty neighbors and return false if so
                     count = isOverRecursive(i, j);
                     if(count >= 2){
                         return false;
                     }
+
+                    //Update count for next liberty
                     count = 0;
                 }
             }
         }
+
+        //Return true if there is no set of empty liberties
         return true;
     }
 
+    /**
+     * Helper method for isOver Checks surrounding empty liberties
+     *
+     * @param i x index of liberty
+     * @param j y index of liberty
+     *
+     * @return the number of empty liberties
+     * @author Jude Gabriel
+     */
     public int isOverRecursive(int i, int j){
+        //Set count to 1 since the liberty that called this method is empty
         int count = 1;
+
+        /* Check if there are any empty neighbors */
         if(i > 0){
             if(gameBoard[i - 1][j].getStoneColor() == Stone.StoneColor.NONE){
                 count++;
@@ -649,6 +669,8 @@ public class GoGameState extends GameState implements Serializable {
                 count++;
             }
         }
+
+        //Return the number of empty liberties
         return count;
     }
 
@@ -960,7 +982,7 @@ public class GoGameState extends GameState implements Serializable {
 
 
 
-    ///////// HELPER METHODS FOR TESTING (NOT FINISHED!) //////////
+    /********* HELPER METHODS FOR TESTING ***********/
 
     /**
      * Checks if two boards are equal
@@ -979,7 +1001,8 @@ public class GoGameState extends GameState implements Serializable {
 
         for(int i = 0; i < boardSize; i++){
             for(int j = 0; j < boardSize; j++){
-                if(this.gameBoard[i][j].getStoneColor() != goGameState.gameBoard[i][j].getStoneColor()){
+                if(this.gameBoard[i][j].getStoneColor() !=
+                        goGameState.gameBoard[i][j].getStoneColor()){
                     return false;
                 }
             }
@@ -990,6 +1013,14 @@ public class GoGameState extends GameState implements Serializable {
     }
 
 
+    /**
+     * Compares if two constructors are equal
+     *
+     * @param object the gamestate to compare to
+     *
+     * @return true if they are equal
+     * @author Jude Gabriel
+     */
     public boolean testCopyConstructor(Object object){
         //Test all non-board instance variables
         if(!(object instanceof GoGameState)){
@@ -1044,31 +1075,40 @@ public class GoGameState extends GameState implements Serializable {
         //Check gameboard values
         for(int i = 0; i < boardSize; i++){
             for(int j = 0; j < boardSize; j++){
-                if(gameBoard[i][j].getStoneColor() != ((GoGameState) object).gameBoard[i][j].getStoneColor()){
+                if(gameBoard[i][j].getStoneColor() !=
+                        ((GoGameState) object).gameBoard[i][j].getStoneColor()){
                     return false;
                 }
-                if(gameBoard[i][j].getCheckedStone() != ((GoGameState) object).gameBoard[i][j].getCheckedStone()){
+                if(gameBoard[i][j].getCheckedStone() !=
+                        ((GoGameState) object).gameBoard[i][j].getCheckedStone()){
                     return false;
                 }
-                if(gameBoard[i][j].getxLeft() != ((GoGameState) object).gameBoard[i][j].getxLeft()){
+                if(gameBoard[i][j].getxLeft() !=
+                        ((GoGameState) object).gameBoard[i][j].getxLeft()){
                     return false;
                 }
-                if(gameBoard[i][j].getxRight() != ((GoGameState) object).gameBoard[i][j].getxRight()){
+                if(gameBoard[i][j].getxRight() !=
+                        ((GoGameState) object).gameBoard[i][j].getxRight()){
                     return false;
                 }
-                if(gameBoard[i][j].getxLocation() != ((GoGameState) object).gameBoard[i][j].getxLocation()){
+                if(gameBoard[i][j].getxLocation() !=
+                        ((GoGameState) object).gameBoard[i][j].getxLocation()){
                     return false;
                 }
-                if(gameBoard[i][j].getyBottom() != ((GoGameState) object).gameBoard[i][j].getyBottom()){
+                if(gameBoard[i][j].getyBottom() !=
+                        ((GoGameState) object).gameBoard[i][j].getyBottom()){
                     return false;
                 }
-                if(gameBoard[i][j].getyTop() != ((GoGameState) object).gameBoard[i][j].getyTop()){
+                if(gameBoard[i][j].getyTop() !=
+                        ((GoGameState) object).gameBoard[i][j].getyTop()){
                     return false;
                 }
-                if(gameBoard[i][j].getyLocation() != ((GoGameState) object).gameBoard[i][j].getyLocation()){
+                if(gameBoard[i][j].getyLocation() !=
+                        ((GoGameState) object).gameBoard[i][j].getyLocation()){
                     return false;
                 }
-                if(gameBoard[i][j].getRadius() != ((GoGameState) object).gameBoard[i][j].getRadius()){
+                if(gameBoard[i][j].getRadius() !=
+                        ((GoGameState) object).gameBoard[i][j].getRadius()){
                     return false;
                 }
             }
@@ -1077,31 +1117,40 @@ public class GoGameState extends GameState implements Serializable {
         //Check stone copies first values
         for(int i = 0; i < boardSize; i++){
             for(int j = 0; j < boardSize; j++){
-                if(stoneCopiesFirst[i][j].getStoneColor() != ((GoGameState) object).stoneCopiesFirst[i][j].getStoneColor()){
+                if(stoneCopiesFirst[i][j].getStoneColor() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getStoneColor()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getCheckedStone() != ((GoGameState) object).stoneCopiesFirst[i][j].getCheckedStone()){
+                if(stoneCopiesFirst[i][j].getCheckedStone() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getCheckedStone()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getxLeft() != ((GoGameState) object).stoneCopiesFirst[i][j].getxLeft()){
+                if(stoneCopiesFirst[i][j].getxLeft() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getxLeft()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getxRight() != ((GoGameState) object).stoneCopiesFirst[i][j].getxRight()){
+                if(stoneCopiesFirst[i][j].getxRight() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getxRight()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getxLocation() != ((GoGameState) object).stoneCopiesFirst[i][j].getxLocation()){
+                if(stoneCopiesFirst[i][j].getxLocation() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getxLocation()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getyBottom() != ((GoGameState) object).stoneCopiesFirst[i][j].getyBottom()){
+                if(stoneCopiesFirst[i][j].getyBottom() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getyBottom()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getyTop() != ((GoGameState) object).stoneCopiesFirst[i][j].getyTop()){
+                if(stoneCopiesFirst[i][j].getyTop() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getyTop()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getyLocation() != ((GoGameState) object).stoneCopiesFirst[i][j].getyLocation()){
+                if(stoneCopiesFirst[i][j].getyLocation() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getyLocation()){
                     return false;
                 }
-                if(stoneCopiesFirst[i][j].getRadius() != ((GoGameState) object).stoneCopiesFirst[i][j].getRadius()){
+                if(stoneCopiesFirst[i][j].getRadius() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getRadius()){
                     return false;
                 }
             }
@@ -1110,31 +1159,40 @@ public class GoGameState extends GameState implements Serializable {
         //Check stone copies second values
         for(int i = 0; i < boardSize; i++){
             for(int j = 0; j < boardSize; j++){
-                if(stoneCopiesSecond[i][j].getStoneColor() != ((GoGameState) object).stoneCopiesSecond[i][j].getStoneColor()){
+                if(stoneCopiesSecond[i][j].getStoneColor() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getStoneColor()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getCheckedStone() != ((GoGameState) object).stoneCopiesSecond[i][j].getCheckedStone()){
+                if(stoneCopiesSecond[i][j].getCheckedStone() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getCheckedStone()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getxLeft() != ((GoGameState) object).stoneCopiesSecond[i][j].getxLeft()){
+                if(stoneCopiesSecond[i][j].getxLeft() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getxLeft()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getxRight() != ((GoGameState) object).stoneCopiesSecond[i][j].getxRight()){
+                if(stoneCopiesSecond[i][j].getxRight() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getxRight()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getxLocation() != ((GoGameState) object).stoneCopiesSecond[i][j].getxLocation()){
+                if(stoneCopiesSecond[i][j].getxLocation() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getxLocation()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getyBottom() != ((GoGameState) object).stoneCopiesSecond[i][j].getyBottom()){
+                if(stoneCopiesSecond[i][j].getyBottom() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getyBottom()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getyTop() != ((GoGameState) object).stoneCopiesSecond[i][j].getyTop()){
+                if(stoneCopiesSecond[i][j].getyTop() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getyTop()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getyLocation() != ((GoGameState) object).stoneCopiesSecond[i][j].getyLocation()){
+                if(stoneCopiesSecond[i][j].getyLocation() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getyLocation()){
                     return false;
                 }
-                if(stoneCopiesSecond[i][j].getRadius() != ((GoGameState) object).stoneCopiesSecond[i][j].getRadius()){
+                if(stoneCopiesSecond[i][j].getRadius() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getRadius()){
                     return false;
                 }
             }
@@ -1171,15 +1229,11 @@ public class GoGameState extends GameState implements Serializable {
      * @author Jude Gabriel
      */
     public void testRepeatedPosition() {
-
         //Set up the triangle of black stones
         gameBoard[0][1].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[1][0].setStoneColor(Stone.StoneColor.BLACK);
 
-
-
         //Set up the triangle of whiteStones
-
         gameBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[1][3].setStoneColor(Stone.StoneColor.WHITE);
