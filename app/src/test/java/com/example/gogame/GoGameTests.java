@@ -382,9 +382,9 @@ public class GoGameTests {
     /**
      * Tests that captures are successful
      *
-     * TODO: Write method
-     * TODO: verify if works
      * add score tests, empty test
+     *
+     * STATUS - PASSED
      *
      * @author Brynn Harrington
      */
