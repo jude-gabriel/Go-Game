@@ -14,8 +14,12 @@ package com.example.gogame.GoGame.infoMessage;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Stone {
+import java.io.Serializable;
 
+public class Stone implements Serializable {
+
+    //Network Play Tag
+    private static final long serialVersionUID = 7552321013487624386L;
 
     /**
      * Enum's for the Stone's Color
@@ -72,6 +76,7 @@ public class Stone {
 
         //Set checked stone to false
         checkedStone = CheckedStone.FALSE;
+
     }
 
 
@@ -84,9 +89,7 @@ public class Stone {
      * @author Jude Gabriel
      */
     public void draw(Canvas canvas, int x, int y){
-        //Create a new paint
         Paint paint = new Paint();
-
         //Case 1: The stone color is none, make the paint transparent
         if(stoneColor == StoneColor.NONE){
             paint.setARGB(0, 0, 0, 0);
@@ -296,4 +299,5 @@ public class Stone {
     public void setCheckedStone(CheckedStone checkVal){
         checkedStone = checkVal;
     }
+
 }

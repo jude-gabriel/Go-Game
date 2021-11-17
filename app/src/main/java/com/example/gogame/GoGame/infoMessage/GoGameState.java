@@ -13,7 +13,9 @@ package com.example.gogame.GoGame.infoMessage;
 
 import com.example.gogame.GameFramework.infoMessage.GameState;
 
-public class GoGameState extends GameState {
+import java.io.Serializable;
+
+public class GoGameState extends GameState implements Serializable {
 
     /* Private Instance Variables */
     private final float userXClick;         //The x coordinate the user clicks
@@ -33,6 +35,10 @@ public class GoGameState extends GameState {
     private boolean player1Forfeit;         //Tracks if Player 1 forfeits
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
+    private int[] mostRecentMove;           //Tracks the most recent move made in the game
+
+    //Network play ID Tag
+    private static final long serialVersionUID = 7552321013488624386L;
 
     /**
      * GoGameState
@@ -46,7 +52,6 @@ public class GoGameState extends GameState {
     public GoGameState() {
         //Initialize the board size and gameBoard array
         boardSize = 9;
-        gameBoard = new Stone[boardSize][boardSize];
         gameBoard = initializeArray();
 
         //Set isPlayer1 to true so that player 1 starts the game
@@ -66,8 +71,8 @@ public class GoGameState extends GameState {
         numSkips = 0;
 
         //Initialize the arrays that store former board positions
-        stoneCopiesFirst = new Stone[boardSize][boardSize];
-        stoneCopiesSecond = new Stone[boardSize][boardSize];
+        stoneCopiesFirst = initializeArray();
+        stoneCopiesSecond = initializeArray();
 
         //Initialize handicap
         p1Handicap = false;
@@ -77,7 +82,13 @@ public class GoGameState extends GameState {
         player1Forfeit = false;
         player2Forfeit = false;
 
+        //Initialize the time
         time = 0;
+
+        //Initialize the most recent move array
+        mostRecentMove = new int[2];
+        mostRecentMove[0] = -1;
+        mostRecentMove[1] = -1;
     }
 
 
@@ -98,7 +109,6 @@ public class GoGameState extends GameState {
         this.boardSize = gs.boardSize;
         this.userXClick = gs.userXClick;
         this.userYClick = gs.userYClick;
-        this.gameBoard = new Stone[boardSize][boardSize];
         this.gameBoard = deepCopyArray(gs.gameBoard);
         this.player1Score = gs.player1Score;
         this.player2Score = gs.player2Score;
@@ -111,6 +121,14 @@ public class GoGameState extends GameState {
         this.player1Forfeit = gs.player1Forfeit;
         this.player2Forfeit = gs.player2Forfeit;
         this.time = gs.time;
+        this.mostRecentMove = new int[2];
+        this.mostRecentMove[0] = gs.mostRecentMove[0];
+        this.mostRecentMove[1] = gs.mostRecentMove[1];
+        this.stoneCopiesFirst = deepCopyArray(gs.stoneCopiesFirst);
+        this.stoneCopiesSecond = deepCopyArray(gs.stoneCopiesSecond);
+        super.currentSetupTurn = gs.currentSetupTurn;
+        super.numSetupTurns = gs.numSetupTurns;
+
     }
 
 
@@ -204,6 +222,10 @@ public class GoGameState extends GameState {
 
             //Reset the number of skipped turns to zero since valid move played
             numSkips = 0;
+
+            //Store the most recent move
+            mostRecentMove[0] = x;
+            mostRecentMove[1] = y;
 
             //Return true since valid move was made by player
             return true;
@@ -306,6 +328,9 @@ public class GoGameState extends GameState {
         //Initialize a variable to track if able to capture
         boolean capCheck = false;
 
+        //Initialize a variable to track if repeated position
+        boolean repeated = false;
+
         //Initialize a variable to track current player's stone color
         //and the opponent's stone color
         Stone.StoneColor currStoneColor;
@@ -334,14 +359,19 @@ public class GoGameState extends GameState {
         //Verify the player will not capture themselves
         capCheck = selfCapture(iIndex, jIndex, oppStoneColor, currStoneColor);
 
+        //Verify the board is not a repeated position
+        if(totalMoves >= 2) {
+            repeated = checkRepeatedPosition(iIndex, jIndex);
+        }
+
         //Set the game board to the deep copy with new position
         gameBoard = deepCopyArray(copyArr);
 
         //If self capture, return false
         if (capCheck) return false;
 
-        //If total moves is greater than 2 and is repeated position return false
-        if (totalMoves >= 2 && checkRepeatedPosition(iIndex, jIndex)) return false;
+        //If it is repeated position return false
+        if (repeated) return false;
 
         //Reset the capture
         resetCapture();
@@ -486,12 +516,13 @@ public class GoGameState extends GameState {
      * @return true if the board position is repeated
      * @author Jude Gabriel
      */
-    public boolean checkRepeatedPosition(int x, int y) {
+    public boolean checkRepeatedPosition(int x, int y){// Stone.StoneColor checkCol, Stone.StoneColor capCol) {
         //Set a truth counter to zero
         int count = 0;
 
         //Create a deep copy of the copy array
         Stone[][] copyArray = deepCopyArray(gameBoard);
+
 
         //Determine the current color
         Stone.StoneColor oppStoneColor;
@@ -575,6 +606,76 @@ public class GoGameState extends GameState {
 
 
     /**
+     * Checks if a winning condition is not possible for a player
+     *
+     * @return true if a winning condition is not possible
+     * @author Jude Gabriel
+     */
+    public boolean isOver() {
+        //Set count to zero
+        int count = 0;
+
+        //Iterate through the board and find empty liberties
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if(gameBoard[i][j].getStoneColor() == Stone.StoneColor.NONE){
+                    //Check if empty liberties have empty neighbors and return false if so
+                    count = isOverRecursive(i, j);
+                    if(count >= 2){
+                        return false;
+                    }
+
+                    //Update count for next liberty
+                    count = 0;
+                }
+            }
+        }
+
+        //Return true if there is no set of empty liberties
+        return true;
+    }
+
+    /**
+     * Helper method for isOver Checks surrounding empty liberties
+     *
+     * @param i x index of liberty
+     * @param j y index of liberty
+     *
+     * @return the number of empty liberties
+     * @author Jude Gabriel
+     */
+    public int isOverRecursive(int i, int j){
+        //Set count to 1 since the liberty that called this method is empty
+        int count = 1;
+
+        /* Check if there are any empty neighbors */
+        if(i > 0){
+            if(gameBoard[i - 1][j].getStoneColor() == Stone.StoneColor.NONE){
+                count++;
+            }
+        }
+        if(i < gameBoard.length - 1){
+            if(gameBoard[i + 1][j].getStoneColor() == Stone.StoneColor.NONE){
+                count++;
+            }
+        }
+        if(j > 0){
+            if(gameBoard[i][j - 1].getStoneColor() == Stone.StoneColor.NONE){
+                count++;
+            }
+        }
+        if(j < gameBoard.length - 1){
+            if(gameBoard[i][j + 1].getStoneColor() == Stone.StoneColor.NONE){
+                count++;
+            }
+        }
+
+        //Return the number of empty liberties
+        return count;
+    }
+
+
+    /**
      * Getter for boardSize
      *
      * @return size of current board as an int
@@ -593,6 +694,17 @@ public class GoGameState extends GameState {
      */
     public Stone[][] getGameBoard(){
         return gameBoard;
+    }
+
+
+    /**
+     * Getter for the number of skips
+     *
+     * @return number of skips made
+     * @author Jude Gabriel
+     */
+    public int getNumSkips(){
+        return numSkips;
     }
 
 
@@ -795,6 +907,39 @@ public class GoGameState extends GameState {
 
 
     /**
+     * Getter for the coordinates of the most recent move
+     *
+     * @return an array with the most recent moves coordinates
+     * @author Jude Gabriel
+     */
+    public int[] getMostRecentMove(){
+        return mostRecentMove;
+    }
+
+
+    /**
+     * Getter for the player 1 handicap value
+     *
+     * @return true if player 1 agrees to a handicap
+     * @author Jude Gabriel
+     */
+    public boolean getP1Handicap(){
+        return p1Handicap;
+    }
+
+
+    /**
+     * Getter for the player 2 handicap value
+     *
+     * @return true if player 2 agrees to a handicap
+     * @author Jude Gabriel
+     */
+    public boolean getP2Handicap(){
+        return p2Handicap;
+    }
+
+
+    /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
      * if so.
@@ -837,10 +982,10 @@ public class GoGameState extends GameState {
 
 
 
-    ///////// HELPER METHODS FOR TESTING (NOT FINISHED!) //////////
+    /********* HELPER METHODS FOR TESTING ***********/
 
     /**
-     * Checks if two gamestates are equal
+     * Checks if two boards are equal
      *
      * @param object the gamestate to compare to
      *
@@ -856,26 +1001,205 @@ public class GoGameState extends GameState {
 
         for(int i = 0; i < boardSize; i++){
             for(int j = 0; j < boardSize; j++){
-                if(this.gameBoard[i][j].getStoneColor() != goGameState.gameBoard[i][j].getStoneColor()){
+                if(this.gameBoard[i][j].getStoneColor() !=
+                        goGameState.gameBoard[i][j].getStoneColor()){
                     return false;
                 }
             }
         }
 
-        if(this.getPlayer() != goGameState.getPlayer()){
-            return false;
-        }
-
-        if(this.getPlayer1Score() != goGameState.getPlayer2Score()){
-            return false;
-        }
-
-        if(this.getPlayer2Score() != goGameState.getPlayer2Score()){
-            return false;
-        }
-
         return true;
 
+    }
+
+
+    /**
+     * Compares if two constructors are equal
+     *
+     * @param object the gamestate to compare to
+     *
+     * @return true if they are equal
+     * @author Jude Gabriel
+     */
+    public boolean testCopyConstructor(Object object){
+        //Test all non-board instance variables
+        if(!(object instanceof GoGameState)){
+            return false;
+        }
+        if(this.userXClick != ((GoGameState) object).userXClick){
+            return false;
+        }
+        if(this.userYClick != ((GoGameState) object).userYClick){
+            return false;
+        }
+        if(this.boardSize != ((GoGameState) object).boardSize){
+            return false;
+        }
+        if(this.isPlayer1 != ((GoGameState) object).isPlayer1){
+            return false;
+        }
+        if(this.player1Score != ((GoGameState) object).player1Score){
+            return false;
+        }
+        if(this.player2Score != ((GoGameState) object).player2Score){
+            return false;
+        }
+        if(this.gameOver != ((GoGameState) object).gameOver){
+            return false;
+        }
+        if(this.totalMoves != ((GoGameState) object).totalMoves){
+            return false;
+        }
+        if(this.numSkips != ((GoGameState) object).numSkips){
+            return false;
+        }
+        if(this.p1Handicap != ((GoGameState) object).getP1Handicap()){
+            return false;
+        }
+        if(this.p2Handicap != ((GoGameState) object).getP2Handicap()){
+            return false;
+        }
+        if(this.player1Forfeit != ((GoGameState) object).getPlayer1Forfeit()){
+            return false;
+        }
+        if(this.player2Forfeit != ((GoGameState) object).getPlayer2Forfeit()){
+            return false;
+        }
+        if (this.time != ((GoGameState) object).getTime()){
+            return false;
+        }
+        if(this.mostRecentMove != getMostRecentMove()){
+            return false;
+        }
+
+        //Check gameboard values
+        for(int i = 0; i < boardSize; i++){
+            for(int j = 0; j < boardSize; j++){
+                if(gameBoard[i][j].getStoneColor() !=
+                        ((GoGameState) object).gameBoard[i][j].getStoneColor()){
+                    return false;
+                }
+                if(gameBoard[i][j].getCheckedStone() !=
+                        ((GoGameState) object).gameBoard[i][j].getCheckedStone()){
+                    return false;
+                }
+                if(gameBoard[i][j].getxLeft() !=
+                        ((GoGameState) object).gameBoard[i][j].getxLeft()){
+                    return false;
+                }
+                if(gameBoard[i][j].getxRight() !=
+                        ((GoGameState) object).gameBoard[i][j].getxRight()){
+                    return false;
+                }
+                if(gameBoard[i][j].getxLocation() !=
+                        ((GoGameState) object).gameBoard[i][j].getxLocation()){
+                    return false;
+                }
+                if(gameBoard[i][j].getyBottom() !=
+                        ((GoGameState) object).gameBoard[i][j].getyBottom()){
+                    return false;
+                }
+                if(gameBoard[i][j].getyTop() !=
+                        ((GoGameState) object).gameBoard[i][j].getyTop()){
+                    return false;
+                }
+                if(gameBoard[i][j].getyLocation() !=
+                        ((GoGameState) object).gameBoard[i][j].getyLocation()){
+                    return false;
+                }
+                if(gameBoard[i][j].getRadius() !=
+                        ((GoGameState) object).gameBoard[i][j].getRadius()){
+                    return false;
+                }
+            }
+        }
+
+        //Check stone copies first values
+        for(int i = 0; i < boardSize; i++){
+            for(int j = 0; j < boardSize; j++){
+                if(stoneCopiesFirst[i][j].getStoneColor() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getStoneColor()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getCheckedStone() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getCheckedStone()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getxLeft() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getxLeft()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getxRight() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getxRight()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getxLocation() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getxLocation()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getyBottom() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getyBottom()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getyTop() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getyTop()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getyLocation() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getyLocation()){
+                    return false;
+                }
+                if(stoneCopiesFirst[i][j].getRadius() !=
+                        ((GoGameState) object).stoneCopiesFirst[i][j].getRadius()){
+                    return false;
+                }
+            }
+        }
+
+        //Check stone copies second values
+        for(int i = 0; i < boardSize; i++){
+            for(int j = 0; j < boardSize; j++){
+                if(stoneCopiesSecond[i][j].getStoneColor() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getStoneColor()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getCheckedStone() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getCheckedStone()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getxLeft() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getxLeft()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getxRight() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getxRight()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getxLocation() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getxLocation()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getyBottom() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getyBottom()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getyTop() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getyTop()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getyLocation() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getyLocation()){
+                    return false;
+                }
+                if(stoneCopiesSecond[i][j].getRadius() !=
+                        ((GoGameState) object).stoneCopiesSecond[i][j].getRadius()){
+                    return false;
+                }
+            }
+        }
+
+        //If nothing is false, gamestates are equal
+        return true;
     }
 
 
@@ -905,15 +1229,11 @@ public class GoGameState extends GameState {
      * @author Jude Gabriel
      */
     public void testRepeatedPosition() {
-
         //Set up the triangle of black stones
         gameBoard[0][1].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[1][0].setStoneColor(Stone.StoneColor.BLACK);
-        gameBoard[1][2].setStoneColor(Stone.StoneColor.BLACK);
-
 
         //Set up the triangle of whiteStones
-        gameBoard[0][2].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[1][1].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
         gameBoard[1][3].setStoneColor(Stone.StoneColor.WHITE);
