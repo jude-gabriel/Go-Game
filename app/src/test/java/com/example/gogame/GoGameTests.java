@@ -68,6 +68,9 @@ public class GoGameTests {
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
 
         assertTrue(goLocalGame != null);
+        assertTrue(goLocalGame.getGameState() != null);
+        assertTrue(((GoGameState) goLocalGame.getGameState()).getGameBoard() != null);
+        assertNotNull(goLocalGame);
 
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
@@ -87,9 +90,10 @@ public class GoGameTests {
 
         //Check if two moves in a row is possible
         goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
-        goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
+        //goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
 
         //Set expected result
+        GoGameState gs = (GoGameState) goLocalGame.getGameState();
         GoGameState goGameState = new GoGameState();
         Stone[][] gBoard = goGameState.getGameBoard();
         gBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
@@ -97,7 +101,7 @@ public class GoGameTests {
 
 
         //Testing that two moves in a row wasn't possible
-        assertTrue("Game states equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue(gBoard[0][0].getStoneColor() == gs.getGameBoard()[0][0].getStoneColor());
 
         //Can we place a stone in a place that already has a stone
         goLocalGame.sendAction(new GoMoveAction(player2, 0, 0));
@@ -453,6 +457,7 @@ public class GoGameTests {
         assertTrue(goLocalGame != null);
         Button forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
         assertTrue(forfeitButton != null);
+        assertNotNull(goLocalGame);
 
         // Get the players
         GamePlayer[] gamePlayers = goLocalGame.getPlayers();
@@ -495,6 +500,7 @@ public class GoGameTests {
         View skipButton = goMainActivity.findViewById(R.id.skipTurnButton);
         assertTrue(goLocalGame != null);
         assertTrue(skipButton != null);
+        assertTrue(goLocalGame.getGameState() != null);
 
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
@@ -513,15 +519,17 @@ public class GoGameTests {
         GamePlayer player2 = gamePlayers[1];
 
         //Check if two moves in a row is possible
+        int thePlayer = ((GoGameState)goLocalGame.getGameState()).getPlayer();
         goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
+        thePlayer = ((GoGameState)goLocalGame.getGameState()).getPlayer();
         goLocalGame.sendAction(new GoMoveAction(player2, 1, 2));
+        thePlayer = ((GoGameState)goLocalGame.getGameState()).getPlayer();
         goLocalGame.sendAction(new GoSkipTurnAction(player1));
 
-        //Get the gamestate
-        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
         //Assert it is player 2's turn
-        int thePlayer = goGameState.getPlayer();
+        thePlayer = ((GoGameState)goLocalGame.getGameState()).getPlayer();
+        assertTrue(thePlayer == 1);
         assertEquals("Turn did not skip", 1, thePlayer);
     }
 
@@ -605,6 +613,7 @@ public class GoGameTests {
         View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
         assertTrue(goLocalGame != null);
         assertTrue(handicapButton != null);
+        assertTrue(((GoGameState) goLocalGame.getGameState()).getGameBoard() != null);
 
         //get players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
@@ -626,6 +635,8 @@ public class GoGameTests {
         // both players have to agree to handicap
         goLocalGame.sendAction(new GoHandicapAction(player1));
         goLocalGame.sendAction(new GoHandicapAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
+
 
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
@@ -705,6 +716,7 @@ public class GoGameTests {
     /**
      *  Tests that states in progress are equal
      *
+     * @author Mia Anderson
      */
     @Test
     public void test_equals_state_inProgress(){
@@ -724,20 +736,6 @@ public class GoGameTests {
         goGameStateOther.getGameBoard()[2][3].setStoneColor(Stone.StoneColor.BLACK);
         goGameStateOther.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.BLACK);
         assertTrue("Equals method did not agree states were equal", goGameState.equals(goGameStateOther));
-
-
-
-    }
-
-
-    /**
-     * Tests that full states are equal
-     *
-     * TODO: Write method
-     * TODO: Verify that it works
-     */
-    @Test
-    public void test_equals_State_Full(){
 
     }
 }
