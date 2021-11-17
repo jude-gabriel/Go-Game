@@ -156,11 +156,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * TODO - testing AND FINISH
 	 */
-	public int getScore() {
-		// calculate the score in each direction
-		/////TODO add in vertical and diagonal
-		return evaluateHorizontalScore();
-	}//getScore
+	public int getScore() { return evaluateHorizontal() + evaluateVertical() +evaluateDiagonal(); }//getScore
 
 	/**
 	 * calculateNextMove
@@ -239,7 +235,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the score
 	 */
-	public int evaluateHorizontalScore() {
+	public int evaluateHorizontal() {
 		// initialize the consecutive, blocks, and score variables
 		int consecutive = 0;
 		int blocks = 2;
@@ -305,7 +301,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the score
 	 *
-	 * TODO FINISH
+	 * TODO testing
 	 */
 	public int evaluateVertical() {
 		// initialize the consecutive, blocks, and score variables
@@ -365,7 +361,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 		// return the score
 		return score;
-	}
+	}//evaluateVertical
 
 	/**
 	 * evaluateDiagonal
@@ -376,7 +372,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param playersTurn - which player it is
 	 * @return the score
 	 *
-	 * //TODO FINISH
+	 * //TODO FINISH and testing
 	 */
 	public int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
 		// initialize the consecutive, blocks, and score variables
@@ -449,13 +445,49 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			int diagonalEnd = Math.min(boardSize + diagonal - 1, boardSize - 1);
 
 			// iterate through the rows and columns of the board
+			for (int row = diagonalStart; row <= diagonalEnd; row++) {
+				// get the current column
+				int col = diagonal - row;
 
+				// increment the consecutive if AI has a stone in current cell
+				if (gameBoard[row][col].getStoneColor() == currStoneColor) consecutive++;
+
+					// determine if empty
+				else if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE) {
+					if (consecutive > 0) {
+						// decrement the blocks
+						blocks--;
+
+						// increment the score
+						score += getConsecutiveSetScore(consecutive, blocks);
+
+						// reset consecutive
+						consecutive = 0;
+					}
+					// set blocks
+					blocks = 1;
+				}
+				// determine if consecutive is greater than 0
+				else if (consecutive > 0) {
+					// add to score
+					score += getConsecutiveSetScore(consecutive, blocks);
+					// reset consecutive
+					consecutive = 0;
+				}
+				// set blocks
+				blocks = 2;
+			}
+
+			// if consecutive is greater than zero, add to the score
+			if(consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
+
+			// rest consecutive and blocks
+			consecutive = 0;
+			blocks = 2;
 		}
-
 		// return the score
 		return score;
-	}
-
+	}//evaluateDiagonal
 
 	/**
 	 * getConsecutiveSetScore
@@ -466,9 +498,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param blocks - the number of blocks
 	 * @return the score
 	 * <p>
-	 * //TODO FINISH
+	 * //TODO FINISH and testing
 	 */
 	public static int getConsecutiveSetScore(int count, int blocks) {
+
+
 		return -1; // dummy
 	}
 
