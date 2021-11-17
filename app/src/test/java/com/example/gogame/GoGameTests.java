@@ -465,11 +465,34 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: verify if works
+     * add score tests, empty test
      *
      * @author Brynn Harrington
      */
     @Test
     public void testCapture(){
+        // initialize a empty game state
+        GoGameState board = new GoGameState();
+
+        // get black's current score
+        int initBS = board.getPlayer1Score();
+
+        // make moves on the board so a capture for black is made
+        //ONE STONE
+        board.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[0][1].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[1][0].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.WHITE);
+        board.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[2][0].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.BLACK);
+
+        // verify black's score went up by one and place on board empty
+        //assertEquals(initBS + 1, board.getPlayer1Score());
+        assertSame(board.getGameBoard()[1][1].getStoneColor(), Stone.StoneColor.NONE);
+
 
     }
 
