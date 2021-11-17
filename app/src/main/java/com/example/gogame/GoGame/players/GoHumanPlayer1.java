@@ -150,7 +150,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 elapsedSec = ((GoGameState) info).getTime();
                 elapsedMin = elapsedSec / 60;
                 elapsedSec = elapsedSec % 60;
-                timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+                if(elapsedSec < 10){
+                    timerText.setText("Elapsed Time: " + elapsedMin + ":0" + elapsedSec);
+                }
+                else {
+                    timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+                }
 
                 //Remove handicap button after the first move
                 if(((GoGameState) info).getTotalMoves() > 0){
