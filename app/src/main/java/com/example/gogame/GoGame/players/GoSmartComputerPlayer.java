@@ -500,8 +500,59 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * <p>
 	 * //TODO FINISH and testing
 	 */
-	public static int getConsecutiveSetScore(int count, int blocks) {
+	public int getConsecutiveSetScore(int count, int blocks, boolean isCurrentPlayer) {
+		// initialize a guaranteed winning score for a base point
+		final int win = 100000;
 
+		// if both sides of a set are blocked, return zero points
+		if (blocks == 2 && count < 5) return 0;
+
+		// determine the consecutive stones in a set
+		switch (count)
+		{
+			// one consecutive stone
+			case 1:
+				return 1;
+			// two consecutive stones
+			case 2:
+				// determine if not blocked and current turn
+				if (blocks == 0)
+				{
+					// only one side blocked
+					if (isCurrentPlayer) return 7;
+					else return 5;
+				}
+				else return 3;
+			// three consecutive stones
+			case 3:
+				// determine if not blocked
+				if (blocks == 0) {
+					// since neither side blocked, if it's the current player's turn,
+					// a win is guaranteed since a user can place a stone to make the
+					// count of consecutive stones 4. the opponent may win the game in
+					// the next turn though so not maximum score
+					if (isCurrentPlayer) return 5000;
+					// if not blocked, this forces opponent to block one of the sides
+				}
+			// four consecutive stones
+			case 4:
+				// determine if current turn - if so can win by capturing
+				if (isCurrentPlayer) return win;
+				else {
+					// determine if either side blocked - if neither side blocked
+					// 4 consecutive stones guarantees a win in the next turn
+					if (blocks == 0) return win / 4;
+
+					// if only one side blocked, opponent's moves are limited to placing
+					// a stone to block the remaining side
+					else return 200;
+				}
+			// five consecutive stones
+			case 5:
+				// five consecutive blocks guarantees a capture
+				return win;
+
+		}
 
 		return -1; // dummy
 	}
