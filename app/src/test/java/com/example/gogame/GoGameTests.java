@@ -359,7 +359,7 @@ public class GoGameTests {
         GoGameState copyState = new GoGameState(goGameState);
 
         //Check if the copies are equal
-        assertTrue("Copy constructor did not produce equal state", goGameState.equals(copyState));
+        assertTrue("Copy constructor produced equal state", goGameState.equals(copyState));
     }
 
     /**
@@ -372,7 +372,9 @@ public class GoGameTests {
     public void testPlaceStone(){
 
         //get gamestate
+
         //place a stone
+
         //check that theres a stone there
 
     }
