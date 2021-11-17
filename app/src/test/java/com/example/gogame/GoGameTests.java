@@ -390,37 +390,50 @@ public class GoGameTests {
     /**
      * Tests that captures are successful
      *
-     * TODO: Write method
-     * TODO: verify if works
      * add score tests, empty test
+     *
+     * STATUS - PASSED
      *
      * @author Brynn Harrington
      */
     @Test
     public void testCapture(){
-        // initialize a empty game state
-        GoGameState board = new GoGameState();
+        // get the current view
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
 
-        // get black's current score
-        int initBS = board.getPlayer1Score();
+        // create a local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertNotNull(goLocalGame);
+
+        // get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
 
         // make moves on the board so a capture for black is made
-        //ONE STONE
-        board.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[0][1].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[1][0].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.WHITE);
-        board.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[2][0].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
-        board.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.BLACK);
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 6));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 5));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 3));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 0));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 8, 6));
+
+        // get the current game state
+        GoGameState board = (GoGameState) goMainActivity.getGame().getGameState();
 
         // verify black's score went up by one and place on board empty
-        //assertEquals(initBS + 1, board.getPlayer1Score());
         assertSame(board.getGameBoard()[1][1].getStoneColor(), Stone.StoneColor.NONE);
-
-
     }
 
 
