@@ -7,25 +7,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gogame.GameFramework.GameMainActivity;
-import com.example.gogame.GameFramework.actionMessage.EndTurnAction;
-import com.example.gogame.GameFramework.actionMessage.TimerAction;
-import com.example.gogame.GameFramework.infoMessage.BindGameInfo;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
-import com.example.gogame.GameFramework.infoMessage.TimerInfo;
 import com.example.gogame.GameFramework.players.GameHumanPlayer;
-import com.example.gogame.GameFramework.utilities.GameTimer;
 import com.example.gogame.GameFramework.utilities.Logger;
 import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
 import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
-import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
 import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
-import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.views.GoSurfaceView;
 import com.example.gogame.R;
@@ -38,6 +31,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView playerTurnText     = null;
     private TextView validMoveText      = null;
     private TextView timerText          = null;
+    private TextView opponentMoveText   = null;
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
@@ -64,6 +58,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @author Jude Gabriel
      */
     public GoHumanPlayer1(String name, int layoutID){
+        //Initialize instance variables
         super(name);
         this.layoutId = layoutID;
     }
@@ -91,6 +86,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             return;
         }
 
+
         /** Update the view objects?? **/
         if(info instanceof GoGameState){
             p1Score = ((GoGameState) info).getPlayer1Score();
@@ -106,11 +102,60 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 //Update who's turn it is
                 playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
 
+                if(playerTurn == 1){
+                    playerTurn = 0;
+                }
+                else{
+                    playerTurn = 1;
+                }
+
+                //Check if the game has started and set text boxes to visible
+                if(((GoGameState) info).getTotalMoves() != 0) {
+                    opponentMoveText.setVisibility(View.VISIBLE);
+                    if (((GoGameState) info).getNumSkips() != 0) {
+
+                        //Find who's turn it is
+                        int otherPlayer;
+                        if(playerTurn == 0){
+                            otherPlayer = 1;
+                        }
+                        else{
+                            otherPlayer = 0;
+                        }
+
+                        //Update the move text box based on the kind of move
+                        opponentMoveText.setText(allPlayerNames[playerTurn] + " skipped their turn. " +
+                                allPlayerNames[otherPlayer] + ", press skip turn to end the game.");
+                    }
+                    else if (((GoGameState) info).getP1Handicap() == true) {
+                        opponentMoveText.setText(allPlayerNames[0] + " agrees to a handicap.");
+                    }
+                    else if (((GoGameState) info).getP2Handicap() == true) {
+                        opponentMoveText.setText(allPlayerNames[1] + " agrees to a handicap.");
+                    }
+                    else {
+                        int[] lastMove = ((GoGameState) info).getMostRecentMove();
+                        int x = lastMove[0] + 1;
+                        int y = lastMove[1] + 1;
+                        opponentMoveText.setText(allPlayerNames[playerTurn] + " placed a stone at: " +
+                                x + ", " + y);
+                    }
+                }
+                else{
+                    //If this case is hit set visibility to invisible since game hasn't started
+                    opponentMoveText.setVisibility(View.INVISIBLE);
+                }
+
                 //Calculate the time and display
                 elapsedSec = ((GoGameState) info).getTime();
                 elapsedMin = elapsedSec / 60;
                 elapsedSec = elapsedSec % 60;
-                timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+                if(elapsedSec < 10){
+                    timerText.setText("Elapsed Time: " + elapsedMin + ":0" + elapsedSec);
+                }
+                else {
+                    timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
+                }
 
                 //Remove handicap button after the first move
                 if(((GoGameState) info).getTotalMoves() > 0){
@@ -125,6 +170,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         //Check if the move was valid. If it wasn't produce an error message.
         //if it is set the current state and then call invalidate
         if(info instanceof IllegalMoveInfo){
+            validMoveText.setVisibility(View.VISIBLE);
             goSurfaceView.flash(Color.RED, 1000);
             validMoveText.setText("INVALID MOVE");
             validMoveText.setBackgroundColor(Color.RED);
@@ -133,6 +179,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //Check the human tried to move out of turn, update the valid move text
         else if(info instanceof NotYourTurnInfo){
+            validMoveText.setVisibility(View.VISIBLE);
             validMoveText.setText("NOT YOUR TURN");
             validMoveText.setBackgroundColor(Color.RED);
         }
@@ -171,13 +218,15 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.player2ScoreText = (TextView) activity.findViewById(R.id.player2ScoreText);
             this.playerTurnText = (TextView) activity.findViewById(R.id.playerTurnText);
             this.validMoveText = (TextView) activity.findViewById(R.id.validMovetext);
+            validMoveText.setVisibility(View.INVISIBLE);
             this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
+            this.opponentMoveText = (TextView) activity.findViewById(R.id.opponentMoveText);
+            opponentMoveText.setVisibility(View.INVISIBLE);
             this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
             this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
             this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
             this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
             this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
-
             this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
         }
 
@@ -250,6 +299,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //Check if the location was not valid and update validMove if so
         if(xyLoc == null || xyLoc[0] == -1 || xyLoc[1] == -1){
+            validMoveText.setVisibility(View.VISIBLE);
             validMoveText.setText("INVALID MOVE");
             validMoveText.setBackgroundColor(Color.RED);
             goSurfaceView.flash(Color.RED, 1000);
@@ -262,6 +312,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             game.sendAction(action);
 
             //Update the valid move text since the move was valid
+            validMoveText.setVisibility(View.VISIBLE);
             validMoveText.setText("VALID MOVE");
             validMoveText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             validMoveText.setBackgroundColor(Color.GREEN);
@@ -288,6 +339,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     public void onClick(View v) {
         //Get the ID of the object clicked
         int viewID = v.getId();
+        if(game == null) return;
         switch (viewID){
 
             //Case 1: It was the skip turn button, send a skip turn action
@@ -325,6 +377,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             default:
                 return;
         }
+
+        //Invalidate the surface view
         goSurfaceView.invalidate();
 
         //Error if we hit here

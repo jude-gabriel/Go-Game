@@ -93,6 +93,22 @@ public class GoLocalGame extends LocalGame {
 		// initialize the current instance of the go game state
 		GoGameState state = (GoGameState) super.state;
 
+		//Check if a winning condition is still possible
+		if(state.getTotalMoves() > 2) {
+			boolean gameOver = state.isOver();
+			if (gameOver) {
+				int p1Score = state.getPlayer1Score();
+				int p2Score = state.getPlayer2Score();
+				if (p1Score > p2Score) {
+					return playerNames[0] + " is the winner";
+				} else if (p2Score > p1Score) {
+					return playerNames[1] + " is the winner";
+				} else {
+					return "Tie game!";
+				}
+			}
+		}
+
 		// check if the game is over, if its not return null
         if (!state.isGameOver()) return null;
 
@@ -214,10 +230,6 @@ public class GoLocalGame extends LocalGame {
 			int row = ((GoMoveAction) action).getX();
 			int col = ((GoMoveAction) action).getY();
 
-			// get the ID of the current player
-			//TODO determine if necessary
-			//int playerID = getPlayerIdx(action.getPlayer());
-
 			// place the player's stone at the selected liberty if possible
 			return state.playerMove(row, col);
 		}
@@ -238,7 +250,12 @@ public class GoLocalGame extends LocalGame {
 
 	//TESTING
 
-
+	/**
+	 * Finds which user won the game
+	 *
+	 * @returns 0 if player 0 won, else returns 1
+	 * @author Brynn Harrington
+	 */
 	public int whoWon(){
 		// get the string for game over
 		String gameOver = checkIfGameOver();
@@ -260,8 +277,11 @@ public class GoLocalGame extends LocalGame {
 	 */
 	@Override
 	protected void timerTicked(){
+		//Set the state and the timer
 		GoGameState state = (GoGameState) super.state;
 		state.setTime(timer.getTicks());
+
+		//Send the updated state to all users
 		this.sendAllUpdatedState();
 	}
 }

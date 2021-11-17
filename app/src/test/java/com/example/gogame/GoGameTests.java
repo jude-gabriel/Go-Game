@@ -4,16 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 import com.example.gogame.GameFramework.Game;
+import com.example.gogame.GameFramework.actionMessage.MyNameIsAction;
 import com.example.gogame.GameFramework.actionMessage.ReadyAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.GoLocalGame;
 import com.example.gogame.GoGame.GoMainActivity;
+import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
+import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 import android.view.View;
+import android.widget.Button;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,8 +39,6 @@ public class GoGameTests {
      *
      * @throws Exception
      *
-     * TODO: Verify the game gets set up correctly with this test
-     *
      * @author Jude Gabriel
      */
     @Before
@@ -45,9 +49,6 @@ public class GoGameTests {
 
     /**
      * This method verifies a normal game play
-     *
-     * TODO: Verify these tests are accurate
-     * TODO: Add tests for capturing, repeated boards, etc...
      *
      * @author Jude Gabriel
      */
@@ -60,11 +61,20 @@ public class GoGameTests {
         View forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
         View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
 
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
         //Get the created game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
 
+        assertTrue(goLocalGame != null);
+
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
 
         //Send the names of the players to the game
         for(GamePlayer gamePlayer : gamePlayers){
@@ -81,24 +91,24 @@ public class GoGameTests {
 
         //Set expected result
         GoGameState goGameState = new GoGameState();
-        //TODO: NEED TO ACCESS THE GAMEBOARD HERE, i think i did that, recheck
         Stone[][] gBoard = goGameState.getGameBoard();
         gBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
 
 
+
         //Testing that two moves in a row wasn't possible
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Can we place a stone in a place that already has a stone
         goLocalGame.sendAction(new GoMoveAction(player2, 0, 0));
 
         //Make sure nothing changed
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
 
         //Make sure turns do work
-        goLocalGame.sendAction(new GoMoveAction(player1, 0, 1));
-        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 0, 1));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
 
         //Change the actual board to the expected output
         gBoard[0][1].setStoneColor(Stone.StoneColor.WHITE);
@@ -108,8 +118,8 @@ public class GoGameTests {
         assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Get to a game over
-        goLocalGame.sendAction(new GoSkipTurnAction(player1));
         goLocalGame.sendAction(new GoSkipTurnAction(player2));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
 
         //Set the GameState to being over
         goGameState.setGameOver(true);
@@ -118,8 +128,7 @@ public class GoGameTests {
         assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
 
         //Player 1 should win
-        //TODO: Verify this test!!
-        assertEquals("Player 1 did not win", 0, goLocalGame.whoWon());
+        assertEquals("Player 1 did not win", 1, goLocalGame.whoWon());
 
         //Check if you can move after game over
         goLocalGame.sendAction(new GoMoveAction(player1, 2, 2));
@@ -130,14 +139,174 @@ public class GoGameTests {
 
 
     /**
-     * Tests if an empty constructor gets copied correctly
-     *
-     * TODO: Verify that this test works
+     * Tests the copy constructor for an empty constructor
      *
      * @author Jude Gabriel
      */
     @Test
-    public void test_CopyConstructorOfState_Empty(){
+    public void Test_CopyConstructor_Empty(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //Get the created game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Start making moves */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        //Create constructor and copy constructor
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        GoGameState copyState = new GoGameState(goGameState);
+
+        //Check if they are equal
+        assertTrue(goGameState.testCopyConstructor(copyState));
+    }
+
+
+    /**
+     * Tests the copy constructor for a partially full constructor
+     *
+     * @author Jude Gabriel
+     */
+    @Test
+    public void Test_CopyConstructor_MidGame(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //Get the created game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Start making moves */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 5, 4));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 4));
+
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        GoGameState copyState = new GoGameState(goGameState);
+
+        //copyState.setTime(15);  //Used to test when false!
+        boolean isTrue = goGameState.testCopyConstructor(copyState);
+
+        assertEquals("Constructors are equal", true, isTrue);
+    }
+
+    /**
+     * Tests the copy constructor for a finished game
+     *
+     * @author Jude Gabriel
+     */
+    @Test
+    public void Test_CopyConstructor_GameOver(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //Get the created game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        assertTrue(goLocalGame != null);
+
+        //Get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        /* Assign the players */
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        /* Make a bunch of moves */
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 5, 4));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 6));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 7));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 3, 8));
+        goLocalGame.sendAction(new GoMoveAction(player1, 6, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 6, 2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 6, 4));
+        goLocalGame.sendAction(new GoMoveAction(player2, 6, 4));
+
+        /* Both player skip to end the game */
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
+        goLocalGame.sendAction(new GoSkipTurnAction(player2));
+
+        /* Get the gamestate and copy it */
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        GoGameState copyState = new GoGameState(goGameState);
+
+        //copyState.setTime(15);  //Used to test when false!
+
+        //Check if the copies are equal
+        boolean isTrue = goGameState.testCopyConstructor(copyState);
+
+        //Assert message passes
+        assertEquals("Constructors are equal", true, isTrue);
+    }
+
+
+
+    /**
+     * Tests if an empty constructor gets copied correctly
+     *
+     *
+     * @author Jude Gabriel
+     */
+    @Test
+    public void test_CopyArray_Empty(){
         GoGameState goGameState = new GoGameState();
         GoGameState copyState = new GoGameState(goGameState);
 
@@ -148,12 +317,11 @@ public class GoGameTests {
     /**
      * Tests if a game in progress gets copied correctly
      *
-     * TODO: Verify that these tests work
      *
      * @author Jude Gabriel
      */
     @Test
-    public void test_CopyConstructorOfState_InProgress(){
+    public void test_CopyArray_InProgress(){
         GoGameState goGameState = new GoGameState();
         goGameState.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.WHITE);
         goGameState.getGameBoard()[3][4].setStoneColor(Stone.StoneColor.BLACK);
@@ -168,13 +336,12 @@ public class GoGameTests {
     /**
      * Tests if a full board copies over correctly
      *
-     * TODO: Verify this test works
      *
      * @author Jude Gabriel
      * @modified Natalie Tashchuk
      */
     @Test
-    public void test_CopyConstructorOfState_Full(){
+    public void test_CopyArray_Full(){
         GoGameState goGameState = new GoGameState();
 
         for (int r = 0; r < goGameState.getBoardSize(); r++){
@@ -215,11 +382,34 @@ public class GoGameTests {
      *
      * TODO: Write method
      * TODO: verify if works
+     * add score tests, empty test
      *
      * @author Brynn Harrington
      */
     @Test
     public void testCapture(){
+        // initialize a empty game state
+        GoGameState board = new GoGameState();
+
+        // get black's current score
+        int initBS = board.getPlayer1Score();
+
+        // make moves on the board so a capture for black is made
+        //ONE STONE
+        board.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[0][1].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[1][0].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.WHITE);
+        board.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[2][0].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
+        board.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.BLACK);
+
+        // verify black's score went up by one and place on board empty
+        //assertEquals(initBS + 1, board.getPlayer1Score());
+        assertSame(board.getGameBoard()[1][1].getStoneColor(), Stone.StoneColor.NONE);
+
 
     }
 
@@ -227,21 +417,26 @@ public class GoGameTests {
     /**
      * Tests that a forfeit works correctly
      *
-     * TODO: Write method
-     * TODO: Verify it works
-     *
      * @author Mia Anderson
      */
     @Test
     public void testForfeit(){
-        //create button for Forfeit
-        View forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
 
         //create a local game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertTrue(goLocalGame != null);
+        Button forfeitButton = goMainActivity.findViewById(R.id.forfeitButton);
+        assertTrue(forfeitButton != null);
 
         // Get the players
         GamePlayer[] gamePlayers = goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
 
         // Send players to the game
         for(GamePlayer gamePlayer: gamePlayers){
@@ -252,35 +447,38 @@ public class GoGameTests {
         GamePlayer player1 = gamePlayers[0];
         GamePlayer player2 = gamePlayers[1];
 
-        goMainActivity.onClick(forfeitButton);
+        goLocalGame.sendAction(new GoForfeitAction(player1));
 
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
         boolean didForfeit = goGameState.forfeit();
 
         assertEquals("Turn did not forfeit", true, didForfeit);
-
     }
 
     /**
      * Tests that a turn can be skipped successfully
      *
-     * TODO: Write method
-     * TODO: Verify it works
-     *
      * @author Jude Gabriel
      */
     @Test
     public void testSkipTurn(){
-        //Create the button for skipping
-        View skipButton = goMainActivity.findViewById(R.id.skipTurnButton);
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
 
         //Initialize a local game
         GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
 
+        View skipButton = goMainActivity.findViewById(R.id.skipTurnButton);
+        assertTrue(goLocalGame != null);
+        assertTrue(skipButton != null);
 
         //Get the players
         GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
 
         //Send the names of the players to the game
         for(GamePlayer gamePlayer : gamePlayers){
@@ -291,61 +489,182 @@ public class GoGameTests {
         GamePlayer player1 = gamePlayers[0];
         GamePlayer player2 = gamePlayers[1];
 
-        goMainActivity.onClick(skipButton);
+        //Check if two moves in a row is possible
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 2));
+        goLocalGame.sendAction(new GoSkipTurnAction(player1));
 
+        //Get the gamestate
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
 
+        //Assert it is player 2's turn
         int thePlayer = goGameState.getPlayer();
-        assertEquals("Turn did not skip", 2, thePlayer);
+        assertEquals("Turn did not skip", 1, thePlayer);
     }
 
 
     /**
      * Test that a game over happens correctly
      *
-     * TODO: Write method
-     * TODO: Verify it works
+     * STATUS: PASSED
      *
      * @author Brynn Harrington
      */
     @Test
     public void testGameOver(){
+        /* CHECK AT THE BEGINNING OF A GAME */
+        // initialize a game state
+        GoGameState boardEmpty = new GoGameState();
 
+        // have each player skip their turn
+        for (int i = 0; i < 2; i++) boardEmpty.skipTurn();
+
+        // verify the game is over
+        assertTrue(boardEmpty.isGameOver());
+
+        /* CHECK IN THE MIDDLE OF A GAME */
+        // initialize a game state
+        GoGameState boardMid = new GoGameState();
+
+        // place moves onto the board
+        for (int row = 0; row < boardMid.getBoardSize(); row++) {
+            for (int col = 1; col < boardMid.getBoardSize() - 1; col++) {
+                // place stones on the board
+                if (row % 4 == 0)
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.WHITE);
+                if (col % 3 == 0) boardMid.playerMove(row, col);
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.BLACK);
+            }
+        }
+
+        // have each player skip their turn
+        for (int i = 0; i < 2; i++) boardEmpty.skipTurn();
+
+        // verify the game is over
+        assertTrue(boardEmpty.isGameOver());
+
+        /* CHECK THE END OF A GAME */
+        // initialize a game state
+        GoGameState boardEnd = new GoGameState();
+
+        // place moves onto the board
+        for (int row = 0; row < boardEnd.getBoardSize(); row++) {
+            for (int col = 0; col < boardEnd.getBoardSize(); col++) {
+                // place stones on the board
+                if (row % 2 == 0)
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.WHITE);
+                if (col % 2 == 1)
+                    boardMid.getGameBoard()[row][col].setStoneColor(Stone.StoneColor.BLACK);
+            }
+        }
+
+        // have each player skip their turn
+        for (int i = 0; i < 2; i++) boardEmpty.skipTurn();
+
+        // verify the game is over
+        assertTrue(boardEmpty.isGameOver());
     }
 
 
     /**
      * Tests that a handicap gets placed correctly
      *
-     * TODO: Write method
-     * TODO: Verify that it works
-     *
      * @author Mia Anderson
      */
     @Test
     public void testHandicap(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
 
+        //new local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+        View handicapButton = goMainActivity.findViewById(R.id.handicapButton);
+        assertTrue(goLocalGame != null);
+        assertTrue(handicapButton != null);
+
+        //get players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        // create player 1 and 2
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        //send handicap button action to local game
+        // both players have to agree to handicap
+        goLocalGame.sendAction(new GoHandicapAction(player1));
+        goLocalGame.sendAction(new GoHandicapAction(player2));
+
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+
+        assertEquals(Stone.StoneColor.WHITE, goGameState.getGameBoard()[2][2].getStoneColor());
+        assertEquals(Stone.StoneColor.WHITE, goGameState.getGameBoard()[6][6].getStoneColor());
     }
 
 
     /**
      * Tests that a repeated position does not work
      *
-     * TODO: Write method
-     * TODO: Verify that it works
-     *
      * @author Jude Gabriel
      */
     @Test
     public void testRepeatedPosition(){
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        //new local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertTrue(goLocalGame != null);
+
+        //get players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+
+        //Set up the board and make the two successive captures
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        goGameState.testRepeatedPosition();
+        goGameState.playerMove(2, 1);
+        goGameState.playerMove(0, 2);
+        goGameState.playerMove(1, 2);
+        goGameState.playerMove(1, 1);
+
+
+        //Generate the expected output
+        GoGameState gsTest = new GoGameState();
+        gsTest.testRepeatedPosition();
+        gsTest.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
+        gsTest.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.BLACK);
+        gsTest.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.WHITE);
+        gsTest.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.NONE);
+        gsTest.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
+
+
+
+        assertTrue("Game states were not equal", goGameState.equals(gsTest));
 
     }
 
 
     /**
      * Tests that empty states are equal
-     *
-     * TODO: Verify that it works
      *
      * @author Jude Gabriel
      */
@@ -356,18 +675,34 @@ public class GoGameTests {
         GoGameState equalsState = new GoGameState();
 
         //Checks if they are equal
-        assertTrue("Equals method lists gamestates as not equal", goGameState.equals(equalsState));
+        assertTrue("Equals method lists game states as not equal", goGameState.equals(equalsState));
     }
 
 
     /**
      *  Tests that states in progress are equal
      *
-     * TODO: Write method
-     * TODO: Verify that it works
      */
     @Test
     public void test_equals_state_inProgress(){
+        // Create two game states
+        GoGameState goGameState = new GoGameState();
+        goGameState.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameState.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameState.getGameBoard()[3][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameState.getGameBoard()[1][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameState.getGameBoard()[2][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameState.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.BLACK);
+        GoGameState goGameStateOther = new GoGameState();
+        goGameStateOther.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameStateOther.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameStateOther.getGameBoard()[3][2].setStoneColor(Stone.StoneColor.WHITE);
+        goGameStateOther.getGameBoard()[1][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameStateOther.getGameBoard()[2][3].setStoneColor(Stone.StoneColor.BLACK);
+        goGameStateOther.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.BLACK);
+        assertTrue("Equals method did not agree states were equal", goGameState.equals(goGameStateOther));
+
+
 
     }
 

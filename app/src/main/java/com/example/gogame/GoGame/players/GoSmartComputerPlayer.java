@@ -38,6 +38,9 @@ import java.util.Random;
  * @author Brynn Harrington
  * @version October 2021
  * @source https://www.moderndescartes.com/essays/implementing_go/
+ *
+ *
+ * NOTE: NOT FINISHED
  */
 public class GoSmartComputerPlayer extends GameComputerPlayer {
 	/** LOGGING TAGS **/

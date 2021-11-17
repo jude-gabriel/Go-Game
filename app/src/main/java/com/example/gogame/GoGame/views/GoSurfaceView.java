@@ -35,7 +35,7 @@ public class GoSurfaceView extends FlashSurfaceView {
      * @author Natalie Tashchuk
      */
     public GoSurfaceView(Context context, AttributeSet attrs) {
-
+        //Initialize surface view by calling super
         super(context, attrs);
         init();
 
@@ -47,6 +47,8 @@ public class GoSurfaceView extends FlashSurfaceView {
         blackPaint.setARGB(255, 0, 0, 0);
         whitePaint = new Paint();
         whitePaint.setARGB(255, 255, 255, 255);
+
+        //Set the radius
         radius = 25;
     }
 
@@ -59,13 +61,20 @@ public class GoSurfaceView extends FlashSurfaceView {
     }// init
 
     /**
+     * Set's the background color
+     *
      * @return the color to set the background
      */
     public int backgroundColor() {
         return Color.BLUE;
     }
 
-
+    /**
+     * Setter for the state
+     *
+     * @param state
+     * @author Natalie Tashchuk
+     */
     public void setState(GoGameState state) {
         this.state = state;
     }
@@ -73,7 +82,6 @@ public class GoSurfaceView extends FlashSurfaceView {
 
     /**
      * onDraw
-     *
      *
      * @author Natalie Tashchuk
      */
@@ -108,6 +116,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         }
     } //onDraw
 
+
     /**
      * findStone
      * finds which index the user clicked on in the stones array
@@ -129,6 +138,7 @@ public class GoSurfaceView extends FlashSurfaceView {
         int boardSize = state.getBoardSize();
         Stone[][] gameBoard = state.getGameBoard();
 
+        //Iterate through the stones and find which one was clicked
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if ((x < gameBoard[i][j].getxRight() + 20) && (x > gameBoard[i][j].getxLeft() - 20)) {

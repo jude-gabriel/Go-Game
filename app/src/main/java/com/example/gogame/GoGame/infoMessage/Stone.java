@@ -14,8 +14,12 @@ package com.example.gogame.GoGame.infoMessage;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Stone {
+import java.io.Serializable;
 
+public class Stone implements Serializable {
+
+    //Network Play Tag
+    private static final long serialVersionUID = 7552321013487624386L;
 
     /**
      * Enum's for the Stone's Color
@@ -56,18 +60,23 @@ public class Stone {
      * @author Natalie Tashchuk
      */
     public Stone(float x, float y){
+        //Initialize the stone color and radius
         stoneColor = StoneColor.NONE;
         radius = 25;
 
+        //Initialize the x and y coordinates
         xLocation = x;
         yLocation = y;
 
+        //Calculate the boundaries of the stone
         xLeft = xLocation - radius;
         xRight = xLocation + radius;
         yTop = yLocation - radius;
         yBottom = yLocation + radius;
 
+        //Set checked stone to false
         checkedStone = CheckedStone.FALSE;
+
     }
 
 
@@ -81,16 +90,20 @@ public class Stone {
      */
     public void draw(Canvas canvas, int x, int y){
         Paint paint = new Paint();
+        //Case 1: The stone color is none, make the paint transparent
         if(stoneColor == StoneColor.NONE){
             paint.setARGB(0, 0, 0, 0);
         }
+
+        //Case 2: The stone color is black, make the paint black
         else if(stoneColor == StoneColor.BLACK){
             paint.setARGB(255, 0, 0, 0);
         }
+
+        //Case 3: The stone color is red, make the paint red
         else{
             paint.setARGB(255, 255, 255, 255);
         }
-
 
         //Draw the stone on the board
         canvas.drawCircle(x, y, radius, paint);
@@ -286,4 +299,5 @@ public class Stone {
     public void setCheckedStone(CheckedStone checkVal){
         checkedStone = checkVal;
     }
+
 }
