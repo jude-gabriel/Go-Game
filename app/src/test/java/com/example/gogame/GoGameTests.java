@@ -369,24 +369,22 @@ public class GoGameTests {
      */
     public void testPlaceStone(){
 
-        //instantiate gamestates
-        GoGameState goGameState = new GoGameState();
-        GoGameState otherGameState = new GoGameState();
+        //create a local game
+        GoLocalGame goLocalGame = new GoLocalGame();
 
-        //place a stone
-        goGameState.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.WHITE);
+        //instantiate empty gamestate
+        GoGameState goGameStateEmpty = new GoGameState();
 
+        //place a stone in local game
+        goLocalGame.sendAction(new GoMoveAction(goLocalGame.getPlayers()[0], 1, 4));
 
-        //check that stones have turned to the correct colors
-        Stone.StoneColor sc = goGameState.getGameBoard()[2][2].getStoneColor();
-        assertEquals(sc, Stone.StoneColor.BLACK);
+        //test that color of stone at given location is not none
+        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
+        assertNotEquals(goGameState,goGameStateEmpty);
 
-        Stone.StoneColor sc2 = goGameState.getGameBoard()[3][3].getStoneColor();
-        assertEquals(sc2, Stone.StoneColor.WHITE);
+        //ensure local game's gamestate is not empty
+        assertTrue("GameState is not empty", ! (goLocalGame.getGameState().equals(goGameStateEmpty)));
 
-        //check that new gs does not match empty gs
-        assertNotEquals("GS does not equal empty GS", goGameState, otherGameState);
     }
 
     /**
