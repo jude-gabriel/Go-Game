@@ -96,7 +96,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             //Check that all GUI objects exist
             if(player1ScoreText != null && playerTurnText != null && timerText != null) {
                 //Update the scores
-                player1ScoreText.setText(allPlayerNames[0] +"'s score: " + p1Score);
+                player1ScoreText.setText(allPlayerNames[0] +"'s Score: " + p1Score);
                 player2ScoreText.setText(allPlayerNames[1] + "'s Score: " + p2Score);
 
                 //Update who's turn it is
