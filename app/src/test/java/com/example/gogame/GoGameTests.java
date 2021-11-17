@@ -366,17 +366,27 @@ public class GoGameTests {
      * Tests that placing a stone works correctly
      *
      * @author Natalie Tashchuk
-     *
-     * TODO: Write method
      */
     public void testPlaceStone(){
 
-        //get gamestate
+        //instantiate gamestates
+        GoGameState goGameState = new GoGameState();
+        GoGameState otherGameState = new GoGameState();
 
         //place a stone
+        goGameState.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.BLACK);
+        goGameState.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.WHITE);
 
-        //check that theres a stone there
 
+        //check that stones have turned to the correct colors
+        Stone.StoneColor sc = goGameState.getGameBoard()[2][2].getStoneColor();
+        assertEquals(sc, Stone.StoneColor.BLACK);
+
+        Stone.StoneColor sc2 = goGameState.getGameBoard()[3][3].getStoneColor();
+        assertEquals(sc2, Stone.StoneColor.WHITE);
+
+        //check that new gs does not match empty gs
+        assertNotEquals("GS does not equal empty GS", goGameState, otherGameState);
     }
 
     /**
