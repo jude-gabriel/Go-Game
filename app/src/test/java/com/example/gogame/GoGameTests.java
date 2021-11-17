@@ -338,115 +338,28 @@ public class GoGameTests {
      *
      *
      * @author Jude Gabriel
+     * @modified Natalie Tashchuk
      */
     @Test
     public void test_CopyArray_Full(){
         GoGameState goGameState = new GoGameState();
 
-        //Set the first row
-        goGameState.getGameBoard()[0][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[0][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[0][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[0][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[0][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[0][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[0][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[0][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the second row
-        goGameState.getGameBoard()[1][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[1][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[1][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[1][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[1][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[1][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[1][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[1][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the third row
-        goGameState.getGameBoard()[2][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[2][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[2][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[2][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[2][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[2][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[2][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[2][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the fourth row
-        goGameState.getGameBoard()[3][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[3][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[3][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[3][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[3][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[3][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[3][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[3][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[3][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the fifth row
-        goGameState.getGameBoard()[4][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[4][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[4][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[4][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[4][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[4][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[4][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[4][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[4][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the sixth row
-        goGameState.getGameBoard()[5][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[5][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[5][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[5][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[5][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[5][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[5][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[5][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[5][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the seventh row
-        goGameState.getGameBoard()[6][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[6][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[6][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[6][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[6][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[6][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[6][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[6][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[6][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the eighth row
-        goGameState.getGameBoard()[7][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[7][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[7][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[7][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[7][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[7][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[7][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[7][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[7][8].setStoneColor(Stone.StoneColor.WHITE);
-
-        //Set the ninth row
-        goGameState.getGameBoard()[8][0].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[8][1].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[8][2].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[8][3].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[8][4].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[8][5].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[8][6].setStoneColor(Stone.StoneColor.WHITE);
-        goGameState.getGameBoard()[8][7].setStoneColor(Stone.StoneColor.BLACK);
-        goGameState.getGameBoard()[8][8].setStoneColor(Stone.StoneColor.WHITE);
+        for (int r = 0; r < goGameState.getBoardSize(); r++){
+            for (int c = 0; c < goGameState.getBoardSize(); c++){
+                if (c % 2 != 0){
+                    goGameState.getGameBoard()[r][c].setStoneColor(Stone.StoneColor.BLACK);
+                }
+                else {
+                    goGameState.getGameBoard()[r][c].setStoneColor(Stone.StoneColor.WHITE);
+                }
+            }
+        }
 
         //Create a copy
         GoGameState copyState = new GoGameState(goGameState);
 
         //Check if the copies are equal
-        assertTrue("Copy constructor did not produce equal state", goGameState.equals(copyState));
+        assertTrue("Copy constructor produced equal state", goGameState.equals(copyState));
     }
 
     /**
@@ -457,6 +370,12 @@ public class GoGameTests {
      * TODO: Write method
      */
     public void testPlaceStone(){
+
+        //get gamestate
+
+        //place a stone
+
+        //check that theres a stone there
 
     }
 
