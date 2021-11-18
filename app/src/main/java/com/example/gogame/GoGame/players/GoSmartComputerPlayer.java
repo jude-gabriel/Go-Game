@@ -53,7 +53,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	private GoGameState goGS;
 
 	// instantiate a variable to hold whether the AI is player 0 or 1
-	private boolean currentPlayer;
+	private boolean isPlayer1;
 
 	// instantiate a variable that tracks the current stone color
 	Stone.StoneColor currStoneColor;
@@ -85,13 +85,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		goGS = (GoGameState) info;
 
 		// determine which player the AI is
-		currentPlayer =
+		//TODO optimize so that the current player is returned
+		isPlayer1 = ((GoGameState) info).getIsPlayer1();
 
 		// determine the current AI's color
-		if (isPlayer1) currStoneColor = Stone.StoneColor.WHITE;
-		else currStoneColor = Stone.StoneColor.BLACK;
-
-
+		if (isPlayer1) currStoneColor = Stone.StoneColor.BLACK;
+		else currStoneColor = Stone.StoneColor.WHITE;
 	}
 
 	/* HELPER FUNCTIONS */
@@ -191,6 +190,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// if at terminal node, return the score, move[0], and move[1]
 		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
 
+		
 
 		return null; // dummy
 	}
@@ -199,14 +199,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * searchWinningMove
 	 * This function looks for a move that can win the game
 	 *
-	 * @param gameBoard - the current instance of the game board
 	 * @return the winning move
 	 * <p>
 	 * //TODO FINISH and testing
 	 */
-	private Object[] searchWinningMove(Stone[][] gameBoard) {
+	private Object[] searchWinningMove() {
 		// initialize a new array list for all possible moves
-		// TODO - write generate moves function
 		ArrayList<int[]> moveList = generateMoves();
 
 		// initialize the winning move
@@ -216,12 +214,22 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int[] move : moveList)
 		{
 			// create a new board from the current game state
-			GoGameState board = new GoGameState(goGS);
+			GoGameState testBoard = new GoGameState(goGS);
+
+			// place on board
+			addStoneNoGUI(testBoard.getGameBoard(), move[1], move[0]);
+
+			// determine if this is the best move
+			if (getScore() >= winningScore)
+			{
+				// set the winning move if greater the the winning score
+				winMove[1] = move[0];
+				winMove[2] = move[1];
+				return winMove;
+			}
 		}
 
-		// initialize an object to store the winning move
-		Object[] winningMove = new Object[3];
-
+		// otherwise return null
 		return null;
 	}
 
@@ -705,6 +713,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// return the move list
 		return moveList;
 	}//generateMoves
+
 	/**
 	 * addStoneNoGUI
 	 *
@@ -718,8 +727,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public void addStoneNoGUI(Stone[][] board, int row, int col) {
 		board[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
-	}
-}//generateMoves
+	}//addStoneNoGUI
+}
 
 /* */
 
