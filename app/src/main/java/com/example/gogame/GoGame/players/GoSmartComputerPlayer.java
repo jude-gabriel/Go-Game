@@ -205,12 +205,22 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param gameBoard - the current instance of the game board
 	 * @return the winning move
 	 * <p>
-	 * //TODO FINISH
+	 * //TODO FINISH and testing
 	 */
-	private static Object[] searchWinningMove(Stone[][] gameBoard) {
+	private Object[] searchWinningMove(Stone[][] gameBoard) {
 		// initialize a new array list for all possible moves
 		// TODO - write generate moves function
-		//ArrayList<Integer> allPossibleMoves = gameBoard.generateMoves();
+		ArrayList<int[]> moveList = generateMoves();
+
+		// initialize the winning move
+		Object[] winMove = new Object[3];
+
+		// iterate through the moves
+		for (int[] move : moveList)
+		{
+			// create a new board from the current game state
+			GoGameState board = new GoGameState(goGS);
+		}
 
 		// initialize an object to store the winning move
 		Object[] winningMove = new Object[3];
@@ -231,7 +241,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * is empty, then the block count will be decremented by one and if there is another
 	 * empty cell after a consecutive stone set, the block count will also be decremented
 	 * by one.
-	 * TODO - testing
+	 * TODO - testing - UNSURE IF CURRENT PLAYER FUNCTIONING PROPERLY
 	 *
 	 * @return the score
 	 */
@@ -241,6 +251,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int blocks = 2;
 		int score = 0;
 
+		// initialize a variable to determine whose turn it is
+		boolean isCurrentPlayer = false;
+
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
 
@@ -248,7 +261,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int row = 0; row < boardSize; row++) {
 			for (int index = 0; index < boardSize; index++) {
 				// increment the consecutive if AI has a stone in current cell
-				if (gameBoard[row][index].getStoneColor() == currStoneColor) consecutive++;
+				if (gameBoard[row][index].getStoneColor() == currStoneColor)
+				{
+					consecutive++;
+
+					// set is current player
+					isCurrentPlayer = true;
+				}
 
 					// check if the current index is empty
 				else if (gameBoard[row][index].getStoneColor() == Stone.StoneColor.NONE) {
@@ -259,7 +278,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 						blocks--;
 
 						// get the consecutive set score
-						score += getConsecutiveSetScore(consecutive, blocks);
+						score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 						// reset the consecutive stone count
 						consecutive = 0;
@@ -276,7 +295,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				// are before this empty cell
 				else if (consecutive > 0) {
 					// get the consecutive set score
-					score += getConsecutiveSetScore(consecutive, blocks);
+					score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 					// reset consecutive to zero
 					consecutive = 0;
@@ -288,7 +307,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				else blocks = 2;
 			}//index loop
 			// at the end of the row check if any consecutive stones reached right border
-			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
+			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 		}//row loop
 
 		// return the score
@@ -309,6 +328,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int blocks = 2;
 		int score = 0;
 
+		// initialize a variable to determine whose turn it is
+		boolean isCurrentPlayer = false;
+
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
 
@@ -316,7 +338,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int index = 0; index < boardSize; index++) {
 			for (int col = 0; col < boardSize; col++) {
 				// increment the consecutive if AI has a stone in current cell
-				if (gameBoard[index][col].getStoneColor() == currStoneColor) consecutive++;
+				if (gameBoard[index][col].getStoneColor() == currStoneColor)
+				{
+					consecutive++;
+
+					// set to is current player
+					isCurrentPlayer = true;
+				}
 
 				// determine if current index is empty
 				else if(gameBoard[index][col].getStoneColor() == Stone.StoneColor.NONE)
@@ -327,7 +355,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 						blocks--;
 
 						// increment the score
-						score += getConsecutiveSetScore(consecutive, blocks);
+						score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 					}
 
 					// otherwise there's a block
@@ -338,7 +366,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				else if (consecutive > 0)
 				{
 					// increment the consecutive set score
-					score += getConsecutiveSetScore(consecutive, blocks);
+					score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 					// reset consecutive to zero
 					consecutive = 0;
@@ -352,7 +380,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}
 
 			// determine if consecutive is greater than zero, increment score
-			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
+			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 			// reset the consecutive and blocks value to zero and two
 			consecutive = 0;
@@ -380,6 +408,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int blocks = 2;
 		int score = 0;
 
+		// initialize a variable to determine whose turn it is
+		boolean isCurrentPlayer = false;
+
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
 
@@ -387,7 +418,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
 				// increment the consecutive if AI has a stone in current cell
-				if (gameBoard[row][col].getStoneColor() == currStoneColor) consecutive++;
+				if (gameBoard[row][col].getStoneColor() == currStoneColor)
+				{
+					consecutive++;
+
+					// set is current player
+					isCurrentPlayer = true;
+				}
 
 				// determine if current index is empty
 				else if(gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
@@ -398,7 +435,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 						blocks--;
 
 						// increment the score
-						score += getConsecutiveSetScore(consecutive, blocks);
+						score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 						// reset consecutive
 						consecutive = 0;
@@ -417,7 +454,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				else if (consecutive > 0)
 				{
 					// increment the consecutive set score
-					score += getConsecutiveSetScore(consecutive, blocks);
+					score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 					// reset consecutive to zero
 					consecutive = 0;
@@ -431,7 +468,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}
 
 			// determine if consecutive is greater than zero, increment score
-			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
+			if (consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 			// reset the consecutive and blocks value to zero and two
 			consecutive = 0;
@@ -459,7 +496,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 						blocks--;
 
 						// increment the score
-						score += getConsecutiveSetScore(consecutive, blocks);
+						score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 						// reset consecutive
 						consecutive = 0;
@@ -470,7 +507,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				// determine if consecutive is greater than 0
 				else if (consecutive > 0) {
 					// add to score
-					score += getConsecutiveSetScore(consecutive, blocks);
+					score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 					// reset consecutive
 					consecutive = 0;
 				}
@@ -479,7 +516,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}
 
 			// if consecutive is greater than zero, add to the score
-			if(consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks);
+			if(consecutive > 0) score += getConsecutiveSetScore(consecutive, blocks, isCurrentPlayer);
 
 			// rest consecutive and blocks
 			consecutive = 0;
@@ -551,11 +588,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			case 5:
 				// five consecutive blocks guarantees a capture
 				return win;
-
 		}
-
-		return -1; // dummy
-	}
+		// otherwise return 0
+		return 0;
+	}//getConsecutiveSetScore
 
 	/**
 	 * generateMoves
@@ -672,13 +708,26 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				}
 			}//endCol
 		}//endRow
-
 		// return the move list
 		return moveList;
+	}//generateMoves
+	/**
+	 * addStoneNoGUI
+	 *
+	 * adds a stone to the board without displaying it onto the GUI
+	 *
+	 * @param board - the board to make the moves on
+	 * @param row - the row to be placed
+	 * @param col - the column to be placed
+	 *
+	 *            TODO - TESTING
+	 */
+	public void addStoneNoGUI(Stone[][] board, int row, int col) {
+		board[row][col] = isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE;
 	}
-}
+}//generateMoves
 
-
+/* */
 
 // OLD CODE - MAY NEED LATER
 /*
