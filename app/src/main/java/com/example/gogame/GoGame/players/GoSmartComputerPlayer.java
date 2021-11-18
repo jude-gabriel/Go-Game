@@ -46,9 +46,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	private static final String TAG = "GoSmartComputerPlayer";
 
 	/* INSTANCE / MEMBER VARIABLES */
-	// instantiate a variable to track the current board
-	private Stone[][] gameBoard;
-
 	// instantiate a variable to hold the current game state
 	private GoGameState goGS;
 
@@ -153,7 +150,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the board score for the specified player
 	 *
-	 * TODO - testing AND FINISH
+	 * TODO - testing
 	 */
 	public int getScore() { return evaluateHorizontal() + evaluateVertical() +evaluateDiagonal(); }//getScore
 
@@ -166,13 +163,40 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * //TODO FINISH
 	 */
-	public int[] calculateNextMove(int depth) {
+	public int[] calculateNextMove(int depth)
+	{
 		// act as the computer is "thinking"
 		sleep(1000);
 
+		// store the moves
+		int[] move = new int[2];
+
+		// determine if there is a winning move
+		Object[] bestMove = searchWinningMove();
+
+		// verify there is a best move
+		if (bestMove != null)
+		{
+			// save the moves
+			move[0] = (Integer) bestMove[1];
+			move[1] = (Integer) bestMove[2];
+		}
+		else
+		{
+			bestMove = miniMaxSearchAB(depth, true, -1.0, getWinningScore());
+
+			// determine if there is a move
+			if (bestMove[1] == null) move = null;
+			else
+			{
+				move[0] = (Integer)(bestMove[1]);
+				move[1] = (Integer)(bestMove[2]);
+			}
+		}
+
 		// return an array to store the move
-		return new int[2];
-	}
+		return move;
+	}//calculateNextMove
 
 	/**
 	 * miniMaxSearchAB
@@ -184,15 +208,103 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param beta  - the best player move (minimizing player)
 	 * @return the score and moves (an object with {score, move[0], move[1]}
 	 * <p>
-	 * //TODO FINISH
+	 * //TODO FINISH AND TESTING
 	 */
 	private Object[] miniMaxSearchAB(int depth, boolean max, double alpha, double beta) {
 		// if at terminal node, return the score, move[0], and move[1]
 		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
 
-		
+		// generate the possible moves on the board
+		ArrayList<int[]> possibleMoves = generateMoves();
 
-		return null; // dummy
+		// if no possible moves, return null move
+		if (possibleMoves.size() == 0) return new Object[]{evaluateBoard(), null, null};
+
+		// otherwise, determine best move
+		Object[] bestMove = new Object[3];
+
+		// if maximizing player, //todo - figure out
+		if (max)
+		{
+			// initialize the best move score to zero
+			bestMove[0] = -1.0;
+
+			// iterate through the moves
+			for (int[] move : possibleMoves)
+			{
+				// copy the current board
+				GoGameState testBoard = new GoGameState(goGS);
+
+				// run the moves
+				addStoneNoGUI(testBoard, move[1], move[0]);
+
+				// store a temporary move
+				Object[] tempMove = miniMaxSearchAB(depth - 1, !max, alpha, beta);
+
+				// assert non-null move
+				assert tempMove != null;
+
+				// if the temporary move is greater than alpha, reset alpha
+				if ((double) tempMove[0] > alpha) alpha = (double) tempMove[0];
+
+				// if the temporary move is greater than beta, return the move
+				if ((double) tempMove[0] >= beta) return tempMove;
+
+				// determine if the temporary move is better than the best move
+				if ((double) tempMove[0] > (double) bestMove[0])
+				{
+					// set the best move to the temporary move
+					bestMove = tempMove;
+					bestMove[1] = move[0];
+					bestMove[2] = move[1];
+
+				}
+			}
+		}
+		// if minimizing player
+		else
+		{
+			// set the score to a high value
+			bestMove[0] = (double) winningScore;
+
+			// get the moves from possible moves
+			bestMove[1] = possibleMoves.get(0)[0];
+			bestMove[2] = possibleMoves.get(0)[1];
+
+			// iterate through the possible moves
+			for (int[] move : possibleMoves)
+			{
+				// copy the current board
+				GoGameState testBoard = new GoGameState(goGS);
+
+				// run the moves
+				addStoneNoGUI(testBoard, move[1], move[0]);
+
+				// store a temporary move
+				Object[] tempMove = miniMaxSearchAB(depth - 1, !max, alpha, beta);
+
+				// assert non-null move
+				assert tempMove != null;
+
+				// if the temporary move is greater than alpha, reset alpha
+				if ((double) tempMove[0] > beta) beta = (double) tempMove[0];
+
+				// if the temporary move is greater than beta, return the move
+				if ((double) tempMove[0] >= alpha) return tempMove;
+
+				// determine if the temporary move is better than the best move
+				if ((double) tempMove[0] > (double) bestMove[0])
+				{
+					// set the best move to the temporary move
+					bestMove = tempMove;
+					bestMove[1] = move[0];
+					bestMove[2] = move[1];
+
+				}
+			}
+		}
+		// return the best move
+		return bestMove;
 	}
 
 	/**
@@ -719,14 +831,14 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * adds a stone to the board without displaying it onto the GUI
 	 *
-	 * @param board - the board to make the moves on
+	 * @param goGSNoGUI - the game state to make the moves on
 	 * @param row - the row to be placed
 	 * @param col - the column to be placed
 	 *
 	 *            TODO - TESTING
 	 */
-	public void addStoneNoGUI(Stone[][] board, int row, int col) {
-		board[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
+	public void addStoneNoGUI(GoGameState goGSNoGUI, int row, int col) {
+		goGSNoGUI.playerMove(row, col);
 	}//addStoneNoGUI
 }
 
