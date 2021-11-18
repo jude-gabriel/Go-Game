@@ -53,7 +53,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	private GoGameState goGS;
 
 	// instantiate a variable to hold whether the AI is player 0 or 1
-	private boolean isPlayer1;
+	private boolean currentPlayer;
 
 	// instantiate a variable that tracks the current stone color
 	Stone.StoneColor currStoneColor;
@@ -85,7 +85,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		goGS = (GoGameState) info;
 
 		// determine which player the AI is
-		isPlayer1 = goGS.getPlayer() != 0;
+		currentPlayer =
 
 		// determine the current AI's color
 		if (isPlayer1) currStoneColor = Stone.StoneColor.WHITE;
@@ -171,11 +171,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// act as the computer is "thinking"
 		sleep(1000);
 
-		// initialize an array to store the move
-		int move[] = new int[2];
-
-		// return the move
-		return move;
+		// return an array to store the move
+		return new int[2];
 	}
 
 	/**
@@ -395,14 +392,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * evaluateDiagonal
 	 * This function calculates the score by evaluating stone horizontal positions
 	 *
-	 * @param gameBoard   - the current instance of the game board
-	 * @param forPlayer0  - whether evaluating for player 0
-	 * @param playersTurn - which player it is
 	 * @return the score
 	 *
 	 * //TODO FINISH and testing
 	 */
-	public int evaluateDiagonal(Stone[][] gameBoard, boolean forPlayer0, boolean playersTurn) {
+	public int evaluateDiagonal() {
 		// initialize the consecutive, blocks, and score variables
 		int consecutive = 0;
 		int blocks = 2;
@@ -723,7 +717,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *            TODO - TESTING
 	 */
 	public void addStoneNoGUI(Stone[][] board, int row, int col) {
-		board[row][col] = isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE;
+		board[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
 	}
 }//generateMoves
 
