@@ -188,8 +188,29 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// store an object with the score and x/y coordinates of the best move
 		Object[] bestMove = searchWinningMove();
 
-		// return an array to store the move
-		return new int[2];
+		// verify the best move is not null
+		if (bestMove == null) {
+			// recall the miniMax search with alpha beta pruning algorithm
+			bestMove = miniMaxSearchAB(depth, true, -1.0, getWinningScore());
+
+			// set the moves to the best moves
+			if (bestMove != null)
+			{
+				move[0] = (Integer) bestMove[1];
+				move[1] = (Integer) bestMove[2];
+			}
+			// otherwise its a null move
+			else move = null;
+		}
+
+		// otherwise its the best move
+		else
+		{
+			move[0] = (Integer) bestMove[1];
+			move[1] = (Integer) bestMove[2];
+		}
+		// return the move
+		return move;
 	}//calculateNextMove
 
 	/**
@@ -208,6 +229,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// if at terminal node, return the score, move[0], and move[1]
 		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
 
+		// initialize an array list for all possible moves
 
 		return null; // dummy
 	}//miniMaxSearchAB
@@ -218,11 +240,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the winning move
 	 * <p>
-	 * //TODO FINISH and testing
+	 * //TODO testing
 	 */
 	private Object[] searchWinningMove() {
 		// initialize a new array list for all possible moves
-		// TODO - write generate moves function
 		ArrayList<int[]> moveList = generateMoves();
 
 		// initialize the winning move
