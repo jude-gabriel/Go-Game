@@ -248,11 +248,37 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			for (int[] move : allPossibleMoves)
 			{
 				// copy the current game state to access the board
-				GoGameState testBoard = new GoGameState(goGS);
+				Stone[][] testBoard = new GoGameState(goGS).getGameBoard();
 
 				// add the current move to non-displaying GUI
-				addStoneNoGUI(testBoard.getGameBoard(), move[1], move[0]);
+				addStoneNoGUI(testBoard, move[1], move[0]);
+
+				// initialize a temporary move
+				Object[] temporaryMove = miniMaxSearchAB(depth - 1, !max, alpha, beta);
+
+				// determine if the move's score is better than the current alpha score
+				if ((double) temporaryMove[0] > alpha) alpha = (double) temporaryMove[0];
+				if ((double) temporaryMove[0] >= beta) return temporaryMove;
+
+				// reset the best move if the score is higher in the temporary
+				if ((double) temporaryMove[0] > (double) bestMove[0])
+				{
+					bestMove = temporaryMove;
+					bestMove[0] = temporaryMove[1];
+					bestMove[1] = temporaryMove[2];
+				}
 			}
+		}
+
+		// if the opponent's turn, determine best move
+		else
+		{
+			// set the best move to an unreasonable number
+			bestMove[0] = 100000000.0;
+
+			// reset the possible moves
+			bestMove[1] = allPossibleMoves(0)[0];
+			bestMove[2] = allPossibleMoves(0)[1];
 		}
 
 		return null; // dummy
