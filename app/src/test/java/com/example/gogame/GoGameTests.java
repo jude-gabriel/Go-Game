@@ -371,25 +371,96 @@ public class GoGameTests {
      *
      * @author Natalie Tashchuk
      */
+    @Test
     public void testPlaceStone(){
 
-        //create a local game
-        GoLocalGame goLocalGame = new GoLocalGame();
+        // get the current view
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
 
-        //instantiate empty gamestate
-        GoGameState goGameStateEmpty = new GoGameState();
+        // create a local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertNotNull(goLocalGame);
 
-        //place a stone in local game
-        goLocalGame.sendAction(new GoMoveAction(goLocalGame.getPlayers()[0], 1, 4));
+        //create an emptyBoard for comparison
+        GoGameState emptyBoard = new GoGameState();
 
-        //test that color of stone at given location is not none
-        GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
-        assertNotEquals(goGameState,goGameStateEmpty);
+        //get players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
 
-        //ensure local game's gamestate is not empty
-        assertTrue("GameState is not empty", ! (goLocalGame.getGameState().equals(goGameStateEmpty)));
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+
+        // create player 1 and 2
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        //test that board is equal to empty board before move is made
+        assertEquals(emptyBoard, goLocalGame.getGameState());
+
+        //make a move
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+
+        // get the current game state
+        GoGameState board = (GoGameState) goLocalGame.getGameState();
+
+        //test that board is no longer empty
+        assertNotEquals(board, emptyBoard);
 
     }
+    /*
+     * Tests that captures are successful on edges or corners
+     *
+     *
+     * @author Natalie Tashchuk
+     */
+    @Test
+    public void testCaptureOnEdge(){
+        // get the current view
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+
+        // create a local game
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+        assertNotNull(goLocalGame);
+
+        // get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+        GamePlayer player1 = gamePlayers[0];
+        GamePlayer player2 = gamePlayers[1];
+
+        //set up board for black to make a capture in the right corner
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 1, 1));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 6));
+        goLocalGame.sendAction(new GoMoveAction(player1, 0, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 5));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 4));
+        goLocalGame.sendAction(new GoMoveAction(player1, 1, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 3));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 0));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 2));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 1));
+        goLocalGame.sendAction(new GoMoveAction(player2, 9, 0));
+        goLocalGame.sendAction(new GoMoveAction(player1, 2, 2));
+        goLocalGame.sendAction(new GoMoveAction(player2, 8, 6));
+
+        // get the current game state
+        GoGameState board = (GoGameState) goMainActivity.getGame().getGameState();
+
+        // verify black's score went up by one and place on board empty
+        assertSame(board.getGameBoard()[1][1].getStoneColor(), Stone.StoneColor.NONE);
+    }
+
+
 
     /**
      * Tests that captures are successful
@@ -689,8 +760,6 @@ public class GoGameTests {
         gsTest.getGameBoard()[0][2].setStoneColor(Stone.StoneColor.WHITE);
         gsTest.getGameBoard()[1][1].setStoneColor(Stone.StoneColor.NONE);
         gsTest.getGameBoard()[2][1].setStoneColor(Stone.StoneColor.BLACK);
-
-
 
         assertTrue("Game states were not equal", goGameState.equals(gsTest));
 
