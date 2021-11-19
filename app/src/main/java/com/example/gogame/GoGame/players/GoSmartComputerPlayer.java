@@ -238,7 +238,22 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// track the best move
 		Object[] bestMove = new Object[3];
 
+		// determine if maximizing player
+		if (max)
+		{
+			// reset the best move to an impossible number
+			bestMove[0] = -1.0;
 
+			// iterate through the possible moves
+			for (int[] move : allPossibleMoves)
+			{
+				// copy the current game state to access the board
+				GoGameState testBoard = new GoGameState(goGS);
+
+				// add the current move to non-displaying GUI
+				addStoneNoGUI(testBoard.getGameBoard(), move[1], move[0]);
+			}
+		}
 
 		return null; // dummy
 	}//miniMaxSearchAB
