@@ -230,6 +230,15 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
 
 		// initialize an array list for all possible moves
+		ArrayList<int[]> allPossibleMoves = generateMoves();
+
+		// determine if there are any possible moves
+		if (allPossibleMoves.size() == 0) return new Object[]{evaluateBoard(), null, null};
+
+		// track the best move
+		Object[] bestMove = new Object[3];
+
+
 
 		return null; // dummy
 	}//miniMaxSearchAB
