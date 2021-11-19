@@ -54,7 +54,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	// instantiate a variable to hold whether the AI is player 0 or 1
 	private int currentPlayer;
-	
+
 	// instantiate a variable to track if player move is currently the AI
 	boolean isSmartAI;
 
@@ -148,16 +148,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		}
 
 		// otherwise, the current player is white
-		else if (goGS.getPlayer() == this.playerNum) {
-			// ensure the score for black is not 0 for division
-			if (player0Score == 0) player0Score = 1;
+		else {
+			// ensure the score for white is not 0 for division
+			if (player1Score == 0) player1Score = 1;
 
 			// return the relative score of black against white
-			return (double) (player1Score / player0Score);
+			return (double) (player0Score / player1Score);
 		}
-
-		// otherwise return 0
-		else return 0;
 	}//evaluateBoard
 
 	/**
@@ -184,6 +181,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
 		sleep(1000);
+
+		// define an integer to store the move on the board
+		int[] move = new int[2];
+
+		// store an object with the score and x/y coordinates of the best move
+		Object[] bestMove = searchWinningMove();
 
 		// return an array to store the move
 		return new int[2];
@@ -213,12 +216,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * searchWinningMove
 	 * This function looks for a move that can win the game
 	 *
-	 * @param gameBoard - the current instance of the game board
 	 * @return the winning move
 	 * <p>
 	 * //TODO FINISH and testing
 	 */
-	private Object[] searchWinningMove(Stone[][] gameBoard) {
+	private Object[] searchWinningMove() {
 		// initialize a new array list for all possible moves
 		// TODO - write generate moves function
 		ArrayList<int[]> moveList = generateMoves();
@@ -230,12 +232,22 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int[] move : moveList)
 		{
 			// create a new board from the current game state
-			GoGameState board = new GoGameState(goGS);
+			Stone[][] testBoard = new GoGameState(goGS).getGameBoard();
+
+			// add the stone to the board without displaying
+			addStoneNoGUI(testBoard, move[1], move[0]);
+
+			// determine if the score is greater than the winning score
+			if (getScore() >= winningScore)
+			{
+				// reset the winning moves to the x/y coordinates (first is score)
+				winMove[1] = move[0];
+				winMove[2] = move[1];
+				return winMove;
+			}
 		}
 
-		// initialize an object to store the winning move
-		Object[] winningMove = new Object[3];
-
+		// otherwise return null
 		return null;
 	}//searchWinningMove
 
