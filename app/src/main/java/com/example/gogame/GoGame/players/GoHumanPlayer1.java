@@ -111,6 +111,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
                 //Check if the game has started and set text boxes to visible
                 if(((GoGameState) info).getTotalMoves() != 0) {
+                    validMoveText.setVisibility(View.VISIBLE);
                     opponentMoveText.setVisibility(View.VISIBLE);
                     if (((GoGameState) info).getNumSkips() != 0) {
 
