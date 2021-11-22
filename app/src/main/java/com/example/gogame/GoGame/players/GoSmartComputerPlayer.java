@@ -1,31 +1,31 @@
 package com.example.gogame.GoGame.players;
 
-import android.graphics.Color;
-import android.graphics.Point;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TextView;
+//import android.graphics.Color;
+//import android.graphics.Point;
+//import android.view.MotionEvent;
+//import android.view.View;
+//import android.widget.TextView;
 
-import com.example.gogame.GameFramework.GameMainActivity;
+//import com.example.gogame.GameFramework.GameMainActivity;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
-import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
-import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
+//import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
+//import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
-import com.example.gogame.GameFramework.players.GameHumanPlayer;
-import com.example.gogame.GameFramework.utilities.Logger;
-import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
-import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
-import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
-import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
-import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
-import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
-import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
-import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
-import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
+//import com.example.gogame.GameFramework.players.GameHumanPlayer;
+//import com.example.gogame.GameFramework.utilities.Logger;
+//import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
+//import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
+//import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
+//import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+//import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
+//import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
+//import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
+//import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
+//import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
-import com.example.gogame.GoGame.views.GoSurfaceView;
-import com.example.gogame.R;
+//import com.example.gogame.GoGame.views.GoSurfaceView;
+//import com.example.gogame.R;
 
 import java.util.ArrayList;
 
@@ -176,7 +176,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param depth - the current depth we are searching for the best move at
 	 * @return an integer array for the best move
 	 *
-	 * //TODO FINISH and testing
+	 * //TODO testing
 	 */
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
@@ -223,7 +223,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param beta  - the best player move (minimizing player)
 	 * @return the score and moves (an object with {score, move[0], move[1]}
 	 * <p>
-	 * //TODO FINISH and testing
+	 * //TODO testing
 	 */
 	private Object[] miniMaxSearchAB(int depth, boolean max, double alpha, double beta) {
 		// if at terminal node, return the score, move[0], and move[1]
@@ -248,7 +248,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			for (int[] move : allPossibleMoves)
 			{
 				// copy the current game state to access the board
-				Stone[][] testBoard = new GoGameState(goGS).getGameBoard();
+				GoGameState testBoard = new GoGameState(goGS);
 
 				// add the current move to non-displaying GUI
 				addStoneNoGUI(testBoard, move[1], move[0]);
@@ -281,11 +281,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			bestMove[2] = allPossibleMoves.get(0)[1];
 
 			// iterate through the possible moves
-			// iterate through the possible moves
 			for (int[] move : allPossibleMoves)
 			{
 				// copy the current game state to access the board
-				Stone[][] testBoard = new GoGameState(goGS).getGameBoard();
+				GoGameState testBoard = new GoGameState(goGS);
 
 				// add the current move to non-displaying GUI
 				addStoneNoGUI(testBoard, move[1], move[0]);
@@ -306,8 +305,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				}
 			}
 		}
-
-		return bestMove; // dummy
+		// return the best move
+		return bestMove;
 	}//miniMaxSearchAB
 
 	/**
@@ -328,8 +327,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// iterate through the moves
 		for (int[] move : moveList)
 		{
-			// create a new board from the current game state
-			Stone[][] testBoard = new GoGameState(goGS).getGameBoard();
+			// copy the current game state to access the board
+			GoGameState testBoard = new GoGameState(goGS);
 
 			// add the stone to the board without displaying
 			addStoneNoGUI(testBoard, move[1], move[0]);
@@ -343,7 +342,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				return winMove;
 			}
 		}
-
 		// otherwise return null
 		return null;
 	}//searchWinningMove
@@ -396,14 +394,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 						// reset the consecutive stone count
 						consecutive = 0;
-
-						// since the current cell is empty, the next consecutive set will have
-						// at most 1 blocked side
-						blocks = 1;
 					}
 					// no consecutive stones - current cell is empty so next consecutive set will
 					// have at most 1 blocked side
-					else blocks = 1;
+					blocks = 1;
 				}
 				// if the cell is occupied by the opponent, check if there were any consecutive stones
 				// are before this empty cell
@@ -444,7 +438,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int score = 0;
 
 		// initialize a variable to determine whose turn it is
-		boolean isSmartAI = false;
+		//boolean isSmartAI = false;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -515,7 +509,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int score = 0;
 
 		// initialize a variable to determine whose turn it is
-		boolean isSmartAI = false;
+		//boolean isSmartAI = false;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -703,7 +697,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public ArrayList<int[]> generateMoves() {
 		// initialize the a list of different moves
-		ArrayList<int[]> moveList = new ArrayList<int[]>();
+		ArrayList<int[]> moveList = new ArrayList<>();
 
 		// get the current game board
 		Stone[][] gameBoard = goGS.getGameBoard();
@@ -818,14 +812,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * adds a stone to the board without displaying it onto the GUI
 	 *
-	 * @param board - the board to make the moves on
 	 * @param row - the row to be placed
 	 * @param col - the column to be placed
 	 *
 	 *            TODO - TESTING
 	 */
-	public void addStoneNoGUI(Stone[][] board, int row, int col) {
+	public void addStoneNoGUI(GoGameState test, int row, int col) {
 		// place a stone on the board
-		goGS.playerMove(row, col);
+		test.playerMove(row, col);
 	}//addStoneNoGUI
 }
