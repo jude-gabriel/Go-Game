@@ -253,8 +253,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				// add the current move to non-displaying GUI
 				addStoneNoGUI(testBoard, move[1], move[0]);
 
-				// initialize a temporary move
-				Object[] temporaryMove = miniMaxSearchAB(depth - 1, !max, alpha, beta);
+				// initialize a temporary move for the other player
+				Object[] temporaryMove = miniMaxSearchAB(depth - 1, false, alpha, beta);
 
 				// determine if the move's score is better than the current alpha score
 				if ((double) temporaryMove[0] > alpha) alpha = (double) temporaryMove[0];
@@ -264,8 +264,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				if ((double) temporaryMove[0] > (double) bestMove[0])
 				{
 					bestMove = temporaryMove;
-					bestMove[0] = temporaryMove[1];
-					bestMove[1] = temporaryMove[2];
+					bestMove[1] = temporaryMove[0];
+					bestMove[2] = temporaryMove[1];
 				}
 			}
 		}
@@ -274,14 +274,40 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		else
 		{
 			// set the best move to an unreasonable number
-			bestMove[0] = 100000000.0;
+			bestMove[0] = winningScore;
 
 			// reset the possible moves
-			bestMove[1] = allPossibleMoves(0)[0];
-			bestMove[2] = allPossibleMoves(0)[1];
+			bestMove[1] = allPossibleMoves.get(0)[0];
+			bestMove[2] = allPossibleMoves.get(0)[1];
+
+			// iterate through the possible moves
+			// iterate through the possible moves
+			for (int[] move : allPossibleMoves)
+			{
+				// copy the current game state to access the board
+				Stone[][] testBoard = new GoGameState(goGS).getGameBoard();
+
+				// add the current move to non-displaying GUI
+				addStoneNoGUI(testBoard, move[1], move[0]);
+
+				// initialize a temporary move for the other player
+				Object[] temporaryMove = miniMaxSearchAB(depth - 1, false, alpha, beta);
+
+				// determine if the move's score is better than the current alpha score
+				if ((double) temporaryMove[0] > beta) beta = (double) temporaryMove[0];
+				if ((double) temporaryMove[0] >= alpha) return temporaryMove;
+
+				// reset the best move if the score is higher in the temporary
+				if ((double) temporaryMove[0] > (double) bestMove[0])
+				{
+					bestMove = temporaryMove;
+					bestMove[1] = temporaryMove[0];
+					bestMove[2] = temporaryMove[1];
+				}
+			}
 		}
 
-		return null; // dummy
+		return bestMove; // dummy
 	}//miniMaxSearchAB
 
 	/**
