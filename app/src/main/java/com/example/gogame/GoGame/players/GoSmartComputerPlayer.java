@@ -1,36 +1,34 @@
 package com.example.gogame.GoGame.players;
 
+// TODO - determine if necessary?
 //import android.graphics.Color;
 //import android.graphics.Point;
 //import android.view.MotionEvent;
 //import android.view.View;
 //import android.widget.TextView;
 
-//import com.example.gogame.GameFramework.GameMainActivity;
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 //import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
-//import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
+import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
-//import com.example.gogame.GameFramework.players.GameHumanPlayer;
-//import com.example.gogame.GameFramework.utilities.Logger;
-//import com.example.gogame.GoGame.goActionMessage.GoDumbAIAction;
+import com.example.gogame.GameFramework.utilities.Logger;
 //import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
-//import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
-//import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
-//import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
-//import com.example.gogame.GoGame.goActionMessage.GoQuitGameAction;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
+import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
+import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
 //import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 //import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
 //import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
 import com.example.gogame.GameFramework.utilities.Logger;
+import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 //import com.example.gogame.GoGame.views.GoSurfaceView;
 //import com.example.gogame.R;
 
 import java.util.ArrayList;
-
+//TODO ensure tracking current player properly, see if ever makes sense for forfeit
 /**
  * A computerized Go player that recognizes an immediate capture of the
  * opponent or a possible capture from the other opponent, and plays
@@ -53,9 +51,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	// instantiate a variable to hold the current game state
 	private GoGameState goGS;
-
-	// instantiate a variable to hold whether the AI is player 0 or 1
-	private int currentPlayer;
 
 	// instantiate a variable to track if player move is currently the AI
 	boolean isSmartAI;
@@ -87,26 +82,37 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// verify this is a valid go game state
 		assert info != null;
 
-		// verify it is the smart AI's turn
-        if(info instanceof NotYourTurnInfo) return;
+		// if an illegal move, TODO - skip or forfeit?
+		if (info instanceof IllegalMoveInfo) game.sendAction(new GoSkipTurnAction(this));
 
-        // otherwise log that it is the smart AI's turn
-		Logger.log("GoSmartComputerPlayer", "Smart AI's Turn");
+		// verify it is the smart AI's turn
+        if(info instanceof NotYourTurnInfo)
+		{
+			// set that is is not the AI's turn and return
+			isSmartAI = false;
+			return;
+		}
+        // otherwise, it is the smart AI's turn and log it
+		else {
+			isSmartAI = true;
+			Logger.log(TAG, "Smart AI's Turn");
+		}
 
 		// initialize the global game state variable
+		assert info instanceof GoGameState;
 		goGS = (GoGameState) info;
+
+		// assuming that AI is a better player so if AI is white, always give black more stones
+        GoGameState goGameState = (GoGameState) info;
+        if(goGameState.getTotalMoves() == 0 && isSmartAI){
+            game.sendAction(new GoHandicapAction(this));
+        }
 
 		// initialize the game board
 		gameBoard = goGS.getGameBoard();
-
-		// determine which player the AI is
-		currentPlayer = this.playerNum;
-
-		// set correct turn
-		isSmartAI = true;
 		
 		// determine the current AI's and opponent's color
-		if (currentPlayer == 0)
+		if (this.playerNum == 0)
 		{
 			AIStoneColor = Stone.StoneColor.BLACK;
 			oppStoneColor = Stone.StoneColor.WHITE;
@@ -116,6 +122,20 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			AIStoneColor = Stone.StoneColor.WHITE;
 			oppStoneColor = Stone.StoneColor.BLACK;
 		}
+
+		// TODO implement when the smart AI should skip turn
+		// dummy
+		if(getWinningScore() < 5000) {
+			Logger.log(TAG, "Smart AI's Skip");
+			game.sendAction(new GoSkipTurnAction(this));
+		}
+
+		// get the current best move starting at depth zero for the algorithm
+		int[] nextMove = calculateNextMove(0);
+
+		// send the move to the game object
+        Logger.log(TAG, "Smart AI's Move");
+        game.sendAction(new GoMoveAction(this, nextMove[0], nextMove[1]));
 	}//receiveInfo
 
 	/* HELPER FUNCTIONS */
@@ -604,8 +624,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 						// reset consecutive
 						consecutive = 0;
 					}
-					// set blocks
-					blocks = 1;
+					// set blocks - TODO figure out why this value isn't ever used
+					//blocks = 1;
 				}
 				// determine if consecutive is greater than 0
 				else if (consecutive > 0) {
