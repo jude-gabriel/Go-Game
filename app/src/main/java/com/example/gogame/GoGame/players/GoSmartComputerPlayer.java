@@ -1,14 +1,6 @@
 package com.example.gogame.GoGame.players;
 
-// TODO - determine if necessary?
-//import android.graphics.Color;
-//import android.graphics.Point;
-//import android.view.MotionEvent;
-//import android.view.View;
-//import android.widget.TextView;
-
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
-//import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
@@ -16,25 +8,19 @@ import com.example.gogame.GameFramework.utilities.Logger;
 //import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
-import com.example.gogame.GoGame.goActionMessage.GoNetworkPlayAction;
-//import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
-//import com.example.gogame.GoGame.goActionMessage.GoSmartAIAction;
-//import com.example.gogame.GoGame.goActionMessage.GoTwoPlayerAction;
-import com.example.gogame.GameFramework.utilities.Logger;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
-//import com.example.gogame.GoGame.views.GoSurfaceView;
-//import com.example.gogame.R;
-
 import java.util.ArrayList;
+
+
 //TODO ensure tracking current player properly, see if ever makes sense for forfeit
 /**
  * A computerized Go player that recognizes an immediate capture of the
  * opponent or a possible capture from the other opponent, and plays
  * appropriately. If there is not an immediate capture (which it plays)
  * or loss (which it blocks), it moves randomly.
- * <p>
+ *
  * The algorithm utilized to maximize difficulty is the Minimax Algorithm.
  *
  * @author Brynn Harrington
@@ -46,21 +32,14 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	private static final String TAG = "GoSmartComputerPlayer";
 
 	/* INSTANCE / MEMBER VARIABLES */
-	// instantiate a variable to track the current board
-	private Stone[][] gameBoard;
-
-	// instantiate a variable to hold the current game state
-	private GoGameState goGS;
-
-	// instantiate a variable to track if player move is currently the AI
-	boolean isSmartAI;
-
-	// instantiate a variable that tracks the AI's and other's stone color
-	Stone.StoneColor AIStoneColor;
-	Stone.StoneColor oppStoneColor;
-
-	// set the win score to an impossible score initially (representing infinity)
-	private static final int winningScore = 100000000;
+	// instantiate variables to...
+	private Stone[][] gameBoard; 		// current game board
+	private GoGameState goGS;			// current game state
+	boolean isSmartAI;					// track is smart AI's turn
+	Stone.StoneColor AIStoneColor;		// smart AI's stone color
+	Stone.StoneColor oppStoneColor;		// opponent's stone color
+	private static final int
+			winningScore = 100000000;	// winning score (initially "infinity")
 
 	/**
 	 * constructor
@@ -102,14 +81,14 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		assert info instanceof GoGameState;
 		goGS = (GoGameState) info;
 
-		// assuming that AI is a better player so if AI is white, always give black more stones
-        GoGameState goGameState = (GoGameState) info;
-        if(goGameState.getTotalMoves() == 0 && isSmartAI){
-            game.sendAction(new GoHandicapAction(this));
-        }
-
 		// initialize the game board
 		gameBoard = goGS.getGameBoard();
+
+		// assuming that AI is better player so if AI is white,
+		// always give black more stones
+        if(goGS.getTotalMoves() == 0 && isSmartAI) {
+            game.sendAction(new GoHandicapAction(this));
+        }
 		
 		// determine the current AI's and opponent's color
 		if (this.playerNum == 0)
