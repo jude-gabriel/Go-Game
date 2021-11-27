@@ -7,6 +7,7 @@ import com.example.gogame.GameFramework.Game;
 import com.example.gogame.GameFramework.actionMessage.MyNameIsAction;
 import com.example.gogame.GameFramework.actionMessage.ReadyAction;
 import com.example.gogame.GameFramework.infoMessage.GameState;
+import com.example.gogame.GameFramework.players.GameComputerPlayer;
 import com.example.gogame.GameFramework.players.GamePlayer;
 import com.example.gogame.GoGame.GoLocalGame;
 import com.example.gogame.GoGame.GoMainActivity;
@@ -17,6 +18,8 @@ import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
+import com.example.gogame.GoGame.players.GoSmartComputerPlayer;
+
 import android.view.View;
 import android.widget.Button;
 
@@ -827,4 +830,41 @@ public class GoGameTests {
         assertTrue("Equals method did not agree states were equal", goGameState.equals(goGameStateOther));
 
     }
+
+    /* BEGINNING SMART AI TESTS */
+    /**
+     * Tests if getting the winning score returns the correct value
+     *
+     * @author Brynn Harrington
+     */
+    @Test
+    public void test_SAI_getWinningScore()
+    {
+        // initialize a new local game
+        View view = goMainActivity.findViewById(R.id.playGameButton);
+        goMainActivity.onClick(view);
+        GoLocalGame goLocalGame = (GoLocalGame) goMainActivity.getGame();
+
+//        assertNotNull(goLocalGame);
+//        assertNotNull(goLocalGame.getGameState());
+//        assertNotNull(((GoGameState) goLocalGame.getGameState()).getGameBoard());
+//        assertNotNull(goLocalGame);
+
+        // get the players
+        GamePlayer[] gamePlayers= goLocalGame.getPlayers();
+
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new MyNameIsAction(gamePlayer, gamePlayer.getClass().toString()));
+        }
+
+        //Send the names of the players to the game
+        for(GamePlayer gamePlayer : gamePlayers){
+            goLocalGame.sendAction(new ReadyAction(gamePlayer));
+        }
+         // get the current game state game
+        GoSmartComputerPlayer = new GoSmartComputerPlayer(gamePlayers[]);
+
+        // get the winning score from the smart AI
+    }
+
 }
