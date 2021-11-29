@@ -371,6 +371,7 @@ public class GoGameTests {
      *
      * @author Natalie Tashchuk
      */
+    @Test
     public void testPlaceStone(){
 
         //create a local game
@@ -384,10 +385,10 @@ public class GoGameTests {
 
         //test that color of stone at given location is not none
         GoGameState goGameState = (GoGameState) goLocalGame.getGameState();
-        assertNotEquals(goGameState,goGameStateEmpty);
+
 
         //ensure local game's gamestate is not empty
-        assertTrue("GameState is not empty", ! (goLocalGame.getGameState().equals(goGameStateEmpty)));
+       assertTrue("GameState is not empty", ! (goLocalGame.getGameState().equals(goGameStateEmpty)));
 
     }
 

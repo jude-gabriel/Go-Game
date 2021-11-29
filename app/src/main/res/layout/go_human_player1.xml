@@ -284,6 +284,7 @@
             android:backgroundTint="#000000"
             android:text="@string/handicap"
             android:textColor="#FBFBFB" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
