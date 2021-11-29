@@ -114,7 +114,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 		// send the move to the game object
         Logger.log(TAG, "Smart AI's Move");
-        game.sendAction(new GoMoveAction(this, nextMove[0], nextMove[1]));
+
+        // get the x- and y-coordinates of the best move
+		int xNext = nextMove[0];
+		int yNext = nextMove[1];
+
+		// send a move action
+        game.sendAction(new GoMoveAction(this, xNext, yNext));
 	}//receiveInfo
 
 	/* HELPER FUNCTIONS */
