@@ -1,6 +1,7 @@
 package com.example.gogame.GoGame.players;
 
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
+import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
@@ -76,8 +77,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			isSmartAI = true;
 			Logger.log(TAG, "Smart AI's Turn");
 		}*/
-					isSmartAI = true;
-
+		// set smart AI to true since the current player
+		isSmartAI = true;
 
 		// initialize the global game state variable
 		if(info instanceof IllegalMoveInfo){
@@ -87,9 +88,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			return;
 		}
 		assert info instanceof GoGameState;
-		goGS = (GoGameState) info;
+		//goGS = (GoGameState) info;
 
 		// initialize the game board
+		goGS = new GoGameState((GoGameState) info);
 		gameBoard = goGS.getGameBoard();
 
 		// assuming that AI is better player so if AI is white,
@@ -723,7 +725,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		ArrayList<int[]> moveList = new ArrayList<>();
 
 		// get the current game board
-		Stone[][] gameBoard = goGS.getGameBoard();
+		//Stone[][] gameBoard = goGS.getGameBoard();
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -737,8 +739,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 					continue;
 
 				// determine the row and column are in bounds
-				if (row > 0) {
-					if (col > 0) {
+				if (row - 1 > 0 && row + 1 < boardSize) {
+					if (col - 1 > 0 && col + 1 < boardSize) {
 						// verify the liberty is not empty
 						if (gameBoard[row - 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
 								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
