@@ -862,7 +862,7 @@ public class GoGameTests {
             goLocalGame.sendAction(new ReadyAction(gamePlayer));
         }
          // get the current game state game
-        GoSmartComputerPlayer = new GoSmartComputerPlayer(gamePlayers[]);
+        //GoSmartComputerPlayer = new GoSmartComputerPlayer(gamePlayers[]);
 
         // get the winning score from the smart AI
     }
