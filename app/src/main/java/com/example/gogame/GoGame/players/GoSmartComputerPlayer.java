@@ -80,6 +80,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 
 		// initialize the global game state variable
+		if(info instanceof IllegalMoveInfo){
+			return;
+		}
+		if(info instanceof NotYourTurnInfo){
+			return;
+		}
 		assert info instanceof GoGameState;
 		goGS = (GoGameState) info;
 
@@ -211,8 +217,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			// set the moves to the best moves
 			if (bestMove != null)
 			{
-				move[0] = (Integer) bestMove[1];
-				move[1] = (Integer) bestMove[2];
+				if(bestMove[1] != null && bestMove[2] != null) {
+					move[0] = (Integer) bestMove[1];
+					move[1] = (Integer) bestMove[2];
+				}
 			}
 			// otherwise its a null move
 			else move = null;
