@@ -62,9 +62,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		assert info != null;
 
 		// if an illegal move, TODO - skip or forfeit?
-		if (info instanceof IllegalMoveInfo) game.sendAction(new GoSkipTurnAction(this));
+		//if (info instanceof IllegalMoveInfo) game.sendAction(new GoSkipTurnAction(this));
 
-		// verify it is the smart AI's turn
+		/*// verify it is the smart AI's turn
         if(info instanceof NotYourTurnInfo)
 		{
 			// set that is is not the AI's turn and return
@@ -75,7 +75,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		else {
 			isSmartAI = true;
 			Logger.log(TAG, "Smart AI's Turn");
-		}
+		}*/
+					isSmartAI = true;
+
 
 		// initialize the global game state variable
 		assert info instanceof GoGameState;
@@ -193,7 +195,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
-		sleep(1000);
+		sleep(1);
 
 		// define an integer to store the move on the board
 		int[] move = new int[2];
