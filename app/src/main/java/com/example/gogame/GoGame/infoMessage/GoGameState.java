@@ -825,7 +825,8 @@ public class GoGameState extends GameState implements Serializable {
 
 
     /** getPlayer
-     * Returns whether it is player 1's turn or not
+     *
+     * Returns the index of the current player
      *
      * @author Brynn Harrington
      * @return current player
@@ -838,6 +839,14 @@ public class GoGameState extends GameState implements Serializable {
         else return 1;
     }
 
+    /** getIsPlayer1
+     *
+     * Returns whether it is player 1's turn or not
+     *
+     * @author Brynn Harrington
+     * @return isPlayer1
+     */
+    public boolean getIsPlayer1() { return isPlayer1; }
 
     /**
      * Getter for player 1's score
@@ -1273,6 +1282,21 @@ public class GoGameState extends GameState implements Serializable {
             }
         }
     }
+
+    /**
+	 * addStoneNoGUI
+	 *
+	 * adds a stone to the board without displaying it onto the GUI
+	 *
+	 * @param board - the board to make the moves on
+	 * @param row - the row to be placed
+	 * @param col - the column to be placed
+     *
+     * @author Brynn Harrington
+	 */
+	public void addStoneNoGUI(Stone[][] board, int row, int col) {
+		board[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
+	}
 }
 
 
