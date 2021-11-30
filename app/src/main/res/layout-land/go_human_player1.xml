@@ -71,16 +71,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/helpButtonText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elegantTextHeight="true"
-                android:minHeight="160dp"
-                android:text="This is the help button text"
-                android:textSize="34sp" />
+                android:text="The goal of Go is to take up as much space as possible on the board by capturing the opponent's stones. You can capture stones by fully surrounding the opponents stones."
+                android:textColor="#FDFDFD"
+                android:textSize="20sp"
+                android:textStyle="italic" />
         </LinearLayout>
 
     </LinearLayout>
