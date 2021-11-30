@@ -64,12 +64,6 @@
             android:text="DIFFICULTY ++"
             android:textColor="#FAFAFA" />
 
-        <Button
-            android:id="@+id/helpButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="HELP" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -172,6 +166,18 @@
             android:textAlignment="center"
             android:textColor="#FFFEFE"
             android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/helpButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HELP" />
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"

@@ -62,6 +62,19 @@
             android:text="DIFFICULTY ++"
             android:textColor="#FAFAFA" />
 
+        <Button
+            android:id="@+id/helpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HELP" />
+
+        <TextView
+            android:id="@+id/helpButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is the help button text"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +88,9 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/playerTurnLayout"
@@ -97,6 +112,7 @@
             android:text="Player 1's Turn!"
             android:textColor="#FFFEFE"
             android:textSize="25sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -123,7 +139,9 @@
             android:layout_width="300dp"
             android:layout_height="5dp"
             android:background="#F3F1F1"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -174,6 +192,7 @@
                 android:text="Player 2 Score: 19"
                 android:textColor="#F1EBEB"
                 android:textSize="25sp" />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -251,7 +270,7 @@
 
         <TextView
             android:id="@+id/howToPlayText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="bottom"

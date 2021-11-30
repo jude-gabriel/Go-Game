@@ -32,12 +32,16 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView validMoveText      = null;
     private TextView timerText          = null;
     private TextView opponentMoveText   = null;
+    private TextView helpButtonText     = null;
+    private TextView howToPlayText      = null;
+
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
     private Button dumbAIButton         = null;
     private Button smartAIButton        = null;
     private Button quitGameButton       = null;
+    private Button helpButton           = null;
 
     //Tag for logging
     private static final String TAG = "GoHumanPlayer1";
@@ -113,6 +117,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 if(((GoGameState) info).getTotalMoves() != 0) {
                     validMoveText.setVisibility(View.VISIBLE);
                     opponentMoveText.setVisibility(View.VISIBLE);
+
                     if (((GoGameState) info).getNumSkips() != 0) {
 
                         //Find who's turn it is
@@ -223,12 +228,18 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
             this.opponentMoveText = (TextView) activity.findViewById(R.id.opponentMoveText);
             opponentMoveText.setVisibility(View.INVISIBLE);
+            this.helpButtonText = (TextView) activity.findViewById(R.id.helpButtonText);
+            helpButtonText.setVisibility(View.INVISIBLE);
+            this.howToPlayText = (TextView) activity.findViewById(R.id.howToPlayText);
+            howToPlayText.setVisibility(View.INVISIBLE);
+
             this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
             this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
             this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
             this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
             this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
             this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
+            this.helpButton = (Button) activity.findViewById(R.id.helpButton);
         }
 
         //Initialize the surface view
@@ -242,6 +253,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         this.dumbAIButton.setOnClickListener(this);
         this.smartAIButton.setOnClickListener(this);
         this.quitGameButton.setOnClickListener(this);
+        this.helpButton.setOnClickListener(this);
     }
 
 
@@ -371,6 +383,13 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             //Case 6: It was the smartAi button, send a smartAI action
             case R.id.smartAIButton:
                 game.sendAction(new GoSmartAIAction(this));
+                break;
+
+            //Case 7: It was the help button, display helpButtonText
+            case R.id.helpButton:
+                //set up the textview
+                helpButtonText.setVisibility(View.VISIBLE);
+                howToPlayText.setVisibility(View.VISIBLE);
                 break;
 
 
