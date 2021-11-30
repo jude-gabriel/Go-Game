@@ -3,8 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/judeg/AndroidStudioProjects/Go-Game/app/src/main/res/layout-land/go_human_player1.xml" value="0.33" />
         <entry key="..\:/Users/judeg/AndroidStudioProjects/Go-Game/app/src/main/res/layout/go_human_player1.xml" value="0.33" />
-        <entry key="app/src/main/res/layout-land/go_human_player1.xml" value="0.15828924162257496" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/game_config_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/game_config_tabhost.xml" value="0.27608915906788245" />

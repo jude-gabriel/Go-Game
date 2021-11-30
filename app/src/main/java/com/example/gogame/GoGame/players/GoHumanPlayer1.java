@@ -202,7 +202,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //If it is, then update the surface view
         else{
-            goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
+            goSurfaceView.setState((GoGameState)info);
             goSurfaceView.invalidate();
         }
 
@@ -235,7 +235,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             opponentMoveText.setVisibility(View.INVISIBLE);
             this.helpButtonText1 = (TextView) activity.findViewById(R.id.helpButtonText1);
             helpButtonText1.setVisibility(View.INVISIBLE);
-            this.helpButtonText2 = (TextView) activity.findViewById(R.id.helpButtonText2);
+            this.helpButtonText2 = (TextView) activity.findViewById(R.id.helpButtonText3);
             helpButtonText2.setVisibility(View.INVISIBLE);
             this.helpButtonText3 = (TextView) activity.findViewById(R.id.helpButtonText3);
             helpButtonText3.setVisibility(View.INVISIBLE);
