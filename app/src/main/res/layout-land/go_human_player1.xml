@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/top_gui_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/top_gui_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#733825"
-    android:backgroundTintMode="add" >
+    android:background="@drawable/newvibebackground"
+    android:backgroundTintMode="add">
 
     <LinearLayout
         android:id="@+id/gameBoardLayout"
@@ -30,7 +30,6 @@
             android:layout_width="500dp"
             android:layout_height="500dp"
             android:layout_gravity="center|right" />
-
 
 
     </LinearLayout>
@@ -75,7 +74,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/playerTurnLayout"
@@ -188,8 +187,7 @@
         android:gravity="bottom|right"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/quitGameButton"
