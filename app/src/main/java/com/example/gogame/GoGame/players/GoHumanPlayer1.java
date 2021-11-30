@@ -32,8 +32,10 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView validMoveText      = null;
     private TextView timerText          = null;
     private TextView opponentMoveText   = null;
-    private TextView helpButtonText     = null;
-    private TextView howToPlayText      = null;
+    private TextView helpButtonText1 = null;
+    private TextView helpButtonText2 = null;
+    private TextView helpButtonText3 = null;
+    private TextView helpButtonText4 = null;
 
     private Button skipButton           = null;
     private Button handicapButton       = null;
@@ -51,6 +53,9 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
     //ID for the layout to use
     private int layoutId;
+
+    //boolean to flip back and forth between displaying help messages when help button clicked
+    private boolean displayHelpMessages = false;
 
 
     /**
@@ -228,10 +233,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
             this.opponentMoveText = (TextView) activity.findViewById(R.id.opponentMoveText);
             opponentMoveText.setVisibility(View.INVISIBLE);
-            this.helpButtonText = (TextView) activity.findViewById(R.id.helpButtonText);
-            helpButtonText.setVisibility(View.INVISIBLE);
-            this.howToPlayText = (TextView) activity.findViewById(R.id.howToPlayText);
-            howToPlayText.setVisibility(View.INVISIBLE);
+            this.helpButtonText1 = (TextView) activity.findViewById(R.id.helpButtonText1);
+            helpButtonText1.setVisibility(View.INVISIBLE);
+            this.helpButtonText2 = (TextView) activity.findViewById(R.id.helpButtonText2);
+            helpButtonText2.setVisibility(View.INVISIBLE);
+            this.helpButtonText3 = (TextView) activity.findViewById(R.id.helpButtonText3);
+            helpButtonText3.setVisibility(View.INVISIBLE);
+            this.helpButtonText4 = (TextView) activity.findViewById(R.id.helpButtonText4);
+            helpButtonText4.setVisibility(View.INVISIBLE);
 
             this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
             this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
@@ -387,9 +396,21 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
             //Case 7: It was the help button, display helpButtonText
             case R.id.helpButton:
-                //set up the textview
-                helpButtonText.setVisibility(View.VISIBLE);
-                howToPlayText.setVisibility(View.VISIBLE);
+                // switch between displaying and not displaying help messages
+                displayHelpMessages = !displayHelpMessages;
+
+                if(displayHelpMessages) {
+                    helpButtonText1.setVisibility(View.VISIBLE);
+                    helpButtonText2.setVisibility(View.VISIBLE);
+                    helpButtonText3.setVisibility(View.VISIBLE);
+                    helpButtonText4.setVisibility(View.VISIBLE);
+                }
+                else{
+                    helpButtonText1.setVisibility(View.INVISIBLE);
+                    helpButtonText2.setVisibility(View.INVISIBLE);
+                    helpButtonText3.setVisibility(View.INVISIBLE);
+                    helpButtonText4.setVisibility(View.INVISIBLE);
+                }
                 break;
 
 

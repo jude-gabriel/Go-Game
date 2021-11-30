@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
-        android:layout_width="170dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:orientation="vertical"
@@ -74,7 +74,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/helpButtonText"
+                android:id="@+id/helpButtonText1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elegantTextHeight="true"
@@ -103,7 +103,7 @@
 
     <LinearLayout
         android:id="@+id/playerTurnLayout"
-        android:layout_width="300dp"
+        android:layout_width="198dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
@@ -120,7 +120,18 @@
             android:paddingLeft="7dp"
             android:text="Player 1's Turn!"
             android:textColor="#FFFEFE"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/helpButtonText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
+            android:textColor="#FDFDFD"
+            android:textSize="25sp"
+            android:textStyle="italic" />
 
     </LinearLayout>
 
@@ -156,7 +167,7 @@
     <LinearLayout
         android:id="@+id/timeAndScoreLayout"
         android:layout_width="880dp"
-        android:layout_height="75dp"
+        android:layout_height="150dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="620dp"
         android:layout_marginEnd="200dp"
@@ -201,6 +212,15 @@
                 android:text="Player 2 Score: 19"
                 android:textColor="#F1EBEB"
                 android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/helpButtonText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
+                android:textColor="#FDFDFD"
+                android:textSize="16sp"
+                android:textStyle="italic" />
 
         </LinearLayout>
 
@@ -266,27 +286,20 @@
 
     <LinearLayout
         android:layout_width="198dp"
-        android:layout_height="450dp"
+        android:layout_height="600dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="145dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/networkLayout"
         app:layout_constraintEnd_toStartOf="@+id/gameBoardLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
 
-        <TextView
-            android:id="@+id/howToPlayText"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
-            android:textColor="#FDFDFD"
-            android:textSize="25sp"
-            android:textStyle="italic" />
+            android:layout_height="200dp" />
 
         <Button
             android:id="@+id/skipTurnButton"
@@ -311,6 +324,15 @@
             android:backgroundTint="#000000"
             android:text="@string/handicap"
             android:textColor="#FBFBFB" />
+
+        <TextView
+            android:id="@+id/helpButtonText3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."
+            android:textColor="#FDFDFD"
+            android:textSize="24sp"
+            android:textStyle="italic" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
