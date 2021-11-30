@@ -1,7 +1,6 @@
 package com.example.gogame.GoGame.players;
 
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
-import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
@@ -65,7 +64,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// if an illegal move, TODO - skip or forfeit?
 		//if (info instanceof IllegalMoveInfo) game.sendAction(new GoSkipTurnAction(this));
 
-		/*// verify it is the smart AI's turn
+		// verify it is the smart AI's turn
         if(info instanceof NotYourTurnInfo)
 		{
 			// set that is is not the AI's turn and return
@@ -76,22 +75,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		else {
 			isSmartAI = true;
 			Logger.log(TAG, "Smart AI's Turn");
-		}*/
-		// set smart AI to true since the current player
-		isSmartAI = true;
+		}
 
 		// initialize the global game state variable
-		if(info instanceof IllegalMoveInfo){
-			return;
-		}
-		if(info instanceof NotYourTurnInfo){
-			return;
-		}
 		assert info instanceof GoGameState;
-		//goGS = (GoGameState) info;
+		goGS = (GoGameState) info;
 
 		// initialize the game board
-		goGS = new GoGameState((GoGameState) info);
 		gameBoard = goGS.getGameBoard();
 
 		// assuming that AI is better player so if AI is white,
@@ -203,7 +193,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
-		sleep(1);
+		sleep(1000);
 
 		// define an integer to store the move on the board
 		int[] move = new int[2];
@@ -219,10 +209,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			// set the moves to the best moves
 			if (bestMove != null)
 			{
-				if(bestMove[1] != null && bestMove[2] != null) {
-					move[0] = (Integer) bestMove[1];
-					move[1] = (Integer) bestMove[2];
-				}
+				move[0] = (Integer) bestMove[1];
+				move[1] = (Integer) bestMove[2];
 			}
 			// otherwise its a null move
 			else move = null;
@@ -725,7 +713,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		ArrayList<int[]> moveList = new ArrayList<>();
 
 		// get the current game board
-		//Stone[][] gameBoard = goGS.getGameBoard();
+		Stone[][] gameBoard = goGS.getGameBoard();
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -739,8 +727,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 					continue;
 
 				// determine the row and column are in bounds
-				if (row - 1 > 0 && row + 1 < boardSize) {
-					if (col - 1 > 0 && col + 1 < boardSize) {
+				if (row > 0) {
+					if (col > 0) {
 						// verify the liberty is not empty
 						if (gameBoard[row - 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
 								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
