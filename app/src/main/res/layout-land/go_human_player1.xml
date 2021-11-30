@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:orientation="vertical"
@@ -68,12 +68,20 @@
             android:layout_height="wrap_content"
             android:text="HELP" />
 
-        <TextView
-            android:id="@+id/helpButtonText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="This is the help button text"
-            android:textSize="12sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/helpButtonText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elegantTextHeight="true"
+                android:minHeight="160dp"
+                android:text="This is the help button text"
+                android:textSize="34sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
