@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/top_gui_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/top_gui_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#733825"
-    android:backgroundTintMode="add" >
+    android:background="@drawable/newvibebackground"
+    android:backgroundTintMode="add">
 
 
     <LinearLayout
@@ -34,34 +33,35 @@
             android:layout_gravity="center|right" />
 
 
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="1dp"
         android:orientation="vertical"
         android:paddingRight="7dp"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/dumbAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FBBAD9"
-            android:backgroundTint="#000000"
+            android:backgroundTint="#FE775B"
             android:hapticFeedbackEnabled="false"
             android:text="DIFFICULTY --"
-            android:textColor="#F6F6F6" />
+            android:textColor="#F6F6F6"
+            tools:ignore="TextContrastCheck" />
 
         <Button
             android:id="@+id/smartAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
+            android:backgroundTint="#FE775B"
             android:text="DIFFICULTY ++"
             android:textColor="#FAFAFA" />
 
@@ -69,6 +69,7 @@
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#FE775B"
             android:text="HELP" />
 
         <LinearLayout
@@ -123,7 +124,7 @@
             android:text="Player 1's Turn!"
             android:textColor="#FFFEFE"
             android:textSize="31sp" />
-            android:textSize="20sp" />
+        android:textSize="20sp" />
 
         <TextView
             android:id="@+id/helpButtonText2"
@@ -189,7 +190,8 @@
             android:gravity="center"
             android:text="Elapsed Time: 18:20"
             android:textColor="#F1EBEB"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            tools:ignore="TextContrastCheck" />
 
         <LinearLayout
             android:id="@+id/playerScoreLayout"
@@ -207,7 +209,8 @@
                 android:gravity="center"
                 android:text="Player 1 Score: 25"
                 android:textColor="#F6F2F2"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/player2ScoreText"
@@ -217,8 +220,9 @@
                 android:gravity="center"
                 android:text="Player 2 Score: 19"
                 android:textColor="#F1EBEB"
-                android:textSize="27sp" />
-                android:textSize="25sp" />
+                android:textSize="27sp"
+                tools:ignore="TextContrastCheck" />
+            android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/helpButtonText3"
@@ -243,8 +247,7 @@
         android:gravity="bottom|right"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/quitGameButton"
@@ -319,7 +322,7 @@
             android:id="@+id/skipTurnButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
+            android:backgroundTint="#AF6EB2"
             android:text="@string/skip_turn"
             android:textColor="#FFFFFF" />
 
@@ -327,7 +330,7 @@
             android:id="@+id/forfeitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
+            android:backgroundTint="#AF6EB2"
             android:text="@string/forfeit"
             android:textColor="#FFFFFF" />
 
@@ -335,7 +338,7 @@
             android:id="@+id/handicapButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
+            android:backgroundTint="#AF6EB2"
             android:text="@string/handicap"
             android:textColor="#FBFBFB" />
 
