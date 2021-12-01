@@ -52,7 +52,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private GoSurfaceView goSurfaceView;
 
     //ID for the layout to use
-    private int layoutId;
+    private final int layoutId;
 
     //boolean to flip back and forth between displaying help messages when help button clicked
     private boolean displayHelpMessages = false;
@@ -225,34 +225,34 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //initialize the widget reference members
         if(activity != null) {
-            this.player1ScoreText = (TextView) activity.findViewById(R.id.player1ScoreText);
-            this.player2ScoreText = (TextView) activity.findViewById(R.id.player2ScoreText);
-            this.playerTurnText = (TextView) activity.findViewById(R.id.playerTurnText);
-            this.validMoveText = (TextView) activity.findViewById(R.id.validMovetext);
+            this.player1ScoreText = activity.findViewById(R.id.player1ScoreText);
+            this.player2ScoreText = activity.findViewById(R.id.player2ScoreText);
+            this.playerTurnText = activity.findViewById(R.id.playerTurnText);
+            this.validMoveText = activity.findViewById(R.id.validMovetext);
             validMoveText.setVisibility(View.INVISIBLE);
-            this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
-            this.opponentMoveText = (TextView) activity.findViewById(R.id.opponentMoveText);
+            this.timerText = activity.findViewById(R.id.elapsedTimeText);
+            this.opponentMoveText = activity.findViewById(R.id.opponentMoveText);
             opponentMoveText.setVisibility(View.INVISIBLE);
-            this.helpButtonText1 = (TextView) activity.findViewById(R.id.helpButtonText1);
+            this.helpButtonText1 = activity.findViewById(R.id.helpButtonText1);
             helpButtonText1.setVisibility(View.INVISIBLE);
-            this.helpButtonText2 = (TextView) activity.findViewById(R.id.helpButtonText3);
+            this.helpButtonText2 = activity.findViewById(R.id.helpButtonText3);
             helpButtonText2.setVisibility(View.INVISIBLE);
-            this.helpButtonText3 = (TextView) activity.findViewById(R.id.helpButtonText3);
+            this.helpButtonText3 = activity.findViewById(R.id.helpButtonText3);
             helpButtonText3.setVisibility(View.INVISIBLE);
-            this.helpButtonText4 = (TextView) activity.findViewById(R.id.helpButtonText4);
+            this.helpButtonText4 = activity.findViewById(R.id.helpButtonText4);
             helpButtonText4.setVisibility(View.INVISIBLE);
 
-            this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
-            this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
-            this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
-            this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
-            this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
-            this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
-            this.helpButton = (Button) activity.findViewById(R.id.helpButton);
+            this.handicapButton = activity.findViewById(R.id.handicapButton);
+            this.skipButton = activity.findViewById(R.id.skipTurnButton);
+            this.forfeitButton = activity.findViewById(R.id.forfeitButton);
+            this.dumbAIButton = activity.findViewById(R.id.dumbAIButton);
+            this.smartAIButton = activity.findViewById(R.id.smartAIButton);
+            this.quitGameButton = activity.findViewById(R.id.quitGameButton);
+            this.helpButton = activity.findViewById(R.id.helpButton);
         }
 
         //Initialize the surface view
-        goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.goSurfaceView);
+        goSurfaceView = myActivity.findViewById(R.id.goSurfaceView);
 
         //Set the listener for all buttons
         goSurfaceView.setOnTouchListener(this);

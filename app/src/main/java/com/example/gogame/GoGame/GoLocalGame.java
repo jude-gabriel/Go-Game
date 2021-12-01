@@ -34,7 +34,7 @@ import java.util.Timer;
 public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
     private static final String TAG = "GoLocalGame";
-    private GameTimer timer;
+    private final GameTimer timer;
     private static final int TICK = 1000;
 
 

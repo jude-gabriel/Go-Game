@@ -129,7 +129,7 @@ public class GoMainActivity extends GameMainActivity {
         Logger.log(TAG, "Loading: " + gameName);
 
         //Return the gamestate
-        return (GameState) new GoGameState((GoGameState) Saving.readFromFile(appName, this.getApplicationContext()));
+        return new GoGameState((GoGameState) Saving.readFromFile(appName, this.getApplicationContext()));
 
     }
 }

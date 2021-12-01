@@ -60,7 +60,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	@Override
 	protected void receiveInfo(GameInfo info) {
-		//TODO - verify this is the correct assertion
 		// verify this is a valid go game state
 		assert info != null;
 
@@ -105,8 +104,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			oppStoneColor = Stone.StoneColor.BLACK;
 		}
 
-		// TODO implement when the smart AI should skip turn
-		// dummy
+		// have the AI skip a turn if a low score is presented
 		if(getWinningScore() < 5000) {
 			Logger.log(TAG, "Smart AI's Skip");
 			game.sendAction(new GoSkipTurnAction(this));
@@ -127,7 +125,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}//receiveInfo
 
 	/* HELPER FUNCTIONS */
-
 	/* getWinningScore
 	 * getter function for the winning score
 	 *
@@ -146,8 +143,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * the game before the computer player_
 	 *
 	 * @return the value to be used as the score in the minimax algorithm
-	 *
-	 * TODO - testing
 	 */
 	public double evaluateBoard() {
 		// get the current player
@@ -160,7 +155,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			if (player0Score == 0) player0Score = 1;
 
 			// return the relative score of white against black
-			return (double) (player1Score / player0Score);
+			return player1Score / player0Score;
 		}
 
 		// otherwise, the current player is white
@@ -169,7 +164,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			if (player1Score == 0) player1Score = 1;
 
 			// return the relative score of black against white
-			return (double) (player0Score / player1Score);
+			return player0Score / player1Score;
 		}
 	}//evaluateBoard
 
@@ -180,8 +175,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * consecutive 2's, 3's, 4's it has, how many of them are blocked etc...)
 	 *
 	 * @return the board score for the specified player
-	 *
-	 * TODO - testing
 	 */
 	public int getScore() { return evaluateHorizontal() + evaluateVertical() +evaluateDiagonal(); }//getScore
 
@@ -191,12 +184,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @param depth - the current depth we are searching for the best move at
 	 * @return an integer array for the best move
-	 *
-	 * //TODO testing
 	 */
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
-		sleep(1000);
+		sleep(5000);
 
 		// define an integer to store the move on the board
 		int[] move = new int[2];
