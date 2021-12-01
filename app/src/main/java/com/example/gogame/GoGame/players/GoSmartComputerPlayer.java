@@ -9,10 +9,7 @@ import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
-
 import java.util.ArrayList;
-
-//import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 
 
 //TODO ensure tracking current player properly, see if ever makes sense for forfeit
