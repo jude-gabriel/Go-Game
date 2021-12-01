@@ -118,12 +118,6 @@
             android:textSize="75sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/underlineLayout"
-            android:layout_width="300dp"
-            android:layout_height="5dp"
-            android:background="#F3F1F1"
-            android:orientation="vertical"></LinearLayout>
     </LinearLayout>
 
     <LinearLayout
