@@ -11,8 +11,6 @@ import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 import java.util.ArrayList;
 
-
-//TODO ensure tracking current player properly, see if ever makes sense for forfeit
 /**
  * A computerized Go player that recognizes an immediate capture of the
  * opponent or a possible capture from the other opponent, and plays
@@ -43,9 +41,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @param name the player's name (e.g., "John")
 	 */
-	public GoSmartComputerPlayer(String name) {
-		super(name);
-	}//GoSmartComputerPlayer
+	public GoSmartComputerPlayer(String name) { super(name); }//GoSmartComputerPlayer
 
 	/**
 	 * receiveInfo
@@ -104,11 +100,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 		// TODO implement when the smart AI should skip turn
 		// dummy
-		if(getWinningScore() < 5000) {
+		if(getWinningScore() < 1000) {
 			Logger.log(TAG, "Smart AI's Skip");
 			game.sendAction(new GoSkipTurnAction(this));
 		}
 
+		//TODO - FIGURE OUT WHERE CRASHING
 		// get the current best move starting at depth zero for the algorithm
 		int[] nextMove = calculateNextMove(0);
 
