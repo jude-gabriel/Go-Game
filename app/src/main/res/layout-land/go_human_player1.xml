@@ -48,6 +48,7 @@
             android:id="@+id/dumbAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#FBBAD9"
             android:backgroundTint="#000000"
             android:hapticFeedbackEnabled="false"
             android:text="DIFFICULTY --"
