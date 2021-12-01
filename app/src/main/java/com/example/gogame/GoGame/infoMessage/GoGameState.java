@@ -35,7 +35,7 @@ public class GoGameState extends GameState implements Serializable {
     private boolean player1Forfeit;         //Tracks if Player 1 forfeits
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
-    private int[] mostRecentMove;           //Tracks the most recent move made in the game
+    private final int[] mostRecentMove;           //Tracks the most recent move made in the game
 
     //Network play ID Tag
     private static final long serialVersionUID = 7552321013488624386L;

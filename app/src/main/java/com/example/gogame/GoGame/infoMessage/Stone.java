@@ -28,7 +28,7 @@ public class Stone implements Serializable {
         WHITE,
         BLACK,
         NONE
-    };
+    }
 
 
     /**s
@@ -37,7 +37,7 @@ public class Stone implements Serializable {
     public enum CheckedStone{
         FALSE,
         TRUE
-    };
+    }
 
     /* Instance Variables for the Stone Class */
     private StoneColor stoneColor;
