@@ -691,6 +691,18 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// initialize the a list of different moves
 		ArrayList<int[]> moveList = new ArrayList<>();
 
+		//// TODO TESTING
+		/*Logger.log(TAG, "entered generate moves method");
+
+		// store a variable to hold the initial moves
+		int[] moveInit = {0, 0};
+
+		// initialize the move list to be all zeros
+		moveList.add(moveInit);
+
+		//// TODO TESTING
+		Logger.log(TAG, "added move to list");*/
+
 		// look for cells that has at least one stone in an adjacent cell
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
@@ -698,15 +710,19 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				//TODO - FIGURE OUT WHY THERE IS AN ERROR
 				// verify there is at least one adjacent cell
 				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
-					continue;
+				{
+					//// TODO TESTING
+					Logger.log(TAG, "no stone found at: (" + row + ", " + col +")");
+					//continue;
+				}
 
 				// determine the row and column are in bounds
 				if (row > 0) {
 					if (col > 0) {
 						// verify the liberty is not empty
 						if (gameBoard[row - 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
-								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
-
+								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE)
+						{
 							// create a move on the free space
 							int[] move = {row, col};
 
@@ -714,7 +730,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							moveList.add(move);
 
 							// continue to determine if more moves
-							continue;
+							//continue;
 						}
 					}
 
@@ -729,7 +745,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							moveList.add(move);
 
 							// continue to determine if more moves
-							continue;
+							//continue;
 						}
 					}
 
@@ -742,7 +758,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							moveList.add(move);
 
 							// continue to determine if more moves
-							continue;
+							//continue;
 					}
 				}
 
@@ -760,7 +776,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							moveList.add(move);
 
 							// continue to determine if more moves
-							continue;
+							//continue;
 						}
 					}
 
@@ -775,7 +791,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							moveList.add(move);
 
 							// continue to determine if more moves
-							continue;
+							//continue;
 						}
 					}
 
