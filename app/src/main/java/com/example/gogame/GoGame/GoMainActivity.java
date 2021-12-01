@@ -2,7 +2,6 @@ package com.example.gogame.GoGame;
 
 import com.example.gogame.GameFramework.GameMainActivity;
 import com.example.gogame.GameFramework.LocalGame;
-import com.example.gogame.GameFramework.ProxyGame;
 import com.example.gogame.GameFramework.gameConfiguration.GameConfig;
 import com.example.gogame.GameFramework.gameConfiguration.GamePlayerType;
 import com.example.gogame.GameFramework.infoMessage.GameState;
@@ -54,7 +53,7 @@ public class GoMainActivity extends GameMainActivity {
 
 
         //add dumb computer player
-        playerTypes.add(new GamePlayerType("Computer Player dumb") {
+        playerTypes.add(new GamePlayerType("Dumb Computer Player") {
             @Override
             public GamePlayer createPlayer(String name) {
                 return new GoDumbComputerPlayer(name);
@@ -62,7 +61,7 @@ public class GoMainActivity extends GameMainActivity {
         });
 
         //add smart computer player
-        playerTypes.add(new GamePlayerType("Computer Player smart") {
+        playerTypes.add(new GamePlayerType("Smart Computer Player") {
             @Override
             public GamePlayer createPlayer(String name) {
                 return new GoSmartComputerPlayer(name);
@@ -74,7 +73,7 @@ public class GoMainActivity extends GameMainActivity {
 
         //Add default players
         defaultConfig.addPlayer("Human", 0);
-        defaultConfig.addPlayer("DumbComputer", 3); // dumb computer player
+        defaultConfig.addPlayer("Computer", 3); // dumb computer player
 
         // Set the initial information for the remote
         defaultConfig.setRemoteData("Remote Player", "", 1);

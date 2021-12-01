@@ -1,17 +1,18 @@
 package com.example.gogame.GoGame.players;
 
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
-import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
 import com.example.gogame.GameFramework.utilities.Logger;
-//import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
+
 import java.util.ArrayList;
+
+//import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 
 
 //TODO ensure tracking current player properly, see if ever makes sense for forfeit
@@ -195,7 +196,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
-		sleep(1000);
+		sleep(3);
 
 		// define an integer to store the move on the board
 		int[] move = new int[2];
@@ -237,8 +238,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param alpha - the best AI move (maximizing player)
 	 * @param beta  - the best player move (minimizing player)
 	 * @return the score and moves (an object with {score, move[0], move[1]}
-	 * <p>
-	 * //TODO testing
 	 */
 	private Object[] miniMaxSearchAB(int depth, boolean max, double alpha, double beta) {
 		// if at terminal node, return the score, move[0], and move[1]
@@ -329,8 +328,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * This function looks for a move that can win the game
 	 *
 	 * @return the winning move
-	 * <p>
-	 * //TODO testing
 	 */
 	private Object[] searchWinningMove() {
 		// initialize a new array list for all possible moves
@@ -374,7 +371,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * is empty, then the block count will be decremented by one and if there is another
 	 * empty cell after a consecutive stone set, the block count will also be decremented
 	 * by one.
-	 * TODO - testing - UNSURE IF CURRENT PLAYER FUNCTIONING PROPERLY
 	 *
 	 * @return the score
 	 */
@@ -444,7 +440,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the score
 	 *
-	 * TODO testing
 	 */
 	public int evaluateVertical() {
 		// initialize the consecutive, blocks, and score variables
@@ -453,7 +448,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int score = 0;
 
 		// initialize a variable to determine whose turn it is
-		//boolean isSmartAI = false;
+		boolean isSmartAI = false;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -515,7 +510,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the score
 	 *
-	 * //TODO FINISH and testing
 	 */
 	public int evaluateDiagonal() {
 		// initialize the consecutive, blocks, and score variables
@@ -524,7 +518,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int score = 0;
 
 		// initialize a variable to determine whose turn it is
-		//boolean isSmartAI = false;
+		boolean isSmartAI = false;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -644,8 +638,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param count  - the current count
 	 * @param blocks - the number of blocks
 	 * @return the score
-	 * <p>
-	 * //TODO FINISH and testing
+	 *
 	 */
 	public int getConsecutiveSetScore(int count, int blocks) {
 		// initialize a guaranteed winning score for a base point
@@ -708,7 +701,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * generates moves given the current board state
 	 *
-	 * @return the list of moves
 	 */
 	public ArrayList<int[]> generateMoves() {
 		// initialize the a list of different moves
@@ -827,10 +819,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param row - the row to be placed
 	 * @param col - the column to be placed
 	 *
-	 *            TODO - TESTING
 	 */
 	public void addStoneNoGUI(GoGameState test, int row, int col) {
 		// place a stone on the board
 		test.playerMove(row, col);
 	}//addStoneNoGUI
-}
+}//GoSmartComputerPlayer
