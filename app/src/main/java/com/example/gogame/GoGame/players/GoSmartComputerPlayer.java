@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * The algorithm utilized to maximize difficulty is the Minimax Algorithm.
  *
  * @author Brynn Harrington
- * @version October 2021
+ * @version November 30 2021
  * @source https://www.moderndescartes.com/essays/implementing_go/
  */
 public class GoSmartComputerPlayer extends GameComputerPlayer {
@@ -33,13 +33,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	/* INSTANCE / MEMBER VARIABLES */
 	// instantiate variables to...
-	private Stone[][] gameBoard; 		// current game board
-	private GoGameState goGS;			// current game state
+//	private Stone[][] gameBoard; 		// current game board
+//	private GoGameState goGS;			// current game state
 	boolean isSmartAI;					// track is smart AI's turn
 	Stone.StoneColor AIStoneColor;		// smart AI's stone color
 	Stone.StoneColor oppStoneColor;		// opponent's stone color
-	private static final int
-			winningScore = 100000000;	// winning score (initially "infinity")
+	private static final int winningScore = 100000000;	// winning score (initially "infinity")
 
 	/**
 	 * constructor
@@ -51,7 +50,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}//GoSmartComputerPlayer
 
 	/**
-	 * //TODO write what this function does
+	 * receiveInfo
+	 *
+	 * this method receives information from the game and implements the smart AI
+	 * moves accordingly
 	 *
 	 * @param info the current information of the game
 	 */
