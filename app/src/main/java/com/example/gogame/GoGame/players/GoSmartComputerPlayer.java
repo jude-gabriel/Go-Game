@@ -33,8 +33,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	/* INSTANCE / MEMBER VARIABLES */
 	// instantiate variables to...
-//	private Stone[][] gameBoard; 		// current game board
-//	private GoGameState goGS;			// current game state
+	private Stone[][] gameBoard; 		// current game board
+	private GoGameState goGS;			// current game state
 	boolean isSmartAI;					// track is smart AI's turn
 	Stone.StoneColor AIStoneColor;		// smart AI's stone color
 	Stone.StoneColor oppStoneColor;		// opponent's stone color
@@ -713,9 +713,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	public ArrayList<int[]> generateMoves() {
 		// initialize the a list of different moves
 		ArrayList<int[]> moveList = new ArrayList<>();
-
-		// get the current game board
-		Stone[][] gameBoard = goGS.getGameBoard();
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
