@@ -9,6 +9,7 @@
     android:background="#733825"
     android:backgroundTintMode="add" >
 
+
     <LinearLayout
         android:id="@+id/gameBoardLayout"
         android:layout_width="match_parent"
