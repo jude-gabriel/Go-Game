@@ -123,7 +123,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/helpButtonText3"
+            android:id="@+id/helpButtonText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -214,7 +214,7 @@
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/helpButtonText4"
+                android:id="@+id/helpButtonText3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
@@ -326,7 +326,7 @@
             android:textColor="#FBFBFB" />
 
         <TextView
-            android:id="@+id/helpButtonText3"
+            android:id="@+id/helpButtonText4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."
