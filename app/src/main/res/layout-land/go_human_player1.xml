@@ -48,7 +48,7 @@
             android:id="@+id/dumbAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF7756"
+            android:backgroundTint="#000000"
             android:hapticFeedbackEnabled="false"
             android:text="DIFFICULTY --"
             android:textColor="#F6F6F6" />
@@ -57,7 +57,7 @@
             android:id="@+id/smartAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF7756"
+            android:backgroundTint="#000000"
             android:text="DIFFICULTY ++"
             android:textColor="#FAFAFA" />
 
@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:text="Go! 圍棋"
             android:textColor="#FBFBFB"
-            android:textSize="71sp"
+            android:textSize="75sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -260,7 +260,7 @@
             android:id="@+id/skipTurnButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#966F9F"
+            android:backgroundTint="#000000"
             android:text="@string/skip_turn"
             android:textColor="#FFFFFF" />
 
@@ -268,7 +268,7 @@
             android:id="@+id/forfeitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#966F9F"
+            android:backgroundTint="#000000"
             android:text="@string/forfeit"
             android:textColor="#FFFFFF" />
 
@@ -276,7 +276,7 @@
             android:id="@+id/handicapButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#966F9F"
+            android:backgroundTint="#000000"
             android:text="@string/handicap"
             android:textColor="#FBFBFB" />
     </LinearLayout>

@@ -51,7 +51,7 @@
             android:id="@+id/dumbAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF7756"
+            android:backgroundTint="#000000"
             android:hapticFeedbackEnabled="false"
             android:text="DIFFICULTY --"
             android:textColor="#F6F6F6" />
@@ -60,7 +60,7 @@
             android:id="@+id/smartAIButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF7756"
+            android:backgroundTint="#000000"
             android:text="DIFFICULTY ++"
             android:textColor="#FAFAFA" />
 
@@ -68,7 +68,6 @@
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#A57BBB"
             android:text="HELP" />
 
     </LinearLayout>
@@ -238,7 +237,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:backgroundTint="#966F9F"
+                android:backgroundTint="#000000"
                 android:foregroundGravity="bottom"
                 android:text="@string/skip_turn"
                 android:textColor="#FFFFFF" />
@@ -254,7 +253,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:backgroundTint="#966F9F"
+                android:backgroundTint="#000000"
                 android:foregroundGravity="bottom"
                 android:text="@string/forfeit"
                 android:textColor="#FFFFFF" />
@@ -270,7 +269,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:backgroundTint="#966F9F"
+                android:backgroundTint="#000000"
                 android:text="@string/handicap"
                 android:textColor="#FBFBFB" />
 
@@ -283,7 +282,7 @@
                 android:id="@+id/quitGameButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#966F9F"
+                android:backgroundTint="#000000"
                 android:text="@string/quit_game"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
