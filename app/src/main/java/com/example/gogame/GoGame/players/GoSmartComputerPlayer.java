@@ -1,17 +1,18 @@
 package com.example.gogame.GoGame.players;
 
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
-import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
 import com.example.gogame.GameFramework.utilities.Logger;
-//import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
+
 import java.util.ArrayList;
+
+//import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 
 
 //TODO ensure tracking current player properly, see if ever makes sense for forfeit
@@ -374,8 +375,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * is empty, then the block count will be decremented by one and if there is another
 	 * empty cell after a consecutive stone set, the block count will also be decremented
 	 * by one.
-	 * TODO - testing - UNSURE IF CURRENT PLAYER FUNCTIONING PROPERLY
-	 *
 	 * @return the score
 	 */
 	public int evaluateHorizontal() {
@@ -443,8 +442,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * This function calculates the score by evaluating stone vertical positions
 	 *
 	 * @return the score
-	 *
-	 * TODO testing
 	 */
 	public int evaluateVertical() {
 		// initialize the consecutive, blocks, and score variables
@@ -514,8 +511,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * This function calculates the score by evaluating stone horizontal positions
 	 *
 	 * @return the score
-	 *
-	 * //TODO FINISH and testing
 	 */
 	public int evaluateDiagonal() {
 		// initialize the consecutive, blocks, and score variables
@@ -644,8 +639,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param count  - the current count
 	 * @param blocks - the number of blocks
 	 * @return the score
-	 * <p>
-	 * //TODO FINISH and testing
 	 */
 	public int getConsecutiveSetScore(int count, int blocks) {
 		// initialize a guaranteed winning score for a base point
