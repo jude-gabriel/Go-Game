@@ -1,6 +1,7 @@
 package com.example.gogame.GoGame.players;
 
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
+import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
 import com.example.gogame.GameFramework.utilities.Logger;
@@ -9,10 +10,9 @@ import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
+
 import java.util.ArrayList;
 
-
-//TODO ensure tracking current player properly, see if ever makes sense for forfeit
 /**
  * A computerized Go player that recognizes an immediate capture of the
  * opponent or a possible capture from the other opponent, and plays
@@ -43,9 +43,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @param name the player's name (e.g., "John")
 	 */
-	public GoSmartComputerPlayer(String name) {
-		super(name);
-	}//GoSmartComputerPlayer
+	public GoSmartComputerPlayer(String name) { super(name); }//GoSmartComputerPlayer
 
 	/**
 	 * receiveInfo
@@ -57,12 +55,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	@Override
 	protected void receiveInfo(GameInfo info) {
-		//TODO - verify this is the correct assertion
 		// verify this is a valid go game state
 		assert info != null;
 
-		// if an illegal move, TODO - skip or forfeit?
-		//if (info instanceof IllegalMoveInfo) game.sendAction(new GoSkipTurnAction(this));
+		// if an illegal move, return //todo verify works
+		if (info instanceof IllegalMoveInfo) return;
 
 		// verify it is the smart AI's turn
         if(info instanceof NotYourTurnInfo)
@@ -102,13 +99,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			oppStoneColor = Stone.StoneColor.BLACK;
 		}
 
-		// TODO implement when the smart AI should skip turn
-		// dummy
-		if(getWinningScore() < 5000) {
+		// have the AI skip their turn if the score is lower
+		if(getWinningScore() < 1000) {
 			Logger.log(TAG, "Smart AI's Skip");
 			game.sendAction(new GoSkipTurnAction(this));
 		}
 
+		//TODO - FIGURE OUT WHERE CRASHING
 		// get the current best move starting at depth zero for the algorithm
 		int[] nextMove = calculateNextMove(0);
 
@@ -144,7 +141,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the value to be used as the score in the minimax algorithm
 	 *
-	 * TODO - testing
 	 */
 	public double evaluateBoard() {
 		// get the current player
@@ -207,7 +203,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			bestMove = miniMaxSearchAB(depth, true, -1.0, getWinningScore());
 
 			// set the moves to the best moves
-			if (bestMove != null)
+			if (bestMove[0] != null && bestMove[1] != null)
 			{
 				move[0] = (Integer) bestMove[1];
 				move[1] = (Integer) bestMove[2];
@@ -710,6 +706,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
 
+				//TODO - FIGURE OUT WHY THERE IS AN ERROR
 				// verify there is at least one adjacent cell
 				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
 					continue;
