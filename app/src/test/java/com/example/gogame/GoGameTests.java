@@ -110,7 +110,7 @@ public class GoGameTests {
         goLocalGame.sendAction(new GoMoveAction(player2, 0, 0));
 
         //Make sure nothing changed
-        assertTrue("Game states were equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were equal", goLocalGame.getGameState().equals(goGameState));
 
 
         //Make sure turns do work
@@ -122,7 +122,7 @@ public class GoGameTests {
         gBoard[1][1].setStoneColor(Stone.StoneColor.BLACK);
 
         //Check if the GameStates are equal
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were not equal", goLocalGame.getGameState().equals(goGameState));
 
         //Get to a game over
         goLocalGame.sendAction(new GoSkipTurnAction(player2));
@@ -132,7 +132,7 @@ public class GoGameTests {
         goGameState.setGameOver(true);
 
         //Check if the GameStates are equal
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were not equal", goLocalGame.getGameState().equals(goGameState));
 
         //Player 1 should win
         assertEquals("Player 1 did not win", 1, goLocalGame.whoWon());
@@ -141,7 +141,7 @@ public class GoGameTests {
         goLocalGame.sendAction(new GoMoveAction(player1, 2, 2));
 
         //Check if the GameStates are equal
-        assertTrue("Game states were not equal", ((GoGameState) goLocalGame.getGameState()).equals(goGameState));
+        assertTrue("Game states were not equal", goLocalGame.getGameState().equals(goGameState));
     }
 
 

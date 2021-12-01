@@ -34,7 +34,7 @@ import java.util.Timer;
 public class GoLocalGame extends LocalGame {
     // initialize a tage for logging the current local game
     private static final String TAG = "GoLocalGame";
-    private GameTimer timer;
+    private final GameTimer timer;
     private static final int TICK = 1000;
 
 
@@ -81,7 +81,6 @@ public class GoLocalGame extends LocalGame {
      *
 	 * @return - a message that tells who has won the game, or null if the
      * game is not over
-	 * TODO: Verify the function works
 	 */
 	@Override
 	protected String checkIfGameOver()
@@ -138,10 +137,10 @@ public class GoLocalGame extends LocalGame {
 		boolean p2Forfeit = state.getPlayer2Forfeit();
 
 		//Check for a forfeit
-		if(p1Forfeit == true){
+		if(p1Forfeit){
 			return playerNames[1] + " wins by forfeit! ";
 		}
-		if(p2Forfeit == true){
+		if(p2Forfeit){
 			return playerNames[0] + " wins by forfeit! ";
 		}
 
@@ -253,7 +252,7 @@ public class GoLocalGame extends LocalGame {
 	/**
 	 * Finds which user won the game
 	 *
-	 * @returns 0 if player 0 won, else returns 1
+	 * @return 0 if player 0 won, else returns 1
 	 * @author Brynn Harrington
 	 */
 	public int whoWon(){

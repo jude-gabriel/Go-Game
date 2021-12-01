@@ -10,8 +10,8 @@ public class GoMoveAction extends GameAction {
     private static final long serialVersionUID = -2242980258970485343L;
 
     /* Instance Variables */
-    private int x;  //The x index value of the liberty
-    private int y;  //The y index value of the liberty
+    private final int x;  //The x index value of the liberty
+    private final int y;  //The y index value of the liberty
 
 
     /**

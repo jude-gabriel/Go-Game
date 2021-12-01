@@ -32,12 +32,18 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView validMoveText      = null;
     private TextView timerText          = null;
     private TextView opponentMoveText   = null;
+    private TextView helpButtonText1 = null;
+    private TextView helpButtonText2 = null;
+    private TextView helpButtonText3 = null;
+    private TextView helpButtonText4 = null;
+
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
     private Button dumbAIButton         = null;
     private Button smartAIButton        = null;
     private Button quitGameButton       = null;
+    private Button helpButton           = null;
 
     //Tag for logging
     private static final String TAG = "GoHumanPlayer1";
@@ -46,7 +52,10 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private GoSurfaceView goSurfaceView;
 
     //ID for the layout to use
-    private int layoutId;
+    private final int layoutId;
+
+    //boolean to flip back and forth between displaying help messages when help button clicked
+    private boolean displayHelpMessages = false;
 
 
     /**
@@ -113,6 +122,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 if(((GoGameState) info).getTotalMoves() != 0) {
                     validMoveText.setVisibility(View.VISIBLE);
                     opponentMoveText.setVisibility(View.VISIBLE);
+
                     if (((GoGameState) info).getNumSkips() != 0) {
 
                         //Find who's turn it is
@@ -192,7 +202,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //If it is, then update the surface view
         else{
-            goSurfaceView.setState((GoGameState)info);  //NEED setState FROM NATALIE
+            goSurfaceView.setState((GoGameState)info);
             goSurfaceView.invalidate();
         }
 
@@ -215,24 +225,34 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //initialize the widget reference members
         if(activity != null) {
-            this.player1ScoreText = (TextView) activity.findViewById(R.id.player1ScoreText);
-            this.player2ScoreText = (TextView) activity.findViewById(R.id.player2ScoreText);
-            this.playerTurnText = (TextView) activity.findViewById(R.id.playerTurnText);
-            this.validMoveText = (TextView) activity.findViewById(R.id.validMovetext);
+            this.player1ScoreText = activity.findViewById(R.id.player1ScoreText);
+            this.player2ScoreText = activity.findViewById(R.id.player2ScoreText);
+            this.playerTurnText = activity.findViewById(R.id.playerTurnText);
+            this.validMoveText = activity.findViewById(R.id.validMovetext);
             validMoveText.setVisibility(View.INVISIBLE);
-            this.timerText = (TextView) activity.findViewById(R.id.elapsedTimeText);
-            this.opponentMoveText = (TextView) activity.findViewById(R.id.opponentMoveText);
+            this.timerText = activity.findViewById(R.id.elapsedTimeText);
+            this.opponentMoveText = activity.findViewById(R.id.opponentMoveText);
             opponentMoveText.setVisibility(View.INVISIBLE);
-            this.handicapButton = (Button) activity.findViewById(R.id.handicapButton);
-            this.skipButton = (Button) activity.findViewById(R.id.skipTurnButton);
-            this.forfeitButton = (Button) activity.findViewById(R.id.forfeitButton);
-            this.dumbAIButton = (Button) activity.findViewById(R.id.dumbAIButton);
-            this.smartAIButton = (Button) activity.findViewById(R.id.smartAIButton);
-            this.quitGameButton = (Button) activity.findViewById(R.id.quitGameButton);
+            this.helpButtonText1 = activity.findViewById(R.id.helpButtonText1);
+            helpButtonText1.setVisibility(View.INVISIBLE);
+            this.helpButtonText2 = activity.findViewById(R.id.helpButtonText2);
+            helpButtonText2.setVisibility(View.INVISIBLE);
+            this.helpButtonText3 = activity.findViewById(R.id.helpButtonText3);
+            helpButtonText3.setVisibility(View.INVISIBLE);
+            this.helpButtonText4 = activity.findViewById(R.id.helpButtonText4);
+            helpButtonText4.setVisibility(View.INVISIBLE);
+
+            this.handicapButton = activity.findViewById(R.id.handicapButton);
+            this.skipButton = activity.findViewById(R.id.skipTurnButton);
+            this.forfeitButton = activity.findViewById(R.id.forfeitButton);
+            this.dumbAIButton = activity.findViewById(R.id.dumbAIButton);
+            this.smartAIButton = activity.findViewById(R.id.smartAIButton);
+            this.quitGameButton = activity.findViewById(R.id.quitGameButton);
+            this.helpButton = activity.findViewById(R.id.helpButton);
         }
 
         //Initialize the surface view
-        goSurfaceView = (GoSurfaceView)myActivity.findViewById(R.id.goSurfaceView);
+        goSurfaceView = myActivity.findViewById(R.id.goSurfaceView);
 
         //Set the listener for all buttons
         goSurfaceView.setOnTouchListener(this);
@@ -242,6 +262,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         this.dumbAIButton.setOnClickListener(this);
         this.smartAIButton.setOnClickListener(this);
         this.quitGameButton.setOnClickListener(this);
+        this.helpButton.setOnClickListener(this);
     }
 
 
@@ -371,6 +392,25 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             //Case 6: It was the smartAi button, send a smartAI action
             case R.id.smartAIButton:
                 game.sendAction(new GoSmartAIAction(this));
+                break;
+
+            //Case 7: It was the help button, display helpButtonText
+            case R.id.helpButton:
+                // switch between displaying and not displaying help messages
+                displayHelpMessages = !displayHelpMessages;
+
+                if(displayHelpMessages) {
+                    helpButtonText1.setVisibility(View.VISIBLE);
+                    helpButtonText2.setVisibility(View.VISIBLE);
+                    helpButtonText3.setVisibility(View.VISIBLE);
+                    helpButtonText4.setVisibility(View.VISIBLE);
+                }
+                else{
+                    helpButtonText1.setVisibility(View.INVISIBLE);
+                    helpButtonText2.setVisibility(View.INVISIBLE);
+                    helpButtonText3.setVisibility(View.INVISIBLE);
+                    helpButtonText4.setVisibility(View.INVISIBLE);
+                }
                 break;
 
 

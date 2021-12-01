@@ -34,7 +34,7 @@ public class IPCoder {
                         .getInetAddresses(); enumIpAddr.hasMoreElements();) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
-                        return inetAddress.getHostAddress().toString();
+                        return inetAddress.getHostAddress();
                     }
                 }
             }
@@ -85,7 +85,7 @@ public class IPCoder {
     }
 
     // helper string, which are our base-36 "digits"
-    private static String codes = "0123456789abcdefghijklmnopqrstuvwxyz";
+    private static final String codes = "0123456789abcdefghijklmnopqrstuvwxyz";
 
     /**
      * Encodes the local IP address as base-36 number, converted to a string

@@ -22,9 +22,9 @@ public class GoSurfaceView extends FlashSurfaceView {
     //constants, which are percentages with respect to the minimum
     //of the height and width
     private final static float BORDER_PERCENT = 5; // size of the border
-    private Paint blackPaint;
-    private Paint whitePaint;
-    private int radius;
+    private final Paint blackPaint;
+    private final Paint whitePaint;
+    private final int radius;
 
     protected GoGameState state;
 
