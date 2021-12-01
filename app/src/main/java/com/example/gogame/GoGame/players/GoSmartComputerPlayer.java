@@ -448,7 +448,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int score = 0;
 
 		// initialize a variable to determine whose turn it is
-		boolean isSmartAI = false;
+		//boolean isSmartAI = false;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
@@ -518,7 +518,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int score = 0;
 
 		// initialize a variable to determine whose turn it is
-		boolean isSmartAI = false;
+		//boolean isSmartAI = false;
 
 		// determine the board size (row = col so will be the same)
 		int boardSize = goGS.getBoardSize();
