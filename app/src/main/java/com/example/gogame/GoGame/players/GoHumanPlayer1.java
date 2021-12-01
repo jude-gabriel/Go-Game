@@ -235,7 +235,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             opponentMoveText.setVisibility(View.INVISIBLE);
             this.helpButtonText1 = activity.findViewById(R.id.helpButtonText1);
             helpButtonText1.setVisibility(View.INVISIBLE);
-            this.helpButtonText2 = activity.findViewById(R.id.helpButtonText3);
+            this.helpButtonText2 = activity.findViewById(R.id.helpButtonText2);
             helpButtonText2.setVisibility(View.INVISIBLE);
             this.helpButtonText3 = activity.findViewById(R.id.helpButtonText3);
             helpButtonText3.setVisibility(View.INVISIBLE);
