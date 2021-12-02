@@ -36,6 +36,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	boolean isSmartAI;					// track is smart AI's turn
 	Stone.StoneColor AIStoneColor;		// smart AI's stone color
 	Stone.StoneColor oppStoneColor;		// opponent's stone color
+	private int boardSize;				// determine the board size
 	private static final int winningScore = 100000000;	// winning score (initially "infinity")
 
 	/**
@@ -58,9 +59,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// verify this is a valid go game state
 		assert info != null;
 
-		// if an illegal move, return
-		if (info instanceof IllegalMoveInfo) return;
-
 		// verify it is the smart AI's turn
         if(info instanceof NotYourTurnInfo)
 		{
@@ -74,6 +72,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			Logger.log(TAG, "Smart AI's Turn");
 		}
 
+		// if an illegal move, return
+		if (info instanceof IllegalMoveInfo) return;
+
 		// initialize the global game state variable
 		assert info instanceof GoGameState;
 		GoGameState initGS = (GoGameState) info;
@@ -81,13 +82,16 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		//////// TODO determine whether i need this copy
 		goGS = new GoGameState(initGS);
 
+		// get the board size
+		boardSize = goGS.getBoardSize();
+
 		// initialize the game board
 		// TODO - DO I NEED TO DO A DEEP COPY?
 		gameBoard = goGS.getGameBoard();
 
 		// assuming that AI is better player so if AI is white,
 		// always give black more stones
-        if(goGS.getTotalMoves() == 0 && isSmartAI) { game.sendAction(new GoHandicapAction(this)); }
+        if(goGS.getTotalMoves() == 0) { game.sendAction(new GoHandicapAction(this)); }
 		
 		// determine the current AI's and opponent's color
 		if (this.playerNum == 0)
@@ -126,8 +130,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}//receiveInfo
 
 	/* HELPER FUNCTIONS */
-
-	////TODO - REMOVE???
 	/**
 	 * getWinningScore
 	 * getter function for the winning score
@@ -153,7 +155,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int player2Score = goGS.getPlayer2Score();
 
 		// determine if current player is black - ensure score is not 0 for division
-		if (goGS.getPlayer() == this.playerNum) if (player1Score == 0) player1Score = 1;
+		if (goGS.getPlayer() == this.playerNum + 1) if (player1Score == 0) player1Score = 1;
 
 		// otherwise, the current player is white - ensure score is not 0 for division
 		else if (player2Score == 0) player2Score = 1;
@@ -185,7 +187,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public int[] calculateNextMove(int depth) {
 		// act as the computer is "thinking"
-		sleep(3);
+		sleep(1);
 
 		// define an integer to store the move on the board
 		int[] move = new int[2];
@@ -369,9 +371,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int blocks = 2;
 		int score = 0;
 
-		// determine the board size (row = col so will be the same)
-		int boardSize = goGS.getBoardSize();
-
 		// iterate through each index in each row
 		for (int row = 0; row < boardSize; row++)
 		{
@@ -436,12 +435,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int blocks = 2;
 		int score = 0;
 
-		// initialize a variable to determine whose turn it is
-		//boolean isSmartAI = false;
-
-		// determine the board size (row = col so will be the same)
-		int boardSize = goGS.getBoardSize();
-
 		// iterate through the cells in each column
 		for (int index = 0; index < boardSize; index++) {
 			for (int col = 0; col < boardSize; col++) {
@@ -505,12 +498,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		int consecutive = 0;
 		int blocks = 2;
 		int score = 0;
-
-		// initialize a variable to determine whose turn it is
-		//boolean isSmartAI = false;
-
-		// determine the board size (row = col so will be the same)
-		int boardSize = goGS.getBoardSize();
 
 		// iterate through the diagonal moves
 		for (int row = 0; row < boardSize; row++) {
@@ -697,9 +684,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// initialize the a list of different moves
 		ArrayList<int[]> moveList = new ArrayList<>();
 
-		// determine the board size (row = col so will be the same)
-		int boardSize = goGS.getBoardSize();
-
 		// look for cells that has at least one stone in an adjacent cell
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
@@ -712,8 +696,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				}
 
 				// determine the row and column are in bounds
-				if (row > 0) {
-					if (col > 0) {
+				if (row > 1) {
+					if (col > 1) {
 						// verify the liberty is not empty
 						if (gameBoard[row - 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
 								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
@@ -759,7 +743,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 				// verify the liberties are in bounds
 				if (row < boardSize - 1) {
-					if (col > 0) {
+					if (col > 1) {
 						// verify the liberty is not empty
 						if (gameBoard[row + 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
 								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
