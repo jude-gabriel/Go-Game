@@ -12,6 +12,7 @@ import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.players.GoDumbComputerPlayer;
 import com.example.gogame.GoGame.players.GoHumanPlayer1;
 import com.example.gogame.GoGame.players.GoSmartComputerPlayer;
+import com.example.gogame.GoGame.players.GoSmartComputerPlayer2;
 import com.example.gogame.R;
 
 import java.util.ArrayList;
@@ -38,30 +39,31 @@ public class GoMainActivity extends GameMainActivity {
         ArrayList<GamePlayerType> playerTypes = new ArrayList<GamePlayerType>();
 
         //add human player1
-        playerTypes.add(new GamePlayerType("Player 1") {
+        playerTypes.add(new GamePlayerType("Human Player") {
             public GamePlayer createPlayer(String name) {
                 return new GoHumanPlayer1(name, R.layout.go_human_player1);
             }
         });
-
-        //add human player
-        playerTypes.add(new GamePlayerType("Player 2") {
-            public GamePlayer createPlayer(String name) {
-                return new GoHumanPlayer1(name, R.layout.go_human_player1);
-            }
-        });
-
 
         //add dumb computer player
-        playerTypes.add(new GamePlayerType("Dumb Computer Player") {
+        playerTypes.add(new GamePlayerType("Easy Computer Player") {
             @Override
             public GamePlayer createPlayer(String name) {
                 return new GoDumbComputerPlayer(name);
             }
         });
 
-        //add smart computer player
-        playerTypes.add(new GamePlayerType("Smart Computer Player") {
+        //add medium computer player
+        playerTypes.add(new GamePlayerType("Medium Computer Player") {
+            @Override
+            public GamePlayer createPlayer(String name) {
+                return new GoSmartComputerPlayer2(name);
+            }
+        });
+
+
+        //add hard computer player
+        playerTypes.add(new GamePlayerType("Hard Computer Player") {
             @Override
             public GamePlayer createPlayer(String name) {
                 return new GoSmartComputerPlayer(name);
