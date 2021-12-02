@@ -125,10 +125,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	/* getWinningScore
 	 * getter function for the winning score
 	 *
-	 * @return  If a winning move was found, a Point object containing
+	 * @return  if a winning move was found, a point object containing
 	 *   the coordinates.  If no winning move was found, null.
-	 *
-	 * TODO - testing
 	 */
 	public int getWinningScore() { return winningScore; }//getWinningScore
 
