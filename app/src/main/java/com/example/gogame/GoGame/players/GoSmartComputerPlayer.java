@@ -122,7 +122,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	/* HELPER FUNCTIONS */
 
-	/* getWinningScore
+	////TODO - REMOVE???
+	/**
+	 * getWinningScore
 	 * getter function for the winning score
 	 *
 	 * @return  if a winning move was found, a point object containing
@@ -142,17 +144,17 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 */
 	public int evaluateBoard() {
 		// get the current player
-		int player0Score = goGS.getPlayer1Score();
 		int player1Score = goGS.getPlayer1Score();
+		int player2Score = goGS.getPlayer2Score();
 
 		// determine if current player is black - ensure score is not 0 for division
-		if (goGS.getPlayer() == this.playerNum) if (player0Score == 0) player0Score = 1;
+		if (goGS.getPlayer() == this.playerNum) if (player1Score == 0) player1Score = 1;
 
 		// otherwise, the current player is white - ensure score is not 0 for division
-		else if (player1Score == 0) player1Score = 1;
+		else if (player2Score == 0) player2Score = 1;
 
 		// return the relative score
-		return player1Score / player0Score;
+		return player2Score / player1Score;
 	}//evaluateBoard
 
 	/**
