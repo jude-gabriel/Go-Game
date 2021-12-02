@@ -59,7 +59,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
         goGameState = (GoGameState) info;
 
         //Initialize the best move array
-        bestMove = new int[9][9];
+        bestMove = new int[goGameState.getBoardSize()][goGameState.getBoardSize()];
 
         //If it is the first move of the game agree to a handicap
         if(goGameState.getTotalMoves() == 0){
@@ -68,12 +68,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 
 
         //Find what color stone this AI is
-        if(goGameState.getIsPlayer1() == true){
-            isPlayer1 = true;
-        }
-        else{
-            isPlayer1 = false;
-        }
+        isPlayer1 = goGameState.getIsPlayer1();
 
         //Initialize the x and y coordinate as well as the running score
         x = -1;

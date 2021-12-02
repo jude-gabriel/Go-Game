@@ -77,17 +77,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 		// initialize the global game state variable
 		assert info instanceof GoGameState;
-		GoGameState initGS = (GoGameState) info;
-
-		//////// TODO determine whether i need this copy
-		goGS = new GoGameState(initGS);
+		goGS = (GoGameState) info;
 
 		// get the board size
 		boardSize = goGS.getBoardSize();
 
 		// initialize the game board
-		// TODO - DO I NEED TO DO A DEEP COPY?
-		gameBoard = goGS.getGameBoard();
+		gameBoard = goGS.deepCopyArray(goGS.getGameBoard());
 
 		// assuming that AI is better player so if AI is white,
 		// always give black more stones
@@ -105,14 +101,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			oppStoneColor = Stone.StoneColor.BLACK;
 		}
 
-		// have the AI skip their turn if the score is lower
-		//TODO - verify this is a valid score to skip on
-		// LIKELY THE ISSUE WITH HAVING THE SAME SCORES
-		if(getWinningScore() < 1000) {
-			Logger.log(TAG, "Smart AI's Skip");
-			game.sendAction(new GoSkipTurnAction(this));
-		}
-
 		//TODO - FIGURE OUT WHERE CRASHING
 		// get the current best move starting at depth
 		// zero for the algorithm
@@ -124,6 +112,14 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
         // get the x- and y-coordinates of the best move
 		int xNext = nextMove[0];
 		int yNext = nextMove[1];
+
+		// have the AI skip their turn if the score is lower
+		//TODO - verify this is a valid score to skip on
+		// LIKELY THE ISSUE WITH HAVING THE SAME SCORES
+		if(winningScore < 1000) {
+			Logger.log(TAG, "Smart AI's Skip");
+			game.sendAction(new GoSkipTurnAction(this));
+		}
 
 		// send a move action
         game.sendAction(new GoMoveAction(this, xNext, yNext));
@@ -696,8 +692,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				}
 
 				// determine the row and column are in bounds
-				if (row > 1) {
-					if (col > 1) {
+				if (row > 0) {
+					if (col > 0) {
 						// verify the liberty is not empty
 						if (gameBoard[row - 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
 								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
@@ -743,7 +739,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 				// verify the liberties are in bounds
 				if (row < boardSize - 1) {
-					if (col > 1) {
+					if (col > 0) {
 						// verify the liberty is not empty
 						if (gameBoard[row + 1][col - 1].getStoneColor() != Stone.StoneColor.NONE ||
 								gameBoard[row][col - 1].getStoneColor() != Stone.StoneColor.NONE) {
