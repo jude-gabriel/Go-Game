@@ -39,7 +39,7 @@
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
@@ -69,6 +69,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="HELP" />
+
+        <TextView
+            android:id="@+id/helpButtonText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elegantTextHeight="true"
+            android:text="The goal of Go is to take up as much space as possible on the board by capturing the opponent's stones. You can capture stones by fully surrounding the opponents stones."
+            android:textColor="#FDFDFD"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
     </LinearLayout>
 
@@ -163,13 +174,14 @@
                 android:textColor="#FDFDFD"
                 android:textSize="16sp"
                 android:textStyle="italic" />
+
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/moveInfoLayout"
-        android:layout_width="600dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="100dp"
@@ -189,6 +201,19 @@
             android:textAlignment="center"
             android:textColor="#FFFEFE"
             android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/helpButtonText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
+            android:textAlignment="center"
+            android:textColor="#FDFDFD"
+            android:textSize="25sp"
+            android:textStyle="italic" />
 
         <Space
             android:layout_width="match_parent"
@@ -245,24 +270,9 @@
             android:id="@+id/helpButtonText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
-            android:textAlignment="center"
+            android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."
             android:textColor="#FDFDFD"
-            android:textSize="25sp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/helpButtonText1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:elegantTextHeight="true"
-            android:text="The goal of Go is to take up as much space as possible on the board by capturing the opponent's stones. You can capture stones by fully surrounding the opponents stones."
-            android:textColor="#FDFDFD"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="italic" />
 
         <LinearLayout

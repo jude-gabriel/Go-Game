@@ -173,7 +173,7 @@
         android:layout_width="880dp"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="620dp"
+        android:layout_marginTop="670dp"
         android:layout_marginEnd="200dp"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
@@ -262,7 +262,7 @@
     <LinearLayout
         android:id="@+id/moveInfoLayout"
         android:layout_width="300dp"
-        android:layout_height="657dp"
+        android:layout_height="300dp"
         android:layout_marginEnd="10dp"
         android:gravity="center|center_vertical"
         android:orientation="vertical"
@@ -281,7 +281,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="50dp" />
 
         <TextView
             android:id="@+id/validMovetext"
@@ -296,7 +296,7 @@
 
     <LinearLayout
         android:layout_width="198dp"
-        android:layout_height="450dp"
+        android:layout_height="500dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -307,16 +307,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
 
-        <TextView
-            android:id="@+id/helpButtonText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
-            android:textColor="#FDFDFD"
-            android:textSize="25sp"
-            android:textStyle="italic" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
         <Button
             android:id="@+id/skipTurnButton"
