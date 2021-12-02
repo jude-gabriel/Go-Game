@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
-        android:layout_width="175dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="1dp"
@@ -78,7 +78,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/helpButtonText1"
+                android:id="@+id/helpTextGoal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elegantTextHeight="true"
@@ -127,7 +127,7 @@
         android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/helpButtonText2"
+            android:id="@+id/helpTextTurn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -173,7 +173,7 @@
         android:layout_width="880dp"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="670dp"
+        android:layout_marginTop="600dp"
         android:layout_marginEnd="200dp"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
@@ -209,7 +209,7 @@
                 android:gravity="center"
                 android:text="Player 1 Score: 25"
                 android:textColor="#F6F2F2"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 tools:ignore="TextContrastCheck" />
 
             <TextView
@@ -220,12 +220,12 @@
                 android:gravity="center"
                 android:text="Player 2 Score: 19"
                 android:textColor="#F1EBEB"
-                android:textSize="27sp"
+                android:textSize="20sp"
                 tools:ignore="TextContrastCheck" />
             android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/helpButtonText3"
+                android:id="@+id/helpTextScore"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
@@ -296,7 +296,7 @@
 
     <LinearLayout
         android:layout_width="198dp"
-        android:layout_height="500dp"
+        android:layout_height="600dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -337,7 +337,7 @@
             android:textColor="#FBFBFB" />
 
         <TextView
-            android:id="@+id/helpButtonText4"
+            android:id="@+id/helpTextSkip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."
