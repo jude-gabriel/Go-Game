@@ -34,13 +34,19 @@
             android:scaleY="1"
             android:translationX="300dp" />
 
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical"></LinearLayout>
+
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:paddingRight="7dp"
@@ -70,6 +76,11 @@
             android:layout_height="wrap_content"
             android:text="HELP" />
 
+        <Space
+            android:id="@+id/spaceForValid"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -88,7 +99,7 @@
             android:layout_height="wrap_content"
             android:text="Go! 圍棋"
             android:textColor="#FBFBFB"
-            android:textSize="48sp"
+            android:textSize="80sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -112,71 +123,101 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/elapsedTimeText"
-            android:layout_width="434dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FF793C"
-            android:gravity="center"
-            android:text="Elapsed Time: 18:20"
-            android:textColor="#F1EBEB"
-            android:textSize="25sp"
-            tools:ignore="TextContrastCheck" />
-
         <LinearLayout
-            android:id="@+id/playerScoreLayout"
-            android:layout_width="486dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="right"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/player1ScoreText"
-                android:layout_width="467dp"
-                android:layout_height="wrap_content"
-                android:background="#FE7945"
-                android:gravity="center"
-                android:text="Player 1 Score: 25"
-                android:textColor="#F6F2F2"
-                android:textSize="31sp"
-                tools:ignore="TextContrastCheck" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/player2ScoreText"
-                android:layout_width="467dp"
-                android:layout_height="wrap_content"
-                android:background="#FBB51D"
-                android:gravity="center"
-                android:text="Player 2 Score: 19"
-                android:textColor="#F1EBEB"
-                android:textSize="31sp"
-                tools:ignore="TextContrastCheck" />
-            android:textSize="25sp" />
+                <TextView
+                    android:id="@+id/elapsedTimeText"
+                    android:layout_width="400dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="#FF793C"
+                    android:gravity="center"
+                    android:text="Elapsed Time: 18:20"
+                    android:textColor="#F1EBEB"
+                    android:textSize="25sp"
+                    tools:ignore="TextContrastCheck" />
 
-            <TextView
-                android:id="@+id/helpButtonText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
-                android:textColor="#FDFDFD"
-                android:textSize="16sp"
-                android:textStyle="italic" />
+                <Space
+                    android:layout_width="100dp"
+                    android:layout_height="130dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/playerScoreLayout"
+                android:layout_width="486dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/player1ScoreText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FE7945"
+                    android:gravity="center"
+                    android:text="Player 1 Score: 25"
+                    android:textColor="#F6F2F2"
+                    android:textSize="31sp"
+                    tools:ignore="TextContrastCheck" />
+
+                <TextView
+                    android:id="@+id/player2ScoreText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FBB51D"
+                    android:gravity="center"
+                    android:text="Player 2 Score: 19"
+                    android:textColor="#F1EBEB"
+                    android:textSize="31sp"
+                    tools:ignore="TextContrastCheck" />
+                android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/helpTextScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
+                    android:textColor="#FDFDFD"
+                    android:textSize="17sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/moveInfoLayout"
-        android:layout_width="600dp"
+        android:layout_width="550dp"
         android:layout_height="wrap_content"
+
+        android:layout_marginStart="120dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="100dp"
         android:gravity="center|center_vertical"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
+
+        <TextView
+            android:id="@+id/validMovetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ED1909"
+            android:textColor="#090909"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/playerTurnText"
@@ -190,32 +231,43 @@
             android:textColor="#FFFEFE"
             android:textSize="30sp" />
 
+        <TextView
+            android:id="@+id/helpTextGoal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elegantTextHeight="true"
+            android:text="The goal of Go is to take up as much space as possible on the board by capturing the opponent's stones. You can capture stones by fully surrounding the opponents stones."
+            android:textColor="#FDFDFD"
+            android:textSize="23sp"
+            android:textStyle="italic" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="15dp" />
 
         <TextView
             android:id="@+id/opponentMoveText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#0A8DF6"
+            android:background="#9C6EAF"
             android:text="Your Move Info"
             android:textColor="#FFFFFF"
             android:textSize="25sp"
             android:textStyle="italic" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="25dp" />
-
         <TextView
-            android:id="@+id/validMovetext"
-            android:layout_width="wrap_content"
+            android:id="@+id/helpTextTurn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ED1909"
-            android:textColor="#090909"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
+            android:textAlignment="center"
+            android:textColor="#FDFDFD"
             android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textStyle="italic" />
 
     </LinearLayout>
 
@@ -232,37 +284,14 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/helpButtonText4"
+            android:id="@+id/helpTextSkip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."
-            android:textColor="#FDFDFD"
-            android:textSize="24sp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/helpButtonText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
             android:textAlignment="center"
             android:textColor="#FDFDFD"
-            android:textSize="25sp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/helpButtonText1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:elegantTextHeight="true"
-            android:text="The goal of Go is to take up as much space as possible on the board by capturing the opponent's stones. You can capture stones by fully surrounding the opponents stones."
-            android:textColor="#FDFDFD"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="italic" />
 
         <LinearLayout

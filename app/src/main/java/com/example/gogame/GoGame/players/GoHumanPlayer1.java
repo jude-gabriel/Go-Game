@@ -233,13 +233,13 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.timerText = activity.findViewById(R.id.elapsedTimeText);
             this.opponentMoveText = activity.findViewById(R.id.opponentMoveText);
             opponentMoveText.setVisibility(View.INVISIBLE);
-            this.helpButtonText1 = activity.findViewById(R.id.helpButtonText1);
+            this.helpButtonText1 = activity.findViewById(R.id.helpTextGoal);
             helpButtonText1.setVisibility(View.INVISIBLE);
-            this.helpButtonText2 = activity.findViewById(R.id.helpButtonText2);
+            this.helpButtonText2 = activity.findViewById(R.id.helpTextTurn);
             helpButtonText2.setVisibility(View.INVISIBLE);
-            this.helpButtonText3 = activity.findViewById(R.id.helpButtonText3);
+            this.helpButtonText3 = activity.findViewById(R.id.helpTextScore);
             helpButtonText3.setVisibility(View.INVISIBLE);
-            this.helpButtonText4 = activity.findViewById(R.id.helpButtonText4);
+            this.helpButtonText4 = activity.findViewById(R.id.helpTextSkip);
             helpButtonText4.setVisibility(View.INVISIBLE);
 
             this.handicapButton = activity.findViewById(R.id.handicapButton);
