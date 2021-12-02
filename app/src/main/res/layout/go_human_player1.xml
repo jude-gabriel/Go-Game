@@ -288,7 +288,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."
+            android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game. "
             android:textAlignment="center"
             android:textColor="#FDFDFD"
             android:textSize="24sp"
