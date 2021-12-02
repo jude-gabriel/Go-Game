@@ -37,7 +37,7 @@ public class GoDumbComputerPlayer extends GameComputerPlayer {
      *
      * @param info
      *
-     * @author Mia Anderson
+     * @author Mia Andersonnnn
      */
     @Override
     protected void receiveInfo(GameInfo info) {
