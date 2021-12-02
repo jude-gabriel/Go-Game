@@ -58,7 +58,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// verify this is a valid go game state
 		assert info != null;
 
-		// if an illegal move, return //todo verify works
+		// if an illegal move, return
 		if (info instanceof IllegalMoveInfo) return;
 
 		// verify it is the smart AI's turn
@@ -76,16 +76,18 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 		// initialize the global game state variable
 		assert info instanceof GoGameState;
-		goGS = (GoGameState) info;
+		GoGameState initGS = (GoGameState) info;
+
+		//////// TODO determine whether i need this copy
+		goGS = new GoGameState(initGS);
 
 		// initialize the game board
+		// TODO - DO I NEED TO DO A DEEP COPY?
 		gameBoard = goGS.getGameBoard();
 
 		// assuming that AI is better player so if AI is white,
 		// always give black more stones
-        if(goGS.getTotalMoves() == 0 && isSmartAI) {
-            game.sendAction(new GoHandicapAction(this));
-        }
+        if(goGS.getTotalMoves() == 0 && isSmartAI) { game.sendAction(new GoHandicapAction(this)); }
 		
 		// determine the current AI's and opponent's color
 		if (this.playerNum == 0)
@@ -100,13 +102,16 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		}
 
 		// have the AI skip their turn if the score is lower
+		//TODO - verify this is a valid score to skip on
+		// LIKELY THE ISSUE WITH HAVING THE SAME SCORES
 		if(getWinningScore() < 1000) {
 			Logger.log(TAG, "Smart AI's Skip");
 			game.sendAction(new GoSkipTurnAction(this));
 		}
 
 		//TODO - FIGURE OUT WHERE CRASHING
-		// get the current best move starting at depth zero for the algorithm
+		// get the current best move starting at depth
+		// zero for the algorithm
 		int[] nextMove = calculateNextMove(0);
 
 		// send the move to the game object
