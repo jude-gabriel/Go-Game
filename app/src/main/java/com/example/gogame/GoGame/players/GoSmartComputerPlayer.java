@@ -31,8 +31,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 
 	/* INSTANCE / MEMBER VARIABLES */
 	// instantiate variables to...
-	private Stone[][] gameBoard; 		// current game board
 	private GoGameState goGS;			// current game state
+	private Stone[][] gameBoard; 		// current game board
 	boolean isSmartAI;					// track is smart AI's turn
 	Stone.StoneColor AIStoneColor;		// smart AI's stone color
 	Stone.StoneColor oppStoneColor;		// opponent's stone color
@@ -140,28 +140,19 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @return the value to be used as the score in the minimax algorithm
 	 *
 	 */
-	public double evaluateBoard() {
+	public int evaluateBoard() {
 		// get the current player
 		int player0Score = goGS.getPlayer1Score();
 		int player1Score = goGS.getPlayer1Score();
 
-		// determine if current player is black
-		if (goGS.getPlayer() == this.playerNum) {
-			// ensure the score for black is not 0 for division
-			if (player0Score == 0) player0Score = 1;
+		// determine if current player is black - ensure score is not 0 for division
+		if (goGS.getPlayer() == this.playerNum) if (player0Score == 0) player0Score = 1;
 
-			// return the relative score of white against black
-			return (double) (player1Score / player0Score);
-		}
+		// otherwise, the current player is white - ensure score is not 0 for division
+		else if (player1Score == 0) player1Score = 1;
 
-		// otherwise, the current player is white
-		else {
-			// ensure the score for white is not 0 for division
-			if (player1Score == 0) player1Score = 1;
-
-			// return the relative score of black against white
-			return (double) (player0Score / player1Score);
-		}
+		// return the relative score
+		return player1Score / player0Score;
 	}//evaluateBoard
 
 	/**
