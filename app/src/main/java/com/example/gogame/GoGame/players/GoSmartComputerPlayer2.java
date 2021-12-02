@@ -6,7 +6,6 @@ import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
-import com.example.gogame.GameFramework.utilities.Logger;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
@@ -19,24 +18,23 @@ import java.util.Random;
 
 public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 
-
-    int[][] bestMove;
-    GoGameState goGameState;
-    GoGameState copyState;
-    boolean isPlayer1;
-    int x;
-    int y;
-    int runningScore;
-
-
+    /* Instance variables for the smart computer player 2 */
+    int[][] bestMove;           //Stores the amount of points each move can make
+    GoGameState goGameState;    //Most recent gamestate
+    GoGameState copyState;      //Copy of the gamestate
+    boolean isPlayer1;          //Check who's turn it is
+    int x;                      //Stores the x coordinate of the move
+    int y;                      //Stores the y coordinate of the move
+    int runningScore;           //Holds the current highest score
 
 
     /**
      * constructor
      *
-     * @param name the player's name (e.g., "John")
+     * @param name the player's name
      */
     public GoSmartComputerPlayer2(String name) {
+        //Call super on the name of the player
         super(name);
     }
 
@@ -69,7 +67,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
         }
 
 
-        //Check which color stone this AI is
+        //Find what color stone this AI is
         if(goGameState.getIsPlayer1() == true){
             isPlayer1 = true;
         }
@@ -77,26 +75,40 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
             isPlayer1 = false;
         }
 
+        //Initialize the x and y coordinate as well as the running score
         x = -1;
         y = -1;
         runningScore = 0;
 
+        //Reset the score
         resetScore();
+
+        //Find the score for each possible move
         populateScores();
+
+        //Find which one is the highest scoring move
         findBestScore();
 
+        //Sleep to simulate the AI thinking
         sleep(0.05);
+
+        //See if there is a valid move
         if(x == -1 || y == -1){
             game.sendAction(new GoSkipTurnAction(this));
         }
+
+        //Send a move action with the highest scoring move
         game.sendAction(new GoMoveAction(this, x, y));
     }
 
 
     /**
-     * resets the scoring array
+     * Resets the scoring array
+     *
+     * DO I NEED THIS???
      */
     public void resetScore(){
+        //Iterate through the array and set the scores to 0
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
                 bestMove[i][j] = 0;
@@ -108,6 +120,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
      * Finds the score at each spot
      */
     public void populateScores(){
+        //Iterate through the gameboard and create a copy of the state each iteration
         for(int i = 0; i < goGameState.getBoardSize(); i++){
             for(int j = 0; j < goGameState.getBoardSize(); j++){
                 //Create the new gamestate
@@ -121,10 +134,13 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
                 //Always make sure the game is not over
                 copyState.setGameOver(false);
 
+                //Check that a move is possible
                 if(copyState.getGameBoard()[i][j].getStoneColor() != Stone.StoneColor.NONE){
                     bestMove[i][j] = 0;
                     continue;
                 }
+
+                //Check if the move is valid or not
                 boolean isValid = true;
                 isValid = copyState.playerMove(i, j);
                 if(isValid == false){
@@ -149,16 +165,23 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
      * Finds the location of the highest score
      */
     public void findBestScore(){
+        //Create an array list to store the locations of equally scoring moves
         ArrayList<Integer[]> equalMoves = new ArrayList<Integer[]>();
 
+        //Iterate through the best move array and find the highest scoring move
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
                 if(bestMove[i][j] > runningScore){
+                    //Store the location of the highest scoring move
                     x = i;
                     y = j;
+
+                    //Change the running score and clear the arraylist to find new equal moves
                     runningScore = bestMove[i][j];
                     equalMoves.clear();
                 }
+
+                //If there is an equal move, update the array list to store it
                 if(bestMove[i][j] == runningScore){
                     Integer[] move = {i, j};
                     equalMoves.add(move);
@@ -166,13 +189,20 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
             }
         }
 
+        //Check if there are moves that produce the same highest score
         if (equalMoves.isEmpty() == false){
-            Logger.log("Size", Integer.toString(equalMoves.size()));
+            //Generate a new random to select the move
             Random rand = new Random();
+
+            //Check if the array list is big enough to generate a random number
             int index = 0;
+
+            //Create a random value to find a location for the stone
             if(equalMoves.size() > 1) {
                 index = rand.nextInt(equalMoves.size() - 1);
             }
+
+            //Set the locations of the moves
             x = equalMoves.get(index)[0];
             y = equalMoves.get(index)[1];
         }
