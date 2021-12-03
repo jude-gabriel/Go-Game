@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:id="@+id/selectPlayerLayout"
-        android:layout_width="175dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="1dp"
@@ -155,7 +155,7 @@
         android:layout_width="880dp"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="620dp"
+        android:layout_marginTop="600dp"
         android:layout_marginEnd="200dp"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
@@ -191,7 +191,7 @@
                 android:gravity="center"
                 android:text="Player 1 Score: 25"
                 android:textColor="#F6F2F2"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 tools:ignore="TextContrastCheck" />
 
             <TextView
@@ -202,7 +202,7 @@
                 android:gravity="center"
                 android:text="Player 2 Score: 19"
                 android:textColor="#F1EBEB"
-                android:textSize="27sp"
+                android:textSize="20sp"
                 tools:ignore="TextContrastCheck" />
             android:textSize="25sp" />
 
@@ -244,7 +244,7 @@
     <LinearLayout
         android:id="@+id/moveInfoLayout"
         android:layout_width="300dp"
-        android:layout_height="657dp"
+        android:layout_height="300dp"
         android:layout_marginEnd="10dp"
         android:gravity="center|center_vertical"
         android:orientation="vertical"
@@ -263,7 +263,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="50dp" />
 
         <TextView
             android:id="@+id/validMovetext"
@@ -278,7 +278,7 @@
 
     <LinearLayout
         android:layout_width="198dp"
-        android:layout_height="450dp"
+        android:layout_height="600dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -288,6 +288,11 @@
         app:layout_constraintEnd_toStartOf="@+id/gameBoardLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
         <Button
             android:id="@+id/skipTurnButton"
