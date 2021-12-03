@@ -99,9 +99,9 @@ public class GoLocalGame extends LocalGame {
 				int p1Score = state.getPlayer1Score();
 				int p2Score = state.getPlayer2Score();
 				if (p1Score > p2Score) {
-					return playerNames[0] + " is the winner";
+					return playerNames[0] + " is the winner. ";
 				} else if (p2Score > p1Score) {
-					return playerNames[1] + " is the winner";
+					return playerNames[1] + " is the winner. ";
 				} else {
 					return "Tie game!";
 				}

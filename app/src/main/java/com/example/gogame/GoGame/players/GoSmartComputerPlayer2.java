@@ -6,6 +6,7 @@ import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.gogame.GameFramework.players.GameComputerPlayer;
+import com.example.gogame.GoGame.goActionMessage.GoForfeitAction;
 import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
 import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
@@ -16,6 +17,11 @@ import com.example.gogame.GoGame.infoMessage.Stone;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Medium smart computer player
+ *
+ * @author Jude Gabriel
+ */
 public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 
     /* Instance variables for the smart computer player 2 */
@@ -94,6 +100,26 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 
         //Sleep to simulate the AI thinking
         sleep(0.05);
+
+        //Get the AI's score and opponents score
+        int aiScore = 0;
+        int oppScore = 0;
+        if(isPlayer1 == true){
+            aiScore = goGameState.getPlayer1Score();
+            oppScore = goGameState.getPlayer2Score();
+        }
+        else{
+            aiScore = goGameState.getPlayer2Score();
+            oppScore = goGameState.getPlayer1Score();
+        }
+
+        //Check if the Ai is being beat a while after the game has started
+        if(oppScore > aiScore && goGameState.getTotalMoves() > 10){
+            if((oppScore - aiScore) > 30){
+                //If the AI is losing by at least 30, send a forfeit
+                game.sendAction(new GoForfeitAction(this));
+            }
+        }
 
         //See if there is a valid move
         if(x == -1 || y == -1){
