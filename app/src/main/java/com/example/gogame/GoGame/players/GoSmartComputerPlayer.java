@@ -75,16 +75,9 @@ class SmartAIMove
 public class GoSmartComputerPlayer extends GameComputerPlayer
 {
 	/* LOGGING TAGS */
-	private static final String TAG = "GoSmartComputerPlayer";
-
-	/* INSTANCE VARIABLES FOR SMART AI */
-	private final int SCORE = 100;
-	private final int MAX = Integer.MAX_VALUE;		// represents the maximum value for alpha
-	private final int MIN = Integer.MIN_VALUE;		// represents the maximum value for beta
-	private final int MAX_DEPTH = 4;				// maximum depth of the tree
-	private boolean isSmartAI = true;						// tracks if its smart AI's turn
-	private int boardSize;							// current size of hte board
+	//private static final String TAG = "GoSmartComputerPlayer";
 	private GoGameState goGS;    					// current game state
+	private int boardSize;							// current size of the board
 
 	/**
 	 * constructor
@@ -109,7 +102,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		assert info != null;
 
 		// change the smart AI's turn to true
-		isSmartAI = !(info instanceof NotYourTurnInfo);
+		// tracks if its smart AI's turn
+		boolean isSmartAI = !(info instanceof NotYourTurnInfo);
 
 		assert info instanceof GoGameState;
 
@@ -125,12 +119,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		// assuming the smart AI is the better player so always do handicap
 		if (this.playerNum != 0 && goGS.getTotalMoves() == 0) game.sendAction(new GoHandicapAction(this));
 
-
-
-		// get the last player's move
-		int[] lastMove = goGS.getMostRecentMove();
-
 		// determine the best smart AI move from the algorithm
+		// represents the maximum value for alpha
+		int MAX = Integer.MAX_VALUE;
+		// represents the maximum value for beta
+		int MIN = Integer.MIN_VALUE;
 		SmartAIMove smartAIMove = miniMaxABSearch(isSmartAI, 0, MIN, MAX);
 
 		// sleep for a few seconds
@@ -138,7 +131,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 
 		// send the information back to the game
 		game.sendAction(new GoMoveAction(this, smartAIMove.row, smartAIMove.col));
-		isSmartAI = false;
 	}//receiveInfo
 
 //////////////////	TODO - ADD HEADERS
@@ -148,9 +140,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		SmartAIMove bestMove = new SmartAIMove();
 
 		// determine if the max level is reached
+		// maximum depth of the tree
+		int MAX_DEPTH = 4;
 		if (depth == MAX_DEPTH)
 		{
 			// determine which player it is and set according score
+			/* INSTANCE VARIABLES FOR SMART AI */
+			int SCORE = 100;
 			if (isSmartAI) bestMove.score = SCORE - depth;
 			else bestMove.score = -(SCORE) + depth;
 			//else if (!isSmartAI) bestMove.score = -(SCORE) + depth;
