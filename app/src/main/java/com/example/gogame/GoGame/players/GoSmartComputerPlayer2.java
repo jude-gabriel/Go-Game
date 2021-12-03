@@ -105,12 +105,12 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
         int aiScore = 0;
         int oppScore = 0;
         if(isPlayer1 == true){
-            aiScore = goGameState.getPlayer1Score();
-            oppScore = goGameState.getPlayer2Score();
-        }
-        else{
             aiScore = goGameState.getPlayer2Score();
             oppScore = goGameState.getPlayer1Score();
+        }
+        else{
+            aiScore = goGameState.getPlayer1Score();
+            oppScore = goGameState.getPlayer2Score();
         }
 
         //Check if the Ai is being beat a while after the game has started
