@@ -138,7 +138,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
                 //Check if the move is valid or not
                 boolean isValid = true;
                 isValid = copyState.playerMove(i, j);
-                if(isValid == false){
+                if(!isValid){
                     bestMove[i][j] = 0;
                     continue;
                 }

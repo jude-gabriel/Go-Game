@@ -6,9 +6,6 @@
  * @author Brynn Harrington
  * @author Jude Gabriel
  */
-
-
-
 package com.example.gogame.GoGame.infoMessage;
 
 import android.graphics.Canvas;
