@@ -103,9 +103,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	private final int SCORE = 100;
 	private final int MAX = Integer.MAX_VALUE;		// represents the maximum value for alpha
 	private final int MIN = Integer.MIN_VALUE;		// represents the maximum value for beta
-	GoGameState goGS;    							// current game state
-	Stone.StoneColor smartAIStone;					// smart AI stone color
-	Stone.StoneColor oppStone;						// opponent's stone color
+	private final int MAX_DEPTH = 5;				// maximum depth of the tree
+	private boolean isSmartAI;						// tracks if its the smart AI's turn
+	private int boardSize;							// current size of hte board
+	private GoGameState goGS;    					// current game state
+	private Stone.StoneColor smartAIStone;			// smart AI stone color
+	private Stone.StoneColor oppStone;				// opponent's stone color
 
 	/**
 	 * constructor
@@ -135,17 +138,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 
 		// copy the state into the instance variable for modification
 		goGS = new GoGameState(origGoGS);
-	}//receiveInfo
-//////////////////	TODO - ADD HEADERS
-	public SmartAIMove miniMaxAlphaBeta(int previousRow, int previousCol, boolean isSmartAI, int depth, int alpha)
-	{
-		// initialize a variable to store the best move
-		SmartAIMove bestMove = new SmartAIMove();
 
-		//TODO - DO I CHECK WHICH TURN IT IS?
-
-		// ensure the game is not over
-		goGS.setGameOver(false);
+		// set the board size
+		boardSize = goGS.getBoardSize();
 
 		// determine the smart AI's color
 		if (this.playerNum == 0)
@@ -164,12 +159,113 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 			if(goGS.getTotalMoves() == 0) { game.sendAction(new GoHandicapAction(this)); }
 		}
 
+		// change the smart AI's turn to true
+		isSmartAI = true;
+	}//receiveInfo
+
+//////////////////	TODO - ADD HEADERS
+	public SmartAIMove miniMaxABSearch(int previousRow, int previousCol, boolean isSmartAI, int depth, int alpha, int beta)
+	{
+		// initialize a variable to store the best move
+		SmartAIMove bestMove = new SmartAIMove();
+
+		// determine if the max level is reached
+		if (depth == MAX_DEPTH)
+		{
+			// determine which player it is and set according score
+			if (isSmartAI) bestMove.score = SCORE - depth;
+			else if (!isSmartAI) bestMove.score = -(SCORE) + depth;
+			else bestMove.score = -(depth);
+		}//max depth reached
+
+		// determine if it is the smart AI's turn
+		else if(isSmartAI)
+		{
+			// set the best move's score to alpha
+			bestMove.score = alpha;
+
+			// initialize a for loop type to break for smart AI
+			forLoopSmartAI:
+			for (int r = 0; r < boardSize; r++) {
+				for (int c = 0; c < boardSize; c++) {
+					// get the current liberty color
+					Stone.StoneColor stoneColor = goGS.getGameBoard()[r][c].getStoneColor();
+
+					// determine if the current liberty is empty
+					if (stoneColor == Stone.StoneColor.NONE)
+					{
+						// play a move on the board's copy
+						goGS.playerMove(r, c);
+
+						// determine the current score
+						int s =
+								miniMaxABSearch(r, c, !isSmartAI, depth + 1, bestMove.score, beta).score;
+
+						// if score is greater, reset the values
+						if (s > bestMove.score)
+						{
+							bestMove.row   = r;
+							bestMove.col   = c;
+							bestMove.score = s;
+						}
+
+						// if the beta value is greater, break
+						if (beta <= bestMove.score) break forLoopSmartAI;
+					}//end no stone color
+				}//end column
+			}//end row
+		}//smartAI - max depth not reached
+
+		// determine if it is the smart AI's turn
+		else
+		{
+			// set the best move's score to beta
+			bestMove.score = beta;
+
+			// initialize a for loop type to break for smart AI
+			forLoopOpponent:
+			for (int r = 0; r < boardSize; r++) {
+				for (int c = 0; c < boardSize; c++) {
+					// get the current liberty color
+					Stone.StoneColor stoneColor = goGS.getGameBoard()[r][c].getStoneColor();
+
+					// determine if the current liberty is empty
+					if (stoneColor == Stone.StoneColor.NONE)
+					{
+						// play a move on the board's copy
+						goGS.playerMove(r, c);
+
+						// determine the current score
+						int s =
+								miniMaxABSearch(r, c, isSmartAI, depth + 1, bestMove.score, beta).score;
+
+						// if score is greater, reset the values
+						if (s > bestMove.score)
+						{
+							bestMove.row   = r;
+							bestMove.col   = c;
+							bestMove.score = s;
+						}
+
+						// if the beta value is greater, break
+						if (bestMove.score <= alpha) break forLoopOpponent;
+					}//end no stone color
+				}//end column
+			}//end row
 		// return the best move
 		return bestMove;
 	}//miniMaxSearchAB
 
 	public SmartAIMove searchBestMove(int previousRow, int previousCol, boolean isSmartAI, int depth, int alpha)
 	{
+		// initialize a number to track how many moves attempted to see if the board is empty
+		int movesMade = 0;
+		int boardSize = goGS.getBoardSize();
+		int totalMoves = boardSize * boardSize;
+
+		// ensure the game copy is not over
+		goGS.setGameOver(false);
+
 		// initialize a variable to store the best move
 		SmartAIMove bestMove = new SmartAIMove();
 
@@ -180,14 +276,18 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 			bestMove.score = MIN;
 
 			// iterate through the rows and columns of the current board
-			for (int r = 0; r < goGS.getBoardSize(); r++) {
-				for (int c = 0; c < goGS.getBoardSize(); c++) {
+			for (int r = 0; r < boardSize; r++) {
+				for (int c = 0; c < boardSize; c++) {
 					// get the current stone color
 					Stone.StoneColor stoneColor = goGS.getGameBoard()[r][c].getStoneColor();
 					// determine if the liberty is empty
 					if (stoneColor == Stone.StoneColor.NONE)
 					{
+						// attempt to place the smart AI's stone in this position
+						goGS.playerMove(r, c);
 
+						// determine the current best move by the alpha beta algorithm
+						//int score = miniMaxABSearch(r, c, !isSmartAI, depth + 1, bestMove.score, beta).score;
 					}
 
 				}
