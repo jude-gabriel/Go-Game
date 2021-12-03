@@ -674,7 +674,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 */
 	public ArrayList<int[]> generateMoves() {
-		int emptyCount = 0;
+		//int emptyCount = 0;
 
 		// initialize the a list of different moves
 		ArrayList<int[]> moveList = new ArrayList<>();
@@ -686,7 +686,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				//TODO - FIGURE OUT WHY THERE IS AN ERROR
 				// verify there is at least one adjacent cell
 				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE){
-					emptyCount++;
+					//emptyCount++;
 					continue;
 				}
 
@@ -781,10 +781,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}//endCol
 		}//endRow
 
-		if(emptyCount == 81){
+		/*if(emptyCount == 81){
 			int[] move = {1, 1};
 			moveList.add(move);
-		}
+		}*/
 
 		// return the move list
 		return moveList;
