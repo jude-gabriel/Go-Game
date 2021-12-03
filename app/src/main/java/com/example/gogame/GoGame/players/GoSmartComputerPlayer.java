@@ -30,10 +30,10 @@
 package com.example.gogame.GoGame.players;
 
  import com.example.gogame.GameFramework.infoMessage.GameInfo;
-import com.example.gogame.GameFramework.players.GameComputerPlayer;
-import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
-import com.example.gogame.GoGame.infoMessage.GoGameState;
-import com.example.gogame.GoGame.infoMessage.Stone;
+ import com.example.gogame.GameFramework.players.GameComputerPlayer;
+ import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
+ import com.example.gogame.GoGame.infoMessage.GoGameState;
+ import com.example.gogame.GoGame.infoMessage.Stone;
 
 
  /**
@@ -83,8 +83,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	private boolean isSmartAI;						// tracks if its the smart AI's turn
 	private int boardSize;							// current size of hte board
 	private GoGameState goGS;    					// current game state
-	private Stone.StoneColor smartAIStone;			// smart AI stone color
-	private Stone.StoneColor oppStone;				// opponent's stone color
 
 	/**
 	 * constructor
@@ -118,22 +116,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		// set the board size
 		boardSize = goGS.getBoardSize();
 
-		// determine the smart AI's color
-		if (this.playerNum == 0)
-		{
-			// since player 0 is black, set smart AI to black
-			smartAIStone = Stone.StoneColor.BLACK;
-			oppStone = Stone.StoneColor.WHITE;
-		}
-		else
-		{
-			// since player 1 is black, set smart AI to white
-			smartAIStone = Stone.StoneColor.WHITE;
-			oppStone = Stone.StoneColor.BLACK;
-
-			// assuming the smart AI is the better player so always do handicap
-			if(goGS.getTotalMoves() == 0) { game.sendAction(new GoHandicapAction(this)); }
-		}
+		// assuming the smart AI is the better player so always do handicap
+		if (this.playerNum != 0 && goGS.getTotalMoves() == 0) game.sendAction(new GoHandicapAction(this));
 
 		// change the smart AI's turn to true
 		isSmartAI = true;
