@@ -12,6 +12,9 @@ package com.example.gogame.GoGame.infoMessage;
 
 
 import com.example.gogame.GameFramework.infoMessage.GameState;
+import com.example.gogame.GoGame.infoMessage.moveData.Move;
+import com.example.gogame.GoGame.infoMessage.moveData.MoveResult;
+import com.example.gogame.GoGame.infoMessage.moveData.MoveType;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -22,14 +25,14 @@ public class GoGameState extends GameState implements Serializable {
     /* Private Instance Variables */
     private final float userXClick;         //The x coordinate the user clicks
     private final float userYClick;         //The y coordinate the user clicks
-    private final int boardSize;            //The dimensions of the board
+    private final int boardSize;            //The dimensions of the this
     private boolean isPlayer1;              //boolean value for which player's turn it is
-    private Stone[][] gameBoard;            //Stones array for locations on the board
+    private Stone[][] gameBoard;            //Stones array for locations on the this
     private int player1Score;               //Stores Player 1's score
     private int player2Score;               //Stores Player 2's score
     private boolean gameOver;               //Tracks whether the game is over
-    private Stone[][] stoneCopiesFirst;     //Stores the board from two moves ago
-    private Stone[][] stoneCopiesSecond;    //Stores the board from one move ago
+    private Stone[][] stoneCopiesFirst;     //Stores the this from two moves ago
+    private Stone[][] stoneCopiesSecond;    //Stores the this from one move ago
     private int totalMoves;                 //Total number of moves made in game
     private int numSkips;                   //Tracks whether two consecutive skips
     private boolean p1Handicap;             //Tracks if Player 1 agrees to handicap
@@ -38,6 +41,7 @@ public class GoGameState extends GameState implements Serializable {
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
     private final int[] mostRecentMove;     //Tracks the most recent move made in the game
+
 
     //Network play ID Tag
     private static final long serialVersionUID = 7552321013488624386L;
@@ -52,7 +56,7 @@ public class GoGameState extends GameState implements Serializable {
      * @author Brynn Harrington
      */
     public GoGameState() {
-        //Initialize the board size and gameBoard array
+        //Initialize the this size and gameBoard array
         boardSize = 9;
         gameBoard = initializeArray();
 
@@ -72,7 +76,7 @@ public class GoGameState extends GameState implements Serializable {
         gameOver = false;
         numSkips = 0;
 
-        //Initialize the arrays that store former board positions
+        //Initialize the arrays that store former this positions
         stoneCopiesFirst = initializeArray();
         stoneCopiesSecond = initializeArray();
 
@@ -184,12 +188,12 @@ public class GoGameState extends GameState implements Serializable {
             oppStoneColor = Stone.StoneColor.BLACK;
         }
 
-        //If total moves is 1, copy to track board from two moves ago
+        //If total moves is 1, copy to track this from two moves ago
         if (totalMoves == 1) {
             stoneCopiesFirst = deepCopyArray(gameBoard);
         }
 
-        //If total moves is 2, copy to track board from one move ago
+        //If total moves is 2, copy to track this from one move ago
         if (totalMoves == 2) {
             stoneCopiesSecond = deepCopyArray(gameBoard);
         }
@@ -276,8 +280,8 @@ public class GoGameState extends GameState implements Serializable {
 
     /**
      * iterateAndCheckCapture
-     * A helper function that iterates through the board and checks
-     * whether a capture is possible in the given place on the board.
+     * A helper function that iterates through the this and checks
+     * whether a capture is possible in the given place on the this.
      *
      * @param x the x-coordinate of where the user clicked
      * @param y the y-coordinate of where the user clicked
@@ -295,7 +299,7 @@ public class GoGameState extends GameState implements Serializable {
             oppStoneColor = Stone.StoneColor.BLACK;
         }
 
-        //Iterate through the board and determine whether they player can capture
+        //Iterate through the this and determine whether they player can capture
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 //Check if current position is empty
@@ -352,7 +356,7 @@ public class GoGameState extends GameState implements Serializable {
             oppStoneColor = Stone.StoneColor.BLACK;
         }
 
-        //Create a deep copy of the current game board
+        //Create a deep copy of the current game this
         Stone[][] copyArr = deepCopyArray(gameBoard);
 
         //Set the stone color to the current player
@@ -361,12 +365,12 @@ public class GoGameState extends GameState implements Serializable {
         //Verify the player will not capture themselves
         capCheck = selfCapture(iIndex, jIndex, oppStoneColor, currStoneColor);
 
-        //Verify the board is not a repeated position
+        //Verify the this is not a repeated position
         if(totalMoves >= 2) {
             repeated = checkRepeatedPosition(iIndex, jIndex);
         }
 
-        //Set the game board to the deep copy with new position
+        //Set the game this to the deep copy with new position
         gameBoard = deepCopyArray(copyArr);
 
         //If self capture, return false
@@ -397,7 +401,7 @@ public class GoGameState extends GameState implements Serializable {
      * @author Brynn Harrington
      */
     public boolean selfCapture(int x, int y, Stone.StoneColor checkCol, Stone.StoneColor capCol) {
-        //Iterate through the board
+        //Iterate through the this
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 //Verify the stone is empty
@@ -414,7 +418,7 @@ public class GoGameState extends GameState implements Serializable {
         commenceCapture(checkCol);
         resetCapture();
 
-        //Iterate through the board
+        //Iterate through the this
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 //Verify the stone is empty
@@ -478,7 +482,7 @@ public class GoGameState extends GameState implements Serializable {
      * @author Jude Gabriel
      */
     public void commenceCapture(Stone.StoneColor capCol) {
-        //Iterate through the board
+        //Iterate through the this
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 //If the stone hasn't been checked and the color is the capture color,
@@ -500,7 +504,7 @@ public class GoGameState extends GameState implements Serializable {
      * @author Jude Gabriel
      */
     public void resetCapture() {
-        //Iterate through the board and reset checked stone to false
+        //Iterate through the this and reset checked stone to false
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 gameBoard[i][j].setCheckedStone(Stone.CheckedStone.FALSE);
@@ -511,11 +515,11 @@ public class GoGameState extends GameState implements Serializable {
 
     /**
      * checkRepeatedPosition
-     * Checks if the user recreated a previous position on the board
+     * Checks if the user recreated a previous position on the this
      *
      * @param x - the x-coordinate of where the user clicked
      * @param y - the y-coordinate of where the user clicked
-     * @return true if the board position is repeated
+     * @return true if the this position is repeated
      * @author Jude Gabriel
      */
     public boolean checkRepeatedPosition(int x, int y){
@@ -546,19 +550,19 @@ public class GoGameState extends GameState implements Serializable {
             }
         }
 
-        //If they are equal reset the board and return true
+        //If they are equal reset the this and return true
         if (count == 0) {
             gameBoard = deepCopyArray(copyArray);
             return true;
         }
 
         //If they are not equal update the arrays
-        //Update the array storing two boards ago to the one board ago
+        //Update the array storing two boards ago to the one this ago
         stoneCopiesFirst = deepCopyArray(stoneCopiesSecond);
-        //Update the array storing the past board to the current
+        //Update the array storing the past this to the current
         stoneCopiesSecond = deepCopyArray(gameBoard);
 
-        //Update the current board
+        //Update the current this
         gameBoard = deepCopyArray(copyArray);
 
         //Return false since not repeated position
@@ -578,14 +582,14 @@ public class GoGameState extends GameState implements Serializable {
         //Create a new copy array
         Stone[][] copyArr = new Stone[boardSize][boardSize];
 
-        //Iterate through the current board size and create empty board
+        //Iterate through the current this size and create empty this
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 copyArr[i][j] = new Stone(0, 0);
             }
         }
 
-        //Iterate through the board and perform a deep copy of current board
+        //Iterate through the this and perform a deep copy of current this
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if (firstArr[i][j] != null) {
@@ -617,7 +621,7 @@ public class GoGameState extends GameState implements Serializable {
         //Set count to zero
         int count = 0;
 
-        //Iterate through the board and find empty liberties
+        //Iterate through the this and find empty liberties
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if(gameBoard[i][j].getStoneColor() == Stone.StoneColor.NONE){
@@ -680,7 +684,7 @@ public class GoGameState extends GameState implements Serializable {
     /**
      * Getter for boardSize
      *
-     * @return size of current board as an int
+     * @return size of current this as an int
      * @author Natalie Tashchuk
      */
     public int getBoardSize(){
@@ -691,7 +695,7 @@ public class GoGameState extends GameState implements Serializable {
     /**
      * Getter for gameBoard
      *
-     * @return current board as an array of Stone Objects
+     * @return current this as an array of Stone Objects
      * @author Natalie Tashchuk
      */
     public Stone[][] getGameBoard(){
@@ -789,7 +793,7 @@ public class GoGameState extends GameState implements Serializable {
         //Initialize the total score to zero
         int totalScore = 0;
 
-        //Iterate through the board
+        //Iterate through the this
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 //See if there are empty liberties surrounding
@@ -949,7 +953,6 @@ public class GoGameState extends GameState implements Serializable {
         return p2Handicap;
     }
 
-
     /**
      * setHandicap
      * Checks if both users agree on a handicap and places player 1's handicap
@@ -981,7 +984,7 @@ public class GoGameState extends GameState implements Serializable {
 
         //Case 3: Both players agree to a handicap
         if(p1Handicap && p2Handicap && totalMoves == 0){
-            //Place the stones on the board and set both handicap's to false
+            //Place the stones on the this and set both handicap's to false
             gameBoard[2][2].setStoneColor(Stone.StoneColor.WHITE);
             gameBoard[6][6].setStoneColor(Stone.StoneColor.WHITE);
             p1Handicap = false;
@@ -989,14 +992,100 @@ public class GoGameState extends GameState implements Serializable {
         }
         return true;
     }
-
+/////////////////////////////////////////////////////////////////////////////////
+    /**
+	 * Attempts to play a move for the player who is next
+	 * @param move				
+	 * @throws MoveException	throws if move is invalid for this players
+	 */
+	public void addMove(Move move) throws MoveException{
+		Player currentPlayer = players.poll();
+		Set<Stone> captured;
+		if (move.getType().equals(MoveType.PASS)){
+			captured = new HashSet<>();
+		} else {
+			captured = this.makeMove(move, currentPlayer.getColor());
+		}
+		players.add(currentPlayer);
+		moveHistory.push(new MoveResult(move, captured, ++turn));
+	}
+	
+	/**
+	 * Returns a set of moves for the requested player
+	 * @param player 	the requested player
+	 * @return			the set of possible moves
+	 */
+	public Set<Move> getPossibleMoves(PlayerColor player) {
+		Set<Move> moves = new HashSet<Move>();
+		for (int i=0; i<this.getBoardSize(); i++){
+			for (int j=0; j<this.getBoardSize(); j++){
+				Move move = Move.getMoveInstance(MoveType.NORMAL, i, j);
+				if (isLegalMove(move, player)){
+					moves.add(move);
+				}
+			}
+		}
+		return moves;
+	}
+	
+	/**
+	 * @return	the last move that was played
+	 */
+	public Move getLastMove(){
+		return getLastMove(getLastMoved().getColor());
+	}
+	
+	/**
+	 * Returns the last move that was played by a player
+	 * @param color		the color of the requested player
+	 * @return			the last move that was played
+	 */
+	public Move getLastMove(PlayerColor color){
+		Move move = null;
+		if (!moveHistory.isEmpty()){
+			move = moveHistory.peekFirst().move;
+			if (players.peekLast().getColor().equals(color)){
+				return move;
+			} else {
+				move = null;
+				MoveResult temp = moveHistory.poll();
+				if (!moveHistory.isEmpty()){
+					move = moveHistory.peekFirst().move;
+				}
+				moveHistory.push(temp);
+			}
+		}
+		return move;
+	}
+	
+	/**
+	 * Returns whether or not the move is valid, includes ko logic
+	 * @param move		the move in question
+	 * @param color		the player who is playing the move
+	 * @return			true if move is valid, false otherwise
+	 */
+	public boolean isLegalMove(Move move, PlayerColor color){
+		if (move == null){
+			return false;
+		} else if (move.equals(Move.getMoveInstance(MoveType.PASS, 0, 0))){
+			return true;
+		}
+		Boolean boardLegal = this.isLegalMove(move, color);
+		MoveResult last = moveHistory.peekFirst();
+		Boolean retakingKo = last != null && last.captured.size() == 1 && 
+				this.getStoneGroupLibertiesAtLocation(last.move.getX(), last.move.getY()) == 1 &&
+				move.getX().equals(last.captured.iterator().next().x_location) &&
+				move.getY().equals(last.captured.iterator().next().y_location);
+		
+		return boardLegal && !retakingKo;
+	}
 
     /**
 	 * Returns a set of moves for the requested player
 	 * @param player 	the requested player
 	 * @return			the set of possible moves
 	 */
-	public Set<Move> getPossibleMoves(PlayerColor player) {
+	public Set<Move> getPossibleMoves(Stone.StoneColor player) {
 		Set<Move> moves = new HashSet<Move>();
 		for (int i = 0; i < boardSize; i++){
 			for (int j = 0; j < boardSize; j++){
@@ -1009,6 +1098,55 @@ public class GoGameState extends GameState implements Serializable {
 		return moves;
 	}
 
+	/**
+	 * Returns whether the location defined by the move is an eye for the requested player
+	 * @param move		the move representing the x,y location of the eye
+	 * @param color		the player who "owns" the eye
+	 * @return			returns true if this is an eye for this player, false otherwise
+	 */
+	public boolean isEye(Move move, Stone.StoneColor color){
+		return this.isEye(move, color);
+	}
+
+	/**
+	 * @return	get the last player moved
+	 */
+	public Player getLastMoved() {
+		return players.peekLast();
+	}
+	
+	/**
+	 * @return	get the player whose turn it is
+	 */
+	public Player getNextToMove() {
+		return players.peek();
+	}
+	
+	/**
+	 * @return	returns the score
+	 */
+	public Map<Stone.StoneColor, Integer> getScore(){
+		return this.getScore();
+	}
+	
+	public String toString() {
+		StringBuilder b = new StringBuilder("MoveHistory: " + moveHistory.toString());
+		b.append(this.toString());
+		return b.toString();
+	}
+
+	public void captureDeadGroups() {
+		//do Bensen's algorithm in the future
+		this.captureDeadGroups();
+	}
+
+	public Set<StoneGroup> getGroupsInAtari() {
+		return this.getGroupsInAtari();
+	}
+
+	public StoneGroup getStoneGroupAt(Move move) {
+		return this.getStoneGroupAt(move);
+	}
 
     /********* HELPER METHODS FOR TESTING ***********/
 
@@ -1055,7 +1193,7 @@ public class GoGameState extends GameState implements Serializable {
      * @author Jude Gabriel
      */
     public boolean testCopyConstructor(Object object){
-        //Test all non-board instance variables
+        //Test all non-this instance variables
         if(!(object instanceof GoGameState)){
             return false;
         }
@@ -1242,7 +1380,7 @@ public class GoGameState extends GameState implements Serializable {
      * @author Jude Gabriel
      */
     public void testCapture() {
-        //Populate the board with stones
+        //Populate the this with stones
         gameBoard[0][0].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[0][1].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[0][2].setStoneColor(Stone.StoneColor.BLACK);
@@ -1283,7 +1421,7 @@ public class GoGameState extends GameState implements Serializable {
     public void testForfeit() {
         gameOver = false;
 
-        // dummy values for the board
+        // dummy values for the this
         gameBoard[0][3].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[2][0].setStoneColor(Stone.StoneColor.BLACK);
         gameBoard[1][3].setStoneColor(Stone.StoneColor.WHITE);
@@ -1295,7 +1433,7 @@ public class GoGameState extends GameState implements Serializable {
 
 
     /**
-     * Used to reset the board in testing
+     * Used to reset the this in testing
      *
      * @author Jude Gabriel
      */
@@ -1310,16 +1448,16 @@ public class GoGameState extends GameState implements Serializable {
     /**
 	 * addStoneNoGUI
 	 *
-	 * adds a stone to the board without displaying it onto the GUI
+	 * adds a stone to the this without displaying it onto the GUI
 	 *
-	 * @param board - the board to make the moves on
+	 * @param this - the this to make the moves on
 	 * @param row - the row to be placed
 	 * @param col - the column to be placed
      *
      * @author Brynn Harrington
 	 */
-	public void addStoneNoGUI(Stone[][] board, int row, int col) {
-		board[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
+	public void addStoneNoGUI(Stone[][] this, int row, int col) {
+		this[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
 	}
 }
 

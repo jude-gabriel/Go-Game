@@ -1,6 +1,7 @@
 package com.example.gogame.GoGame.players.MCTSInfo;
 
 import com.example.gogame.GoGame.infoMessage.GoGameState;
+import com.example.gogame.GoGame.infoMessage.MoveException;
 import com.example.gogame.GoGame.infoMessage.Stone;
 import com.example.gogame.GoGame.infoMessage.StoneGroup;
 import com.example.gogame.GoGame.infoMessage.moveData.Intersection;
@@ -23,7 +24,6 @@ import java.util.TreeSet;
 /**
  * Go Player using non-parallel Monte Carlo Tree Search with a default of 10k moves
  *
- * @author calebj
  */
 public class MCTS extends Player {
 
