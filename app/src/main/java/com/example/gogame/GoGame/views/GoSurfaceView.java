@@ -97,21 +97,20 @@ public class GoSurfaceView extends FlashSurfaceView {
         Stone[][] stonesArray = new Stone[9][9];
 
         //Check if the state exists if not create it
-        if(state != null) {
+        if (state != null) {
             stonesArray = state.getGameBoard();
-        }
-        else{
-            for(int i = 0; i < 9; i++){
-                for(int j = 0; j < 9; j++){
+        } else {
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
                     stonesArray[i][j] = new Stone((j * 83) + 46, (i * 81) + 48);
                 }
             }
         }
 
         //offset each stone to place it directly on a liberty
-        for (int i = 0; i < 9; i++){
-            for (int j = 0; j < 9; j++){
-                stonesArray[i][j].draw(canvas,(j * 83) + 46, (i * 81) + 48);
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                stonesArray[i][j].draw(canvas, (j * 83) + 46, (i * 81) + 48);
             }
         }
     } //onDraw
@@ -129,7 +128,7 @@ public class GoSurfaceView extends FlashSurfaceView {
      */
     public int[] findStone(float x, float y) {
         //Return an error if the state does not exist
-        if(state == null){
+        if (state == null) {
             int[] error = {-1, -1};
             return error;
         }

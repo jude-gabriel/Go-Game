@@ -1,5 +1,7 @@
 package com.example.gogame.GoGame.infoMessage;
 
+import com.example.gogame.GoGame.infoMessage.moveData.Intersection;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,35 +38,23 @@ public class StoneGroup {
 	public boolean includes(Stone newStone) {
 		return stones.contains(newStone);
 	}
-
 	public Integer getRemainingLiberties() {
 		return liberties.size();
 	}
-
 	public Set<Intersection> getLiberties() {
 		return liberties;
 	}
-
 	public void setLiberties(Set<Intersection> liberties) {
 		this.liberties = liberties;
 	}
-
-	public void removeSurroundingStoneGroups(StoneGroup surroundingStoneGroup) {
-		surroundingStoneGroups.remove(surroundingStoneGroup);
-	}
-	
+	public void removeSurroundingStoneGroups(StoneGroup surroundingStoneGroup) { surroundingStoneGroups.remove(surroundingStoneGroup); }
 	public Set<StoneGroup> getSurroundingStoneGroups() {
 		return surroundingStoneGroups;
 	}
-
-	public void addSurroundingStoneGroups(StoneGroup surroundingStoneGroup) {
-		surroundingStoneGroups.add(surroundingStoneGroup);
-	}
-
+	public void addSurroundingStoneGroups(StoneGroup surroundingStoneGroup) { surroundingStoneGroups.add(surroundingStoneGroup); }
 	public Set<Stone> getStones() {
 		return stones;
 	}
-	
 	public int size() {
 		return stones.size();
 	}

@@ -1,4 +1,4 @@
-package com.example.gogame.GoGame.infoMessage;
+package com.example.gogame.GoGame.infoMessage.moveData;
 
 /** MoveType
  *

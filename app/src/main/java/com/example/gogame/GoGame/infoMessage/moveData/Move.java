@@ -1,4 +1,4 @@
-package com.example.gogame.GoGame.infoMessage;
+package com.example.gogame.GoGame.infoMessage.moveData;
 
 import androidx.annotation.NonNull;
 
@@ -64,6 +64,15 @@ public class Move {
         return Objects.requireNonNull(moves.get(moveType))[xCord][yCord];
     }
 
+     /**
+     * getters
+     *
+     * returns the instance variable values
+     */
+    public int getRow() { return row; }
+    public int getCol() { return col; }
+    public MoveType getType() { return type; }
+
     /**
      * hashCode
      * <p>
@@ -88,13 +97,4 @@ public class Move {
     @NonNull
     @Override
     public String toString() { return "(" + row + "," + col + ")"; }
-
-    /**
-     * getters
-     *
-     * returns the instance variable values
-     */
-    public int getRow() { return row; }
-    public int getCol() { return col; }
-    public MoveType getType() { return type; }
 }

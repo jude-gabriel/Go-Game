@@ -27,23 +27,23 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
     //Variables used to reference widgets that will be modified during play
     //TextViews
-    private TextView player1ScoreText   = null;
-    private TextView player2ScoreText   = null;
-    private TextView playerTurnText     = null;
-    private TextView validMoveText      = null;
-    private TextView timerText          = null;
-    private TextView opponentMoveText   = null;
-    private TextView helpButtonText1    = null;
-    private TextView helpButtonText2    = null;
-    private TextView helpButtonText3    = null;
-    private TextView helpButtonText4    = null;
+    private TextView player1ScoreText = null;
+    private TextView player2ScoreText = null;
+    private TextView playerTurnText = null;
+    private TextView validMoveText = null;
+    private TextView timerText = null;
+    private TextView opponentMoveText = null;
+    private TextView helpButtonText1 = null;
+    private TextView helpButtonText2 = null;
+    private TextView helpButtonText3 = null;
+    private TextView helpButtonText4 = null;
 
     //Buttons
-    private Button skipButton           = null;
-    private Button handicapButton       = null;
-    private Button forfeitButton        = null;
-    private Button quitGameButton       = null;
-    private Button helpButton           = null;
+    private Button skipButton = null;
+    private Button handicapButton = null;
+    private Button forfeitButton = null;
+    private Button quitGameButton = null;
+    private Button helpButton = null;
 
     //Tag for logging
     private static final String TAG = "GoHumanPlayer1";
@@ -61,12 +61,11 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     /**
      * Constructor for GoHumanPlayer1
      *
-     * @param name      the name of the player
-     * @param layoutID  id for the layout
-     *
+     * @param name     the name of the player
+     * @param layoutID id for the layout
      * @author Jude Gabriel
      */
-    public GoHumanPlayer1(String name, int layoutID){
+    public GoHumanPlayer1(String name, int layoutID) {
         //Initialize instance variables
         super(name);
         this.layoutId = layoutID;
@@ -75,8 +74,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
     /**
      * Has player receive the current game info
-     * @param info the current game info
      *
+     * @param info the current game info
      * @author Jude Gabriel
      */
     @Override
@@ -89,36 +88,35 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         int playerTurn;
 
         //Error check if the surface view exists
-        if(goSurfaceView == null){
+        if (goSurfaceView == null) {
             return;
         }
 
         //Check if we have the gamestate
-        if(info instanceof GoGameState){
+        if (info instanceof GoGameState) {
             //Initialize the score and player turn
             p1Score = ((GoGameState) info).getPlayer1Score();
             p2Score = ((GoGameState) info).getPlayer2Score();
             playerTurn = ((GoGameState) info).getPlayer();
 
             //Check that all GUI objects exist
-            if(player1ScoreText != null && playerTurnText != null && timerText != null) {
+            if (player1ScoreText != null && playerTurnText != null && timerText != null) {
                 //Update the scores
-                player1ScoreText.setText(allPlayerNames[0] +"'s Score: " + p1Score);
+                player1ScoreText.setText(allPlayerNames[0] + "'s Score: " + p1Score);
                 player2ScoreText.setText(allPlayerNames[1] + "'s Score: " + p2Score);
 
                 //Update who's turn it is
                 playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
 
                 //Swap the player
-                if(playerTurn == 1){
+                if (playerTurn == 1) {
                     playerTurn = 0;
-                }
-                else{
+                } else {
                     playerTurn = 1;
                 }
 
                 //Check if the game has started and set text boxes to visible
-                if(((GoGameState) info).getTotalMoves() != 0) {
+                if (((GoGameState) info).getTotalMoves() != 0) {
                     validMoveText.setVisibility(View.VISIBLE);
                     opponentMoveText.setVisibility(View.VISIBLE);
 
@@ -128,24 +126,20 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                         int otherPlayer;
 
                         //Change the player turn since there has been a skip
-                        if(playerTurn == 0){
+                        if (playerTurn == 0) {
                             otherPlayer = 1;
-                        }
-                        else{
+                        } else {
                             otherPlayer = 0;
                         }
 
                         //Update the move text box based on the kind of move
                         opponentMoveText.setText(allPlayerNames[playerTurn] + " skipped their turn. " +
                                 allPlayerNames[otherPlayer] + ", press skip turn to end the game.");
-                    }
-                    else if (((GoGameState) info).getP1Handicap() == true) {
+                    } else if (((GoGameState) info).getP1Handicap() == true) {
                         opponentMoveText.setText(allPlayerNames[0] + " agrees to a handicap.");
-                    }
-                    else if (((GoGameState) info).getP2Handicap() == true) {
+                    } else if (((GoGameState) info).getP2Handicap() == true) {
                         opponentMoveText.setText(allPlayerNames[1] + " agrees to a handicap.");
-                    }
-                    else {
+                    } else {
                         //Find the coordinates of the most recent move
                         int[] lastMove = ((GoGameState) info).getMostRecentMove();
                         int x = lastMove[0] + 1;
@@ -155,8 +149,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                         opponentMoveText.setText(allPlayerNames[playerTurn] + " placed a stone at: " +
                                 x + ", " + y);
                     }
-                }
-                else{
+                } else {
                     //If this case is hit set visibility to invisible since game hasn't started
                     opponentMoveText.setVisibility(View.INVISIBLE);
                 }
@@ -165,15 +158,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 elapsedSec = ((GoGameState) info).getTime();
                 elapsedMin = elapsedSec / 60;
                 elapsedSec = elapsedSec % 60;
-                if(elapsedSec < 10){
+                if (elapsedSec < 10) {
                     timerText.setText("Elapsed Time: " + elapsedMin + ":0" + elapsedSec);
-                }
-                else {
+                } else {
                     timerText.setText("Elapsed Time: " + elapsedMin + ":" + elapsedSec);
                 }
 
                 //Remove handicap button after the first move
-                if(((GoGameState) info).getTotalMoves() > 0){
+                if (((GoGameState) info).getTotalMoves() > 0) {
                     handicapButton.setVisibility(View.GONE);
                 }
 
@@ -184,7 +176,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
 
         //Check if the move was valid. If it wasn't produce an error message.
         //if it is set the current state and then call invalidate
-        if(info instanceof IllegalMoveInfo){
+        if (info instanceof IllegalMoveInfo) {
             validMoveText.setVisibility(View.VISIBLE);
             goSurfaceView.flash(Color.RED, 1000);
             validMoveText.setText("INVALID MOVE");
@@ -193,20 +185,20 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         }
 
         //Check the human tried to move out of turn, update the valid move text
-        else if(info instanceof NotYourTurnInfo){
+        else if (info instanceof NotYourTurnInfo) {
             validMoveText.setVisibility(View.VISIBLE);
             validMoveText.setText("NOT YOUR TURN");
             validMoveText.setBackgroundColor(Color.RED);
         }
 
         //If we hit here and do not have a gamestate action, exit
-        else if(!(info instanceof GoGameState)){
+        else if (!(info instanceof GoGameState)) {
             return;
         }
 
         //If it is, then update the surface view
-        else{
-            goSurfaceView.setState((GoGameState)info);
+        else {
+            goSurfaceView.setState((GoGameState) info);
             goSurfaceView.invalidate();
         }
 
@@ -217,7 +209,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * Updates the activity GUI to be the player
      *
      * @param activity the current activity
-     *
      * @author Jude Gabriel
      */
     @Override
@@ -226,7 +217,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         activity.setContentView(layoutId);
 
         //initialize the widget reference members and set proper visibility
-        if(activity != null) {
+        if (activity != null) {
             this.player1ScoreText = activity.findViewById(R.id.player1ScoreText);
             this.player2ScoreText = activity.findViewById(R.id.player2ScoreText);
             this.playerTurnText = activity.findViewById(R.id.playerTurnText);
@@ -267,7 +258,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * Getter for the GUI's top view
      *
      * @return the GUI's top view
-     *
      * @author Jude Gabriel
      */
     @Override
@@ -283,7 +273,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      *
      * @author Jude Gabriel
      */
-    public void initAfterReady(){
+    public void initAfterReady() {
         //Initialize the title
         myActivity.setTitle("Go: " + allPlayerNames[0] + " vs " + allPlayerNames[1]);
     }
@@ -293,12 +283,10 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * Detects the users move and calls the appropriate methods to alter the game
      * board
      *
-     * @param v         the current view
-     * @param event     the touch event we are handling
-     * @return          true after the event has been handled
-     *
+     * @param v     the current view
+     * @param event the touch event we are handling
+     * @return true after the event has been handled
      * @author Jude Gabriel
-     *
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -306,7 +294,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         int[] xyLoc = null;
 
         //Check if the action has ended
-        if(event.getAction() != MotionEvent.ACTION_UP){
+        if (event.getAction() != MotionEvent.ACTION_UP) {
             return true;
         }
 
@@ -316,14 +304,13 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         xyLoc = goSurfaceView.findStone(x, y);
 
         //Check if the location was not valid and update validMove if so
-        if(xyLoc == null || xyLoc[0] == -1 || xyLoc[1] == -1){
+        if (xyLoc == null || xyLoc[0] == -1 || xyLoc[1] == -1) {
             validMoveText.setVisibility(View.VISIBLE);
             validMoveText.setText("INVALID MOVE");
             validMoveText.setBackgroundColor(Color.RED);
             goSurfaceView.flash(Color.RED, 1000);
             goSurfaceView.invalidate();
-        }
-        else{
+        } else {
             //Create a new action and send it to the game
             GoMoveAction action = new GoMoveAction(this, xyLoc[0], xyLoc[1]);
             Logger.log("onTouch", "Human player sending Go Move Action");
@@ -348,15 +335,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * Handler for click events
      *
      * @param v the current view
-     *
      * @author Jude Gabriel
      */
     @Override
     public void onClick(View v) {
         //Get the ID of the object clicked
         int viewID = v.getId();
-        if(game == null) return;
-        switch (viewID){
+        if (game == null) return;
+        switch (viewID) {
 
             //Case 1: It was the skip turn button, send a skip turn action
             case R.id.skipTurnButton:
@@ -384,13 +370,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 displayHelpMessages = !displayHelpMessages;
 
                 //Set the visibility
-                if(displayHelpMessages) {
+                if (displayHelpMessages) {
                     helpButtonText1.setVisibility(View.VISIBLE);
                     helpButtonText2.setVisibility(View.VISIBLE);
                     helpButtonText3.setVisibility(View.VISIBLE);
                     helpButtonText4.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     helpButtonText1.setVisibility(View.INVISIBLE);
                     helpButtonText2.setVisibility(View.INVISIBLE);
                     helpButtonText3.setVisibility(View.INVISIBLE);
