@@ -30,10 +30,10 @@
 package com.example.gogame.GoGame.players;
 
  import com.example.gogame.GameFramework.infoMessage.GameInfo;
- import com.example.gogame.GameFramework.players.GameComputerPlayer;
- import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
- import com.example.gogame.GoGame.infoMessage.GoGameState;
- import com.example.gogame.GoGame.infoMessage.Stone;
+import com.example.gogame.GameFramework.players.GameComputerPlayer;
+import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
+import com.example.gogame.GoGame.infoMessage.GoGameState;
+import com.example.gogame.GoGame.infoMessage.Stone;
 
 
  /**
@@ -56,32 +56,8 @@ class SmartAIMove
 	 *
 	 */
 	public SmartAIMove(){}//SmartAIMove
+}//SmartAIMove
 
-	/**
-	 * score constructor
-	 *
-	 * sets the move's score from the passed in score
-	 *
-	 * @param s - the score of the move
-	 */
-	public SmartAIMove(int s) { score = s; }//SmartAIMove
-
-	/**
-	 * setting constructor
-	 *
-	 * sets the move's row, column, and score from the passed in values
-	 *
-	 * @param r - the row of the move
-	 * @param c - the column of the move
-	 * @param s - the score of the move
-	 */
-	public SmartAIMove(int r, int c, int s)
-	{
-		row = r;
-		col = c;
-		score = s;
-	}//SmartAIMove
-}
 /**
  * A computerized Go player that recognizes an immediate capture of the
  * opponent or a possible capture from the other opponent, and plays
@@ -129,7 +105,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	@Override
 	protected void receiveInfo(GameInfo info)
 	{
-		// assert the information passed is a non-null instance of GoGameState
+		// assert the information passed is a non-null instance of a valid GoGameState
 		assert info != null;
 		assert info instanceof GoGameState;
 
