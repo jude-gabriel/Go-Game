@@ -11,16 +11,10 @@
 package com.example.gogame.GoGame.infoMessage;
 
 
-import androidx.annotation.NonNull;
-
 import com.example.gogame.GameFramework.infoMessage.GameState;
-import com.example.gogame.GoGame.infoMessage.moveData.Move;
-import com.example.gogame.GoGame.infoMessage.moveData.MoveType;
 
 import java.io.Serializable;
-import java.util.Deque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 public class GoGameState extends GameState implements Serializable {
@@ -44,8 +38,6 @@ public class GoGameState extends GameState implements Serializable {
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
     private final int[] mostRecentMove;     //Tracks the most recent move made in the game
-    private Stone.StoneColor currColor;     //Current player's color
-	private Deque<MoveResult> moveHistory;  //Track the move history
 
     //Network play ID Tag
     private static final long serialVersionUID = 7552321013488624386L;
@@ -99,12 +91,6 @@ public class GoGameState extends GameState implements Serializable {
         mostRecentMove = new int[2];
         mostRecentMove[0] = -1;
         mostRecentMove[1] = -1;
-
-        //initialize the current stone color to empty
-        currColor = Stone.StoneColor.NONE;
-
-        // initialize the move history as a linked list
-        moveHistory = new LinkedList<>();
     }
 
 
@@ -144,8 +130,7 @@ public class GoGameState extends GameState implements Serializable {
         this.stoneCopiesSecond = deepCopyArray(gs.stoneCopiesSecond);
         super.currentSetupTurn = gs.currentSetupTurn;
         super.numSetupTurns = gs.numSetupTurns;
-        this.currColor = gs.currColor;
-        this.moveHistory.addAll(gs.moveHistory);
+
     }
 
 
@@ -1006,18 +991,15 @@ public class GoGameState extends GameState implements Serializable {
     }
 
 
-    /* HELPER METHODS FOR MONTE-CARLO TREE SEARCH */
     /**
-	 * getPossibleMoves
-     *
-     * returns a set of moves for the requested player
+	 * Returns a set of moves for the requested player
 	 * @param player 	the requested player
 	 * @return			the set of possible moves
 	 */
-	public Set<Move> getPossibleMoves(Stone.StoneColor player) {
+	public Set<Move> getPossibleMoves(PlayerColor player) {
 		Set<Move> moves = new HashSet<Move>();
-		for (int i=0; i< boardSize; i++){
-			for (int j=0; j < boardSize; j++){
+		for (int i = 0; i < boardSize; i++){
+			for (int j = 0; j < boardSize; j++){
 				Move move = Move.getMoveInstance(MoveType.PLACE, i, j);
 				if (isLegalMove(move, player)){
 					moves.add(move);
@@ -1027,53 +1009,6 @@ public class GoGameState extends GameState implements Serializable {
 		return moves;
 	}
 
-	/**
-	 * isLegalMove
-     *
-     * returns whether or not the move is valid, includes ko logic
-	 * @param move		the move in question
-	 * @param color		the player who is playing the move
-	 * @return			true if move is valid, false otherwise
-	 */
-	public boolean isLegalMove(Move move, Stone.StoneColor color){
-		if (move == null){
-			return false;
-		} else if (move.equals(Move.getMoveInstance(MoveType.SKIP, 0, 0))){
-			return true;
-		}
-		boolean boardLegal = this.isLegalMove(move, color);
-		MoveResult last = moveHistory.peekFirst();
-		boolean retakingKo = last != null && last.captured.size() == 1 &&
-				this.getStoneGroupLibertiesAtLocation(last.move.getRow(), last.move.getCol()) == 1 &&
-				move.getRow().equals(last.captured.iterator().next().x_location) &&
-				move.getCol().equals(last.captured.iterator().next().y_location);
-
-		return boardLegal && !retakingKo;
-	}
-
-
-    /**
-	 *	Used to store information
-	 */
-	private class MoveResult {
-		public Move move;
-		public Set<Stone> captured;
-		public int turn;
-
-		public MoveResult(Move move, Set<Stone> captured, int turn) {
-			this.move = move;
-			this.captured = captured;
-			this.turn = turn;
-		}
-
-		@NonNull
-        @Override
-		public String toString() {
-			return "MoveResult [move=" + move + ", captured=" + captured
-					+ ", turn=" + turn + "]";
-		}
-
-	}
 
     /********* HELPER METHODS FOR TESTING ***********/
 
@@ -1371,6 +1306,21 @@ public class GoGameState extends GameState implements Serializable {
             }
         }
     }
+
+    /**
+	 * addStoneNoGUI
+	 *
+	 * adds a stone to the board without displaying it onto the GUI
+	 *
+	 * @param board - the board to make the moves on
+	 * @param row - the row to be placed
+	 * @param col - the column to be placed
+     *
+     * @author Brynn Harrington
+	 */
+	public void addStoneNoGUI(Stone[][] board, int row, int col) {
+		board[row][col].setStoneColor(isPlayer1 ? Stone.StoneColor.BLACK : Stone.StoneColor.WHITE);
+	}
 }
 
 
