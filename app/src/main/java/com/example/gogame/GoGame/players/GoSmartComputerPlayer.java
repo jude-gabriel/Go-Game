@@ -30,6 +30,7 @@
 package com.example.gogame.GoGame.players;
 
  import com.example.gogame.GameFramework.infoMessage.GameInfo;
+ import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
  import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
  import com.example.gogame.GameFramework.players.GameComputerPlayer;
  import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
@@ -100,6 +101,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	{
 		// assert the information passed is a non-null instance of a valid GoGameState
 		assert info != null;
+
+        // verify if the last move was legal
+        if(info instanceof IllegalMoveInfo) return;
 
 		// change the smart AI's turn to true
 		// tracks if its smart AI's turn
