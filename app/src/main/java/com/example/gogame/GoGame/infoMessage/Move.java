@@ -1,5 +1,8 @@
 package com.example.gogame.GoGame.infoMessage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Move
  *
@@ -7,7 +10,7 @@ package com.example.gogame.GoGame.infoMessage;
  *
  * @author Brynn Harrington
  */
-class Move
+public class Move
 {
 	/* INSTANCE VARIABLES */
 	private MoveType type;							// instance of type of move
@@ -32,8 +35,20 @@ class Move
 	 * since making a move is the main action in Go so to optimize running time, all moves are
 	 * created initially and passed by reference
 	 */
-	public static getMoveInstance(MoveType moveType, int xCord, int yCord)
+	public static Move getMoveInstance(MoveType moveType, int x, int y)
 	{
-
+		if (moves == null){
+					moves = new HashMap<>();
+					for (MoveType t : MoveType.values()){
+						Move[][] moveArray = new Move[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
+						for (int i = 0; i<MAX_BOARD_SIZE; i++){
+							for (int j = 0; j<MAX_BOARD_SIZE; j++){
+								moveArray[i][j] = new Move(t, i, j);
+							}
+						}
+						moves.put(t, moveArray);
+					}
+				}
+				return moves.get(moveType)[x][y];
 	}
 }
