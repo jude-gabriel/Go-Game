@@ -48,24 +48,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/dumbAIButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FE775B"
-            android:hapticFeedbackEnabled="false"
-            android:text="DIFFICULTY --"
-            android:textColor="#F6F6F6"
-            tools:ignore="TextContrastCheck" />
-
-        <Button
-            android:id="@+id/smartAIButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FE775B"
-            android:text="DIFFICULTY ++"
-            android:textColor="#FAFAFA" />
-
-        <Button
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

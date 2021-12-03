@@ -40,8 +40,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
-    private Button dumbAIButton         = null;
-    private Button smartAIButton        = null;
     private Button quitGameButton       = null;
     private Button helpButton           = null;
 
@@ -245,8 +243,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.handicapButton = activity.findViewById(R.id.handicapButton);
             this.skipButton = activity.findViewById(R.id.skipTurnButton);
             this.forfeitButton = activity.findViewById(R.id.forfeitButton);
-            this.dumbAIButton = activity.findViewById(R.id.dumbAIButton);
-            this.smartAIButton = activity.findViewById(R.id.smartAIButton);
             this.quitGameButton = activity.findViewById(R.id.quitGameButton);
             this.helpButton = activity.findViewById(R.id.helpButton);
         }
@@ -259,8 +255,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         skipButton.setOnClickListener(this);
         handicapButton.setOnClickListener(this);
         this.forfeitButton.setOnClickListener(this);
-        this.dumbAIButton.setOnClickListener(this);
-        this.smartAIButton.setOnClickListener(this);
         this.quitGameButton.setOnClickListener(this);
         this.helpButton.setOnClickListener(this);
     }
