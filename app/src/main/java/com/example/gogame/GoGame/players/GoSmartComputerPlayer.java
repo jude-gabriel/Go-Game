@@ -85,10 +85,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// initialize the game board
 		gameBoard = goGS.deepCopyArray(goGS.getGameBoard());
 
-		// assuming that AI is better player so if AI is white,
-		// always give black more stones
-        if(goGS.getTotalMoves() == 0) { game.sendAction(new GoHandicapAction(this)); }
-		
 		// determine the current AI's and opponent's color
 		if (this.playerNum == 0)
 		{
@@ -99,6 +95,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		{
 			AIStoneColor = Stone.StoneColor.WHITE;
 			oppStoneColor = Stone.StoneColor.BLACK;
+			// assuming that AI is better player so if AI is white,
+			// always give black more stones
+        	if(goGS.getTotalMoves() == 0) { game.sendAction(new GoHandicapAction(this)); }
 		}
 
 		//TODO - FIGURE OUT WHERE CRASHING
