@@ -15,9 +15,12 @@ import com.example.gogame.GameFramework.infoMessage.GameState;
 import com.example.gogame.GoGame.infoMessage.moveData.Move;
 import com.example.gogame.GoGame.infoMessage.moveData.MoveResult;
 import com.example.gogame.GoGame.infoMessage.moveData.MoveType;
+import com.example.gogame.GoGame.players.Player;
 
 import java.io.Serializable;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class GoGameState extends GameState implements Serializable {
@@ -41,7 +44,8 @@ public class GoGameState extends GameState implements Serializable {
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
     private final int[] mostRecentMove;     //Tracks the most recent move made in the game
-
+    //private LinkedList<Player> players;     //Tracks players ////TODO - SEE IF NECESSARY
+	private Deque<MoveResult> moveHistory;  //Tracks history of the moves
 
     //Network play ID Tag
     private static final long serialVersionUID = 7552321013488624386L;
@@ -993,33 +997,34 @@ public class GoGameState extends GameState implements Serializable {
         return true;
     }
 /////////////////////////////////////////////////////////////////////////////////
-    /**
-	 * Attempts to play a move for the player who is next
-	 * @param move				
-	 * @throws MoveException	throws if move is invalid for this players
-	 */
-	public void addMove(Move move) throws MoveException{
-		Player currentPlayer = players.poll();
-		Set<Stone> captured;
-		if (move.getType().equals(MoveType.PASS)){
-			captured = new HashSet<>();
-		} else {
-			captured = this.makeMove(move, currentPlayer.getColor());
-		}
-		players.add(currentPlayer);
-		moveHistory.push(new MoveResult(move, captured, ++turn));
-	}
+//    /**
+//	 * Attempts to play a move for the player who is next
+//	 * @param move
+//	 * @throws MoveException	throws if move is invalid for this players
+//	 */
+//	public void addMove(Move move) throws MoveException{
+//		Player currentPlayer = players.poll();
+//		Set<Stone> captured;
+//		if (move.getType().equals(MoveType.PASS)){
+//			captured = new HashSet<>();
+//		} else {
+//			captured = this.makeMove(move, currentPlayer.getColor());
+//		}
+//		players.add(currentPlayer);
+//		moveHistory.push(new MoveResult(move, captured, ++turn));
+//	}
+    /////TODO - MAY NEED TO BE IN THE SMART AI
 	
 	/**
 	 * Returns a set of moves for the requested player
 	 * @param player 	the requested player
 	 * @return			the set of possible moves
 	 */
-	public Set<Move> getPossibleMoves(PlayerColor player) {
+	public Set<Move> getPossibleMoves(Stone.StoneColor player) {
 		Set<Move> moves = new HashSet<Move>();
 		for (int i=0; i<this.getBoardSize(); i++){
 			for (int j=0; j<this.getBoardSize(); j++){
-				Move move = Move.getMoveInstance(MoveType.NORMAL, i, j);
+				Move move = Move.getMoveInstance(MoveType.PLACE, i, j);
 				if (isLegalMove(move, player)){
 					moves.add(move);
 				}
@@ -1040,7 +1045,7 @@ public class GoGameState extends GameState implements Serializable {
 	 * @param color		the color of the requested player
 	 * @return			the last move that was played
 	 */
-	public Move getLastMove(PlayerColor color){
+	public Move getLastMove(Stone.StoneColor color){
 		Move move = null;
 		if (!moveHistory.isEmpty()){
 			move = moveHistory.peekFirst().move;
@@ -1064,7 +1069,7 @@ public class GoGameState extends GameState implements Serializable {
 	 * @param color		the player who is playing the move
 	 * @return			true if move is valid, false otherwise
 	 */
-	public boolean isLegalMove(Move move, PlayerColor color){
+	public boolean isLegalMove(Move move, Stone.StoneColor color){
 		if (move == null){
 			return false;
 		} else if (move.equals(Move.getMoveInstance(MoveType.PASS, 0, 0))){
@@ -1078,24 +1083,6 @@ public class GoGameState extends GameState implements Serializable {
 				move.getY().equals(last.captured.iterator().next().y_location);
 		
 		return boardLegal && !retakingKo;
-	}
-
-    /**
-	 * Returns a set of moves for the requested player
-	 * @param player 	the requested player
-	 * @return			the set of possible moves
-	 */
-	public Set<Move> getPossibleMoves(Stone.StoneColor player) {
-		Set<Move> moves = new HashSet<Move>();
-		for (int i = 0; i < boardSize; i++){
-			for (int j = 0; j < boardSize; j++){
-				Move move = Move.getMoveInstance(MoveType.PLACE, i, j);
-				if (isLegalMove(move, player)){
-					moves.add(move);
-				}
-			}
-		}
-		return moves;
 	}
 
 	/**
@@ -1112,7 +1099,13 @@ public class GoGameState extends GameState implements Serializable {
 	 * @return	get the last player moved
 	 */
 	public Player getLastMoved() {
-		return players.peekLast();
+		if (isPlayer1) return new Player(Stone.StoneColor.WHITE) {
+            @Override
+            public Move getMove(GoGameState goGS) {
+                return null;
+            }
+        };
+		else return
 	}
 	
 	/**
