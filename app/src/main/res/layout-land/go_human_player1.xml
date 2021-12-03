@@ -48,24 +48,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/dumbAIButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FE775B"
-            android:hapticFeedbackEnabled="false"
-            android:text="DIFFICULTY --"
-            android:textColor="#F6F6F6"
-            tools:ignore="TextContrastCheck" />
-
-        <Button
-            android:id="@+id/smartAIButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FE775B"
-            android:text="DIFFICULTY ++"
-            android:textColor="#FAFAFA" />
-
-        <Button
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +60,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/helpButtonText1"
+                android:id="@+id/helpTextGoal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elegantTextHeight="true"
@@ -127,7 +109,7 @@
         android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/helpButtonText2"
+            android:id="@+id/helpTextTurn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -225,7 +207,7 @@
             android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/helpButtonText3"
+                android:id="@+id/helpTextScore"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
@@ -307,17 +289,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goLinearLayout">
 
-        <TextView
-            android:id="@+id/helpButtonText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="@string/on_your_turn_click_the_location_you_would_like_to_place_a_chip"
-            android:textColor="#FDFDFD"
-            android:textSize="25sp"
-            android:textStyle="italic" />
-
         <Button
             android:id="@+id/skipTurnButton"
             android:layout_width="match_parent"
@@ -343,7 +314,7 @@
             android:textColor="#FBFBFB" />
 
         <TextView
-            android:id="@+id/helpButtonText4"
+            android:id="@+id/helpTextSkip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Or you can choose to skip your turn or forfeit. Two consecutive skipped turns ends the game."

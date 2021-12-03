@@ -40,8 +40,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
-    private Button dumbAIButton         = null;
-    private Button smartAIButton        = null;
+    //private Button dumbAIButton         = null;
+    //private Button smartAIButton        = null;
     private Button quitGameButton       = null;
     private Button helpButton           = null;
 
@@ -233,20 +233,20 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             this.timerText = activity.findViewById(R.id.elapsedTimeText);
             this.opponentMoveText = activity.findViewById(R.id.opponentMoveText);
             opponentMoveText.setVisibility(View.INVISIBLE);
-            this.helpButtonText1 = activity.findViewById(R.id.helpButtonText1);
+            this.helpButtonText1 = activity.findViewById(R.id.helpTextGoal);
             helpButtonText1.setVisibility(View.INVISIBLE);
-            this.helpButtonText2 = activity.findViewById(R.id.helpButtonText2);
+            this.helpButtonText2 = activity.findViewById(R.id.helpTextTurn);
             helpButtonText2.setVisibility(View.INVISIBLE);
-            this.helpButtonText3 = activity.findViewById(R.id.helpButtonText3);
+            this.helpButtonText3 = activity.findViewById(R.id.helpTextScore);
             helpButtonText3.setVisibility(View.INVISIBLE);
-            this.helpButtonText4 = activity.findViewById(R.id.helpButtonText4);
+            this.helpButtonText4 = activity.findViewById(R.id.helpTextSkip);
             helpButtonText4.setVisibility(View.INVISIBLE);
 
             this.handicapButton = activity.findViewById(R.id.handicapButton);
             this.skipButton = activity.findViewById(R.id.skipTurnButton);
             this.forfeitButton = activity.findViewById(R.id.forfeitButton);
-            this.dumbAIButton = activity.findViewById(R.id.dumbAIButton);
-            this.smartAIButton = activity.findViewById(R.id.smartAIButton);
+            //this.dumbAIButton = activity.findViewById(R.id.dumbAIButton);
+            //this.smartAIButton = activity.findViewById(R.id.smartAIButton);
             this.quitGameButton = activity.findViewById(R.id.quitGameButton);
             this.helpButton = activity.findViewById(R.id.helpButton);
         }
@@ -259,8 +259,8 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
         skipButton.setOnClickListener(this);
         handicapButton.setOnClickListener(this);
         this.forfeitButton.setOnClickListener(this);
-        this.dumbAIButton.setOnClickListener(this);
-        this.smartAIButton.setOnClickListener(this);
+        //this.dumbAIButton.setOnClickListener(this);
+        //this.smartAIButton.setOnClickListener(this);
         this.quitGameButton.setOnClickListener(this);
         this.helpButton.setOnClickListener(this);
     }
@@ -385,14 +385,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 break;
 
             //Case 5: It was the dumbAi button, send a dumbAi action
-            case R.id.dumbAIButton:
-                game.sendAction(new GoDumbAIAction(this));
-                break;
+            //case R.id.dumbAIButton:
+              //  game.sendAction(new GoDumbAIAction(this));
+                //break;
 
             //Case 6: It was the smartAi button, send a smartAI action
-            case R.id.smartAIButton:
-                game.sendAction(new GoSmartAIAction(this));
-                break;
+            //case R.id.smartAIButton:
+              //  game.sendAction(new GoSmartAIAction(this));
+               // break;
 
             //Case 7: It was the help button, display helpButtonText
             case R.id.helpButton:
