@@ -26,6 +26,7 @@ import com.example.gogame.R;
 public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListener, View.OnClickListener {
 
     //Variables used to reference widgets that will be modified during play
+    //TextViews
     private TextView player1ScoreText   = null;
     private TextView player2ScoreText   = null;
     private TextView playerTurnText     = null;
@@ -37,6 +38,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView helpButtonText3 = null;
     private TextView helpButtonText4 = null;
 
+    //Buttons
     private Button skipButton           = null;
     private Button handicapButton       = null;
     private Button forfeitButton        = null;
