@@ -50,7 +50,7 @@ public class Minimax {
 	 * @return the value to be used as the score in the minimax algorithm
 	 *
 	 */
-	public int evaluateBoard() {
+	/*public int evaluateBoard() {
 		// get the current player scores
 		int player0Score = goGS.getPlayer1Score();
 		int player1Score = goGS.getPlayer2Score();
@@ -63,6 +63,6 @@ public class Minimax {
 
 		// return the relative score
 		return player1Score / player0Score;
-	}//evaluateBoard
+	}//evaluateBoard*/
 
 }
