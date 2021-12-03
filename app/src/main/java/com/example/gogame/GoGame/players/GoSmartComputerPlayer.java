@@ -29,23 +29,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	/* LOGGING TAGS */
 	private static final String TAG = "GoSmartComputerPlayer";
 
-	/* INSTANCE / MEMBER VARIABLES */
-	// instantiate variables to...
-	private GoGameState goGS;			// current game state
-	private Stone[][] gameBoard; 		// current game board
-	boolean isSmartAI;					// track is smart AI's turn
-	Stone.StoneColor AIStoneColor;		// smart AI's stone color
-	Stone.StoneColor oppStoneColor;		// opponent's stone color
-	private int boardSize;				// determine the board size
-	private static final int winningScore = 100000000;	// winning score (initially "infinity")
-
-	/**
-	 * constructor
-	 *
-	 * @param name the player's name (e.g., "John")
-	 */
-	public GoSmartComputerPlayer(String name) { super(name); }//GoSmartComputerPlayer
-
 	/**
 	 * receiveInfo
 	 *
@@ -55,22 +38,42 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param info the current information of the game
 	 */
 	@Override
+	protected void receiveInfo(GameInfo info)
+	{
+	}
+
+	/* INSTANCE / MEMBER VARIABLES *//*
+	// instantiate variables to...
+	private GoGameState goGS;			// current game state
+	private Stone[][] gameBoard; 		// current game board
+	private boolean isSmartAI;			// track if AI is player 1 (black)
+	Stone.StoneColor AIStoneColor;		// smart AI's stone color
+	Stone.StoneColor oppStoneColor;		// opponent's stone color
+	private int boardSize;				// determine the board size
+	private static final int winningScore = 100000000;	// winning score (initially "infinity")
+
+	*//**
+	 * constructor
+	 *
+	 * @param name the player's name (e.g., "John")
+	 *//*
+	public GoSmartComputerPlayer(String name) { super(name); }//GoSmartComputerPlayer
+
+	*//**
+	 * receiveInfo
+	 *
+	 * this method receives information from the game and implements the smart AI
+	 * moves accordingly
+	 *
+	 * @param info the current information of the game
+	 *//*
+	@Override
 	protected void receiveInfo(GameInfo info) {
 		// verify this is a valid go game state
 		assert info != null;
 
 		// verify it is the smart AI's turn
-        if(info instanceof NotYourTurnInfo)
-		{
-			// set that is is not the AI's turn and return
-			isSmartAI = false;
-			return;
-		}
-        // otherwise, it is the smart AI's turn and log it
-		else {
-			isSmartAI = true;
-			Logger.log(TAG, "Smart AI's Turn");
-		}
+        if(info instanceof NotYourTurnInfo) return;
 
 		// if an illegal move, return
 		if (info instanceof IllegalMoveInfo) return;
@@ -85,8 +88,11 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		// initialize the game board
 		gameBoard = goGS.deepCopyArray(goGS.getGameBoard());
 
+		// determine if it is player 1's turn
+		isSmartAI = goGS.getIsPlayer1();
+
 		// determine the current AI's and opponent's color
-		if (this.playerNum == 0)
+		if (isSmartAI)
 		{
 			AIStoneColor = Stone.StoneColor.BLACK;
 			oppStoneColor = Stone.StoneColor.WHITE;
@@ -120,21 +126,24 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			game.sendAction(new GoSkipTurnAction(this));
 		}
 
+		// act as the computer is "thinking"
+		sleep(1);
+
 		// send a move action
         game.sendAction(new GoMoveAction(this, xNext, yNext));
 	}//receiveInfo
 
-	/* HELPER FUNCTIONS */
-	/**
+	*//* HELPER FUNCTIONS *//*
+	*//**
 	 * getWinningScore
 	 * getter function for the winning score
 	 *
 	 * @return  if a winning move was found, a point object containing
 	 *   the coordinates.  If no winning move was found, null.
-	 */
+	 *//*
 	public int getWinningScore() { return winningScore; }//getWinningScore
 
-	/**
+	*//**
 	 * evaluateBoard
 	 *
 	 * calculates the relative score of the computer player against
@@ -143,7 +152,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 * @return the value to be used as the score in the minimax algorithm
 	 *
-	 */
+	 *//*
 	public int evaluateBoard() {
 		// get the current player
 		int player1Score = goGS.getPlayer1Score();
@@ -159,7 +168,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return player2Score / player1Score;
 	}//evaluateBoard
 
-	/**
+	*//**
 	 * getScore
 	 * calculates the board score of the specified player
 	 * (i.e. How good a player's general standing on the board by considering how many
@@ -168,10 +177,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @return the board score for the specified player
 	 *
 	 * TODO - testing
-	 */
+	 *//*
 	public int getScore() { return evaluateHorizontal() + evaluateVertical() +evaluateDiagonal(); }//getScore
 
-	/**
+	*//**
 	 * calculateNextMove
 	 * This function calculates the next move given the current depth of the board.
 	 *
@@ -179,11 +188,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @return an integer array for the best move
 	 *
 	 * //TODO testing
-	 */
+	 *//*
 	public int[] calculateNextMove(int depth) {
-		// act as the computer is "thinking"
-		sleep(1);
-
 		// define an integer to store the move on the board
 		int[] move = new int[2];
 
@@ -215,7 +221,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return move;
 	}//calculateNextMove
 
-	/**
+	*//**
 	 * miniMaxSearchAB
 	 * This function takes the best possible AI move (the maximum), the best player move (min),
 	 * and returns the score for moves at 0 and 1.
@@ -224,7 +230,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param alpha - the best AI move (maximizing player)
 	 * @param beta  - the best player move (minimizing player)
 	 * @return the score and moves (an object with {score, move[0], move[1]}
-	 */
+	 *//*
 	private Object[] miniMaxSearchAB(int depth, boolean max, double alpha, double beta) {
 		// if at terminal node, return the score, move[0], and move[1]
 		if (depth == 0) return new Object[]{evaluateBoard(), null, null};
@@ -309,12 +315,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return bestMove;
 	}//miniMaxSearchAB
 
-	/**
+	*//**
 	 * searchWinningMove
 	 * This function looks for a move that can win the game
 	 *
 	 * @return the winning move
-	 */
+	 *//*
 	private Object[] searchWinningMove() {
 		// initialize a new array list for all possible moves
 		ArrayList<int[]> moveList = generateMoves();
@@ -344,7 +350,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return null;
 	}//searchWinningMove
 
-	/**
+	*//**
 	 * evaluateHorizontal
 	 * This function calculates the score by evaluating stone horizontal positions
 	 *
@@ -359,7 +365,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * by one.
 	 *
 	 * @return the score
-	 */
+	 *//*
 	public int evaluateHorizontal() {
 		// initialize the consecutive, blocks, and score variables
 		int consecutive = 0;
@@ -417,13 +423,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return score;
 	}//evaluateHorizontal
 
-	/**
+	*//**
 	 * evaluateVertical
 	 * This function calculates the score by evaluating stone vertical positions
 	 *
 	 * @return the score
 	 *
-	 */
+	 *//*
 	public int evaluateVertical() {
 		// initialize the consecutive, blocks, and score variables
 		int consecutive = 0;
@@ -481,13 +487,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return score;
 	}//evaluateVertical
 
-	/**
+	*//**
 	 * evaluateDiagonal
 	 * This function calculates the score by evaluating stone horizontal positions
 	 *
 	 * @return the score
 	 *
-	 */
+	 *//*
 	public int evaluateDiagonal() {
 		// initialize the consecutive, blocks, and score variables
 		int consecutive = 0;
@@ -498,13 +504,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		for (int row = 0; row < boardSize; row++) {
 			for (int col = 0; col < boardSize; col++) {
 				// increment the consecutive if AI has a stone in current cell
-				if (gameBoard[row][col].getStoneColor() == AIStoneColor)
-				{
-					consecutive++;
+				if (gameBoard[row][col].getStoneColor() == AIStoneColor) consecutive++;
 
-					// set is current player
-					isSmartAI = true;
-				}
 
 				// determine if current index is empty
 				else if(gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE)
@@ -601,7 +602,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return score;
 	}//evaluateDiagonal
 
-	/**
+	*//**
 	 * getConsecutiveSetScore
 	 *
 	 * this function determines the score from a given consecutive set
@@ -610,7 +611,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param blocks - the number of blocks
 	 * @return the score
 	 *
-	 */
+	 *//*
 	public int getConsecutiveSetScore(int count, int blocks) {
 		// initialize a guaranteed winning score for a base point
 		final int win = 100000;
@@ -667,15 +668,17 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		return 0;
 	}//getConsecutiveSetScore
 
-	/**
+	*//**
 	 * generateMoves
 	 *
 	 * generates moves given the current board state
 	 *
-	 */
+	 *//*
 	public ArrayList<int[]> generateMoves() {
+		//int emptyCount = 0;
+
 		// initialize the a list of different moves
-		int[][] moveList = new int[boardSize][boardSize];
+		ArrayList<int[]> moveList = new ArrayList<>();
 
 		// look for cells that has at least one stone in an adjacent cell
 		for (int row = 0; row < boardSize; row++) {
@@ -684,6 +687,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				//TODO - FIGURE OUT WHY THERE IS AN ERROR
 				// verify there is at least one adjacent cell
 				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE){
+					//emptyCount++;
 					continue;
 				}
 
@@ -698,7 +702,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							int[] move = {row, col};
 
 							// add the move to the list
-							moveList[row][col] = 1;
+							moveList.add(move);
 
 							// continue to determine if more moves
 							continue;
@@ -783,15 +787,12 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			int[] move = {1, 1};
 			moveList.add(move);
 		}
-		/*if(emptyCount == 81){
-
-		}*/
 
 		// return the move list
 		return moveList;
 	}//generateMoves
 
-	/**
+	*//**
 	 * addStoneNoGUI
 	 *
 	 * adds a stone to the board without displaying it onto the GUI
@@ -799,9 +800,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 * @param row - the row to be placed
 	 * @param col - the column to be placed
 	 *
-	 */
+	 *//*
 	public void addStoneNoGUI(GoGameState test, int row, int col) {
 		// place a stone on the board
 		test.playerMove(row, col);
-	}//addStoneNoGUI
+	}//addStoneNoGUI*/
 }//GoSmartComputerPlayer
