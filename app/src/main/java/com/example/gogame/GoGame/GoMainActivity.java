@@ -12,7 +12,6 @@ import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.players.GoDumbComputerPlayer;
 import com.example.gogame.GoGame.players.GoHumanPlayer1;
 import com.example.gogame.GoGame.players.GoSmartComputerPlayer;
-import com.example.gogame.GoGame.players.GoSmartComputerPlayer2;
 import com.example.gogame.R;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class GoMainActivity extends GameMainActivity {
         playerTypes.add(new GamePlayerType("Medium Computer Player") {
             @Override
             public GamePlayer createPlayer(String name) {
-                return new GoSmartComputerPlayer2(name);
+                return new GoSmartComputerPlayer(name);
             }
         });
 
