@@ -249,6 +249,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 				}//end column
 			}//end row
 		}//opponent - max not reached
+
 		// return the best move
 		return bestMove;
 	}//miniMaxSearchAB
@@ -304,45 +305,32 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		else {
 			// set the best move to maximum
 			bestMove.score = MAX;
+			for (int r = 0; r < boardSize; r++) {
+				for (int c = 0; c < boardSize; c++) {
+					// get the current liberty color
+					Stone.StoneColor stoneColor = goGS.getGameBoard()[r][c].getStoneColor();
 
+					// determine if the current liberty is empty
+					if (stoneColor == Stone.StoneColor.NONE) {
+						// play a move on the board's copy
+						goGS.playerMove(r, c);
 
+						// determine the current score
+						int s =
+								getBestMove(r, c, isSmartAI, depth + 1).score;
+
+						// if score is greater, reset the values
+						if (s < bestMove.score) {
+							bestMove.row = r;
+							bestMove.col = c;
+							bestMove.score = s;
+						}
+					}//end no stone color
+				}//end column
+			}//end row
 		}
+
 		// return the best move
 		return bestMove;
-
 	}//searchBestMove
-
-	/*////////////
-	public SmartAIMove ScoreIterator(int s, int depth)
-	{
-		// initialize a variable to store the best move
-		SmartAIMove bestMove = new SmartAIMove();
-
-		// iterate through the rows and columns of the current board
-		for (int r = 0; r < boardSize; r++) {
-			for (int c = 0; c < boardSize; c++) {
-				// get the current stone color
-				Stone.StoneColor stoneColor = goGS.getGameBoard()[r][c].getStoneColor();
-
-				// determine if the liberty is empty
-				if (stoneColor == Stone.StoneColor.NONE)
-				{
-					// place the smart AI's stone in this position
-					goGS.playerMove(r, c);
-
-					// determine the current best move by the alpha beta algorithm
-					int s = getBestMove(r, c, !isSmartAI, depth + 1).score;
-
-					// reset moves if the current score is better
-					if (s > bestMove.score)
-					{
-						bestMove.row   = r;
-						bestMove.col   = c;
-						bestMove.score = s;
-					}
-				}//end no stone color
-			}//end column
-		}//end row
-		return bestMove;
-	}//ScoreIterator*/
 }//GoSmartComputerPlayer
