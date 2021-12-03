@@ -118,12 +118,14 @@
                     android:id="@+id/elapsedTimeText"
                     android:layout_width="400dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
                     android:layout_weight="1"
                     android:background="#FF793C"
-                    android:gravity="center"
-                    android:text="            Elapsed Time: 18:20"
+                    android:gravity="center_horizontal"
+                    android:text="Elapsed Time: 18:20"
                     android:textColor="#F1EBEB"
                     android:textSize="29sp"
+                    android:translationX="10dp"
                     tools:ignore="TextContrastCheck" />
 
                 <Space
@@ -169,7 +171,7 @@
                     android:layout_height="100dp"
                     android:text="A players score is calculated by the their total number of stones on the board plus the total number of empty spaces their stones surround. "
                     android:textColor="#FDFDFD"
-                    android:textSize="22sp"
+                    android:textSize="22dp"
                     android:textStyle="italic" />
             </LinearLayout>
 
@@ -225,6 +227,10 @@
             android:textColor="#FFFFFF"
             android:textSize="25sp"
             android:textStyle="italic" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
 
         <TextView
             android:id="@+id/validMovetext"
