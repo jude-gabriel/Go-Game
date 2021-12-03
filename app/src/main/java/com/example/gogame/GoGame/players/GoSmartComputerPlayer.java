@@ -789,6 +789,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}//addStoneNoGUI
 }//GoSmartComputerPlayer
 
+
 /**
  * MCTSNode
  *
@@ -799,18 +800,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 class MCTSNode
 {
 
-
 }//MCTSNode
 
-/**
- * Move
- *
- * a valid Go move
- *
- * @author Brynn Harrington
- */
-class Move
-{
 
-}
 
