@@ -22,11 +22,10 @@ public class GoSurfaceView extends FlashSurfaceView {
     //constants, which are percentages with respect to the minimum
     //of the height and width
     private final static float BORDER_PERCENT = 5; // size of the border
-    private final Paint blackPaint;
-    private final Paint whitePaint;
-    private final int radius;
-
-    protected GoGameState state;
+    private final Paint blackPaint;     //Paint for black stones
+    private final Paint whitePaint;     //Paint for white stones
+    private final int radius;           //The radius
+    protected GoGameState state;        //The current gamestate
 
     /**
      * Constructor for the GoSurfaceView class.
@@ -94,7 +93,10 @@ public class GoSurfaceView extends FlashSurfaceView {
         //Draw the board onto the sv
         canvas.drawBitmap(gameBoardImage, 0.f, 0.f, null);
 
+        //Create an array of stones
         Stone[][] stonesArray = new Stone[9][9];
+
+        //Check if the state exists if not create it
         if(state != null) {
             stonesArray = state.getGameBoard();
         }
@@ -106,12 +108,10 @@ public class GoSurfaceView extends FlashSurfaceView {
             }
         }
 
-
         //offset each stone to place it directly on a liberty
         for (int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++){
                 stonesArray[i][j].draw(canvas,(j * 83) + 46, (i * 81) + 48);
-
             }
         }
     } //onDraw
@@ -128,6 +128,7 @@ public class GoSurfaceView extends FlashSurfaceView {
      * @author Jude Gabriel
      */
     public int[] findStone(float x, float y) {
+        //Return an error if the state does not exist
         if(state == null){
             int[] error = {-1, -1};
             return error;
@@ -143,6 +144,7 @@ public class GoSurfaceView extends FlashSurfaceView {
             for (int j = 0; j < boardSize; j++) {
                 if ((x < gameBoard[i][j].getxRight() + 20) && (x > gameBoard[i][j].getxLeft() - 20)) {
                     if ((y > gameBoard[i][j].getyTop() - 20) && (y < gameBoard[i][j].getyBottom() + 20)) {
+                        //Store the indices of the click
                         iIndex = i;
                         jIndex = j;
                     }

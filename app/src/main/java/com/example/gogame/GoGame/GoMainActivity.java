@@ -80,6 +80,7 @@ public class GoMainActivity extends GameMainActivity {
         // Set the initial information for the remote
         defaultConfig.setRemoteData("Remote Player", "", 1);
 
+        //Return the default configuration
         return defaultConfig;
     }
 
@@ -114,6 +115,7 @@ public class GoMainActivity extends GameMainActivity {
         return super.saveGame(getGameString(gameName));
     }
 
+
     /**
      * loadGame, adds this games prepend to the desire file to open and creates the
      * game specific state
@@ -131,6 +133,5 @@ public class GoMainActivity extends GameMainActivity {
 
         //Return the gamestate
         return new GoGameState((GoGameState) Saving.readFromFile(appName, this.getApplicationContext()));
-
     }
 }

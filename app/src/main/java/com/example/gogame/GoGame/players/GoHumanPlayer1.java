@@ -33,10 +33,10 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
     private TextView validMoveText      = null;
     private TextView timerText          = null;
     private TextView opponentMoveText   = null;
-    private TextView helpButtonText1 = null;
-    private TextView helpButtonText2 = null;
-    private TextView helpButtonText3 = null;
-    private TextView helpButtonText4 = null;
+    private TextView helpButtonText1    = null;
+    private TextView helpButtonText2    = null;
+    private TextView helpButtonText3    = null;
+    private TextView helpButtonText4    = null;
 
     //Buttons
     private Button skipButton           = null;
@@ -78,8 +78,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @param info the current game info
      *
      * @author Jude Gabriel
-     *
-     * TODO: Add support for timer and test
      */
     @Override
     public void receiveInfo(GameInfo info) {
@@ -95,9 +93,9 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             return;
         }
 
-
-        /** Update the view objects?? **/
+        //Check if we have the gamestate
         if(info instanceof GoGameState){
+            //Initialize the score and player turn
             p1Score = ((GoGameState) info).getPlayer1Score();
             p2Score = ((GoGameState) info).getPlayer2Score();
             playerTurn = ((GoGameState) info).getPlayer();
@@ -111,6 +109,7 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 //Update who's turn it is
                 playerTurnText.setText(allPlayerNames[playerTurn] + "'s Turn!");
 
+                //Swap the player
                 if(playerTurn == 1){
                     playerTurn = 0;
                 }
@@ -123,10 +122,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                     validMoveText.setVisibility(View.VISIBLE);
                     opponentMoveText.setVisibility(View.VISIBLE);
 
+                    //Check if there have been skips
                     if (((GoGameState) info).getNumSkips() != 0) {
-
                         //Find who's turn it is
                         int otherPlayer;
+
+                        //Change the player turn since there has been a skip
                         if(playerTurn == 0){
                             otherPlayer = 1;
                         }
@@ -145,9 +146,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                         opponentMoveText.setText(allPlayerNames[1] + " agrees to a handicap.");
                     }
                     else {
+                        //Find the coordinates of the most recent move
                         int[] lastMove = ((GoGameState) info).getMostRecentMove();
                         int x = lastMove[0] + 1;
                         int y = lastMove[1] + 1;
+
+                        //Display the most recent position
                         opponentMoveText.setText(allPlayerNames[playerTurn] + " placed a stone at: " +
                                 x + ", " + y);
                     }
@@ -215,15 +219,13 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @param activity the current activity
      *
      * @author Jude Gabriel
-     *
-     * TODO: Requires Testing
      */
     @Override
     public void setAsGui(GameMainActivity activity) {
         //Initialize the activity
         activity.setContentView(layoutId);
 
-        //initialize the widget reference members
+        //initialize the widget reference members and set proper visibility
         if(activity != null) {
             this.player1ScoreText = activity.findViewById(R.id.player1ScoreText);
             this.player2ScoreText = activity.findViewById(R.id.player2ScoreText);
@@ -241,7 +243,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
             helpButtonText3.setVisibility(View.INVISIBLE);
             this.helpButtonText4 = activity.findViewById(R.id.helpTextSkip);
             helpButtonText4.setVisibility(View.INVISIBLE);
-
             this.handicapButton = activity.findViewById(R.id.handicapButton);
             this.skipButton = activity.findViewById(R.id.skipTurnButton);
             this.forfeitButton = activity.findViewById(R.id.forfeitButton);
@@ -281,7 +282,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * info is received
      *
      * @author Jude Gabriel
-     *
      */
     public void initAfterReady(){
         //Initialize the title
@@ -350,8 +350,6 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
      * @param v the current view
      *
      * @author Jude Gabriel
-     *
-     * TODO: Requires Testing
      */
     @Override
     public void onClick(View v) {
@@ -380,21 +378,12 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 game.sendAction(new GoQuitGameAction(this));
                 break;
 
-            //Case 5: It was the dumbAi button, send a dumbAi action
-            //case R.id.dumbAIButton:
-              //  game.sendAction(new GoDumbAIAction(this));
-                //break;
-
-            //Case 6: It was the smartAi button, send a smartAI action
-            //case R.id.smartAIButton:
-              //  game.sendAction(new GoSmartAIAction(this));
-               // break;
-
-            //Case 7: It was the help button, display helpButtonText
+            //Case 5: It was the help button, display helpButtonText
             case R.id.helpButton:
                 // switch between displaying and not displaying help messages
                 displayHelpMessages = !displayHelpMessages;
 
+                //Set the visibility
                 if(displayHelpMessages) {
                     helpButtonText1.setVisibility(View.VISIBLE);
                     helpButtonText2.setVisibility(View.VISIBLE);

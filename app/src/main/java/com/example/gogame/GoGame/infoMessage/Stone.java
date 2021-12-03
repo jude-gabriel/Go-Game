@@ -40,15 +40,15 @@ public class Stone implements Serializable {
     }
 
     /* Instance Variables for the Stone Class */
-    private StoneColor stoneColor;
-    private float xLocation;  //Create private variables for the x
-    private float yLocation;  //and y locations of the of the stones
-    private int radius;   //Create a private int for the radius of stones
-    private float xLeft;  //stores the x value of the leftmost part of the stone
-    private float xRight;  //stores the x value of the rightmost part of the stone
-    private float yTop;  //stores the y value of the topmost part of the stone
-    private float yBottom;  //stores the y value of bottommost part of the stone
-    private CheckedStone checkedStone;
+    private StoneColor stoneColor;  //Holds the stones color
+    private float xLocation;        //Create private variables for the x
+    private float yLocation;        //and y locations of the of the stones
+    private int radius;             //Create a private int for the radius of stones
+    private float xLeft;            //stores the x value of the leftmost part of the stone
+    private float xRight;           //stores the x value of the rightmost part of the stone
+    private float yTop;             //stores the y value of the topmost part of the stone
+    private float yBottom;          //stores the y value of bottommost part of the stone
+    private CheckedStone checkedStone; //Checks if the stone was marked as captured
 
 
     /**
@@ -80,7 +80,6 @@ public class Stone implements Serializable {
     }
 
 
-
     /**
      * Draws the stone on the canvas
      *
@@ -89,7 +88,9 @@ public class Stone implements Serializable {
      * @author Jude Gabriel
      */
     public void draw(Canvas canvas, int x, int y){
+        //Create a new paint object
         Paint paint = new Paint();
+
         //Case 1: The stone color is none, make the paint transparent
         if(stoneColor == StoneColor.NONE){
             paint.setARGB(0, 0, 0, 0);
@@ -272,6 +273,12 @@ public class Stone implements Serializable {
         return yBottom;
     }
 
+
+    /**
+     * Setter for the bottom y coordinate of the stone
+     *
+     * @param y     a float for the y position
+     */
     public void setyBottom(float y){
         yBottom = y;
     }

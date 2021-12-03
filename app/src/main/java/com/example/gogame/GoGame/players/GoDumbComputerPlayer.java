@@ -33,11 +33,11 @@ public class GoDumbComputerPlayer extends GameComputerPlayer {
    }
 
     /**
-     * Receives the current game info and updates the game based on the info recieved
+     * Receives the current game info and updates the game based on the info received
      *
      * @param info
      *
-     * @author Mia Andersonnnn
+     * @author Mia Anderson
      */
     @Override
     protected void receiveInfo(GameInfo info) {

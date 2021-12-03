@@ -32,10 +32,11 @@ import java.util.Timer;
  * @version October 24
  */
 public class GoLocalGame extends LocalGame {
-    // initialize a tage for logging the current local game
-    private static final String TAG = "GoLocalGame";
-    private final GameTimer timer;
-    private static final int TICK = 1000;
+
+	/* Instance Variables */
+    private static final String TAG = "GoLocalGame";	//Logging tag
+    private final GameTimer timer;						//Game timer
+    private static final int TICK = 1000;				//Tick interval
 
 
     /**
@@ -62,6 +63,7 @@ public class GoLocalGame extends LocalGame {
     public GoLocalGame(GoGameState gameState) {
         // initialize with the superclass
         super();
+
         // create a new empty Go State object
         super.state = new GoGameState(gameState);
 
@@ -85,16 +87,14 @@ public class GoLocalGame extends LocalGame {
 	@Override
 	protected String checkIfGameOver()
     {
-
-        // check if both players have passed
-        // calculate the score if the game is over and return the winner
-
 		// initialize the current instance of the go game state
 		GoGameState state = (GoGameState) super.state;
 
 		//Check if a winning condition is still possible
 		if(state.getTotalMoves() > 2) {
 			boolean gameOver = state.isOver();
+
+			//If a winning condition is not possible, end game and find winner
 			if (gameOver) {
 				int p1Score = state.getPlayer1Score();
 				int p2Score = state.getPlayer2Score();
@@ -144,7 +144,7 @@ public class GoLocalGame extends LocalGame {
 			return playerNames[0] + " wins by forfeit! ";
 		}
 
-		// determine which schore is greater
+		// determine which score is greater
 		if (currPlayerScore > oppPlayerScore) {
 			if (currStoneColor == Stone.StoneColor.BLACK) gameWinner = 0;
 			else gameWinner = 1;
@@ -198,13 +198,9 @@ public class GoLocalGame extends LocalGame {
 	 *
 	 * @author Brynn Harrington
 	 * @author Jude Gabriel
-	 * //TODO - testing
 	 */
 	@Override
 	protected boolean takeAction(GameAction action) {
-
-		//TODO: Add action for changing difficulty
-
 		// ensure the moveAction is not null
 		if (action == null ) return false;
 
@@ -247,7 +243,6 @@ public class GoLocalGame extends LocalGame {
 		else return false;
 	}
 
-	//TESTING
 
 	/**
 	 * Finds which user won the game

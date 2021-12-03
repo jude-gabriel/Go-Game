@@ -35,7 +35,7 @@ public class GoGameState extends GameState implements Serializable {
     private boolean player1Forfeit;         //Tracks if Player 1 forfeits
     private boolean player2Forfeit;         //Tracks if Player 2 forfeits
     private int time;                       //Tracks the time of the game
-    private final int[] mostRecentMove;           //Tracks the most recent move made in the game
+    private final int[] mostRecentMove;     //Tracks the most recent move made in the game
 
     //Network play ID Tag
     private static final long serialVersionUID = 7552321013488624386L;
@@ -516,7 +516,7 @@ public class GoGameState extends GameState implements Serializable {
      * @return true if the board position is repeated
      * @author Jude Gabriel
      */
-    public boolean checkRepeatedPosition(int x, int y){// Stone.StoneColor checkCol, Stone.StoneColor capCol) {
+    public boolean checkRepeatedPosition(int x, int y){
         //Set a truth counter to zero
         int count = 0;
 
@@ -1002,23 +1002,28 @@ public class GoGameState extends GameState implements Serializable {
      * @author Jude Gabriel
      */
     public boolean equals(Object object) {
+        //Check if the object is an instance of the gamestate
         if (!(object instanceof GoGameState)) {
             return false;
         }
 
+        //Get the gamestate
         GoGameState goGameState = (GoGameState) object;
 
+        //Compare if the gamestates have the same color at each location
         for(int i = 0; i < boardSize; i++){
             for(int j = 0; j < boardSize; j++){
                 if(this.gameBoard[i][j].getStoneColor() !=
                         goGameState.gameBoard[i][j].getStoneColor()){
+
+                    //Boards were not equal
                     return false;
                 }
             }
         }
 
+        //Boards were equal
         return true;
-
     }
 
 

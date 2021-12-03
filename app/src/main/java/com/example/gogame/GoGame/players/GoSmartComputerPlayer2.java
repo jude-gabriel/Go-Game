@@ -32,12 +32,21 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
      * constructor
      *
      * @param name the player's name
+     * @author Jude Gabriel
      */
     public GoSmartComputerPlayer2(String name) {
         //Call super on the name of the player
         super(name);
     }
 
+
+    /**
+     * Receives the current game info and updates the game based on the info received
+     *
+     * @param info
+     *
+     * @author Jude Gabriel
+     */
     @Override
     protected void receiveInfo(GameInfo info) {
         //Check info exists
@@ -65,7 +74,6 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
         if(goGameState.getTotalMoves() == 0){
             game.sendAction(new GoHandicapAction(this));
         }
-
 
         //Find what color stone this AI is
         isPlayer1 = goGameState.getIsPlayer1();
@@ -100,7 +108,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
     /**
      * Resets the scoring array
      *
-     * DO I NEED THIS???
+     * @author Jude Gabriel
      */
     public void resetScore(){
         //Iterate through the array and set the scores to 0
@@ -113,6 +121,8 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 
     /**
      * Finds the score at each spot
+     *
+     * @author Jude Gabriel
      */
     public void populateScores(){
         //Iterate through the gameboard and create a copy of the state each iteration
@@ -121,7 +131,7 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
                 //Create the new gamestate
                 copyState = new GoGameState(goGameState);
 
-                //Set it equal to our turn
+                //Make it always be our turn
                 if(copyState.getIsPlayer1() != isPlayer1){
                     copyState.skipTurn();
                 }
@@ -158,6 +168,8 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 
     /**
      * Finds the location of the highest score
+     *
+     * @author Jude Gabriel
      */
     public void findBestScore(){
         //Create an array list to store the locations of equally scoring moves
@@ -189,11 +201,12 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
             //Generate a new random to select the move
             Random rand = new Random();
 
-            //Check if the array list is big enough to generate a random number
+            //Initialze the random value
             int index = 0;
 
-            //Create a random value to find a location for the stone
+            //Check if the array list is big enough to generate a random number
             if(equalMoves.size() > 1) {
+                //Create a random value
                 index = rand.nextInt(equalMoves.size() - 1);
             }
 
