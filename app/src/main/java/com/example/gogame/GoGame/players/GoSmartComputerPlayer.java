@@ -161,6 +161,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 
 		// change the smart AI's turn to true
 		isSmartAI = true;
+
+		// determine the best smart AI move from the algorithm
+		SmartAIMove smartAIMove = miniMaxABSearch(0, 0, isSmartAI, 0, MIN, MAX);
 	}//receiveInfo
 
 //////////////////	TODO - ADD HEADERS
