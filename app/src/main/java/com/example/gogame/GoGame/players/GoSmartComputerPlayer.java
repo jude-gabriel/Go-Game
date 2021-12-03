@@ -29,12 +29,13 @@
  */
 package com.example.gogame.GoGame.players;
 
-import com.example.gogame.GameFramework.infoMessage.GameInfo;
-import com.example.gogame.GameFramework.players.GameComputerPlayer;
+ import com.example.gogame.GameFramework.infoMessage.GameInfo;
+ import com.example.gogame.GameFramework.players.GameComputerPlayer;
+ import com.example.gogame.GoGame.infoMessage.GoGameState;
+ import com.example.gogame.GoGame.infoMessage.Stone;
 
 
-
-/**
+ /**
  * SmartAIMove
  *
  * this class represents a move by the smart AI from the minimax alpha-beta pruning algorithm
@@ -101,6 +102,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	private final int SCORE = 100;
 	private final int ALPHA = Integer.MAX_VALUE;	// represents the maximum value for alpha
 	private final int BETA = Integer.MIN_VALUE;		// represents the maximum value for beta
+	GoGameState goGS;    							// current game state
+	Stone.StoneColor smartAIStone;					// smart AI stone color
+	Stone.StoneColor oppStone;						// opponent's stone color
 
 	/**
 	 * constructor
@@ -121,7 +125,59 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	@Override
 	protected void receiveInfo(GameInfo info)
 	{
+		// assert the information passed is a non-null instance of GoGameState
+		assert info != null;
+		assert info instanceof GoGameState;
+
+		// get a copy of the current state passed in
+		GoGameState origGoGS = (GoGameState) info;
+
+		// copy the state into the instance variable for modification
+		goGS = new GoGameState(origGoGS);
 	}//receiveInfo
+//////////////////	TODO - ADD HEADERS
+	public SmartAIMove miniMaxAlphaBeta(int previousRow, int previousCol, boolean isSmartAI, int depth, int alpha)
+	{
+		// initialize a variable to store the best move
+		SmartAIMove bestMove = new SmartAIMove();
+
+		//TODO - DO I CHECK WHICH TURN IT IS?
+
+		// ensure the game is not over
+		goGS.setGameOver(false);
+
+		// determine the smart AI's color
+		if (this.playerNum == 0)
+		{
+			// since player 0 is black, set smart AI to black
+			smartAIStone = Stone.StoneColor.BLACK;
+			oppStone = Stone.StoneColor.WHITE;
+		}
+		else
+		{
+			// since player 1 is black, set smart AI to white
+			smartAIStone = Stone.StoneColor.WHITE;
+			oppStone = Stone.StoneColor.BLACK;
+
+			// assuming the smart AI is the better player so always do handicap
+			
+		}
+
+		// return the best move
+		return bestMove;
+	}//miniMaxSearchAB
+
+	public SmartAIMove searchBestMove(int previousRow, int previousCol, boolean isSmartAI, int depth, int alpha)
+	{
+		// initialize a variable to store the best move
+		SmartAIMove bestMove = new SmartAIMove();
+
+		// verify it is the smart AI's turn
+
+		// return the best move
+		return bestMove;
+
+	}//searchBestMove
 
 
 }//GoSmartComputerPlayer
