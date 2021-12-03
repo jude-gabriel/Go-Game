@@ -379,14 +379,14 @@ public class GoHumanPlayer1 extends GameHumanPlayer implements View.OnTouchListe
                 break;
 
             //Case 5: It was the dumbAi button, send a dumbAi action
-            case R.id.dumbAIButton:
-                game.sendAction(new GoDumbAIAction(this));
-                break;
+            //case R.id.dumbAIButton:
+              //  game.sendAction(new GoDumbAIAction(this));
+                //break;
 
             //Case 6: It was the smartAi button, send a smartAI action
-            case R.id.smartAIButton:
-                game.sendAction(new GoSmartAIAction(this));
-                break;
+            //case R.id.smartAIButton:
+              //  game.sendAction(new GoSmartAIAction(this));
+               // break;
 
             //Case 7: It was the help button, display helpButtonText
             case R.id.helpButton:
