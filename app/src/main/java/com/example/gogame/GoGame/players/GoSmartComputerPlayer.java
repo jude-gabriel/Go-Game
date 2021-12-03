@@ -31,6 +31,7 @@ package com.example.gogame.GoGame.players;
 
  import com.example.gogame.GameFramework.infoMessage.GameInfo;
  import com.example.gogame.GameFramework.players.GameComputerPlayer;
+ import com.example.gogame.GoGame.goActionMessage.GoHandicapAction;
  import com.example.gogame.GoGame.infoMessage.GoGameState;
  import com.example.gogame.GoGame.infoMessage.Stone;
 
@@ -100,8 +101,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 
 	/* INSTANCE VARIABLES FOR SMART AI */
 	private final int SCORE = 100;
-	private final int ALPHA = Integer.MAX_VALUE;	// represents the maximum value for alpha
-	private final int BETA = Integer.MIN_VALUE;		// represents the maximum value for beta
+	private final int MAX = Integer.MAX_VALUE;		// represents the maximum value for alpha
+	private final int MIN = Integer.MIN_VALUE;		// represents the maximum value for beta
 	GoGameState goGS;    							// current game state
 	Stone.StoneColor smartAIStone;					// smart AI stone color
 	Stone.StoneColor oppStone;						// opponent's stone color
@@ -160,7 +161,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 			oppStone = Stone.StoneColor.BLACK;
 
 			// assuming the smart AI is the better player so always do handicap
-			
+			if(goGS.getTotalMoves() == 0) { game.sendAction(new GoHandicapAction(this)); }
 		}
 
 		// return the best move
@@ -173,6 +174,25 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		SmartAIMove bestMove = new SmartAIMove();
 
 		// verify it is the smart AI's turn
+		if (isSmartAI)
+		{
+			// set the score to the minimum
+			bestMove.score = MIN;
+
+			// iterate through the rows and columns of the current board
+			for (int r = 0; r < goGS.getBoardSize(); r++) {
+				for (int c = 0; c < goGS.getBoardSize(); c++) {
+					// get the current stone color
+					Stone.StoneColor stoneColor = goGS.getGameBoard()[r][c].getStoneColor();
+					// determine if the liberty is empty
+					if (stoneColor == Stone.StoneColor.NONE)
+					{
+
+					}
+
+				}
+			}
+		}
 
 		// return the best move
 		return bestMove;
