@@ -674,10 +674,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	 *
 	 */
 	public ArrayList<int[]> generateMoves() {
-		//int emptyCount = 0;
-
 		// initialize the a list of different moves
-		ArrayList<int[]> moveList = new ArrayList<>();
+		int[][] moveList = new int[boardSize][boardSize];
 
 		// look for cells that has at least one stone in an adjacent cell
 		for (int row = 0; row < boardSize; row++) {
@@ -686,7 +684,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 				//TODO - FIGURE OUT WHY THERE IS AN ERROR
 				// verify there is at least one adjacent cell
 				if (gameBoard[row][col].getStoneColor() == Stone.StoneColor.NONE){
-					//emptyCount++;
 					continue;
 				}
 
@@ -701,7 +698,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 							int[] move = {row, col};
 
 							// add the move to the list
-							moveList.add(move);
+							moveList[row][col] = 1;
 
 							// continue to determine if more moves
 							continue;
@@ -781,9 +778,13 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 			}//endCol
 		}//endRow
 
-		/*if(emptyCount == 81){
+		if (moveList.size() == 0) {
+			// initialize a new move at a random place
 			int[] move = {1, 1};
 			moveList.add(move);
+		}
+		/*if(emptyCount == 81){
+
 		}*/
 
 		// return the move list
