@@ -789,6 +789,17 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	}//addStoneNoGUI
 }//GoSmartComputerPlayer
 
+/** MoveType
+ *
+ * enumerates the type of moves the player can use
+ */
+enum MoveType
+{
+	PLACE,
+	SKIP,
+	UNDO
+};
+
 /**
  * MCTSNode
  *
@@ -799,18 +810,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 class MCTSNode
 {
 
-
 }//MCTSNode
 
-/**
- * Move
- *
- * a valid Go move
- *
- * @author Brynn Harrington
- */
-class Move
-{
 
-}
 
