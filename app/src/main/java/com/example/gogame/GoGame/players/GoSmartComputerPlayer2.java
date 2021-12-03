@@ -101,26 +101,6 @@ public class GoSmartComputerPlayer2 extends GameComputerPlayer {
         //Sleep to simulate the AI thinking
         sleep(0.05);
 
-        //Get the AI's score and opponents score
-        int aiScore = 0;
-        int oppScore = 0;
-        if(isPlayer1 == true){
-            aiScore = goGameState.getPlayer2Score();
-            oppScore = goGameState.getPlayer1Score();
-        }
-        else{
-            aiScore = goGameState.getPlayer1Score();
-            oppScore = goGameState.getPlayer2Score();
-        }
-
-        //Check if the Ai is being beat a while after the game has started
-        if(oppScore > aiScore && goGameState.getTotalMoves() > 10){
-            if((oppScore - aiScore) > 30){
-                //If the AI is losing by at least 30, send a forfeit
-                game.sendAction(new GoForfeitAction(this));
-            }
-        }
-
         //See if there is a valid move
         if(x == -1 || y == -1){
             game.sendAction(new GoSkipTurnAction(this));
