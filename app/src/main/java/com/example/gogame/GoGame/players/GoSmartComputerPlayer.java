@@ -198,8 +198,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 						goGS.playerMove(r, c);
 
 						// determine the current score
-						int s =
-								miniMaxABSearch(r, c, !isSmartAI, depth + 1, bestMove.score, beta).score;
+						int s = miniMaxABSearch(r, c, !isSmartAI, depth + 1, bestMove.score, beta).score;
 
 						// if score is greater, reset the values
 						if (s > bestMove.score)
@@ -209,14 +208,14 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 							bestMove.score = s;
 						}
 
-						// if the beta value is greater, break
+						// if the beta value is greater than maximum for AI, break
 						if (beta <= bestMove.score) break forLoopSmartAI;
 					}//end no stone color
 				}//end column
 			}//end row
 		}//smartAI - max depth not reached
 
-		// determine if it is the smart AI's turn
+		// determine if it is not the smart AI's turn
 		else
 		{
 			// set the best move's score to beta
@@ -237,7 +236,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 
 						// determine the current score
 						int s =
-								miniMaxABSearch(r, c, isSmartAI, depth + 1, bestMove.score, beta).score;
+								miniMaxABSearch(r, c, isSmartAI, depth + 1, alpha, bestMove.score).score;
 
 						// if score is greater, reset the values
 						if (s > bestMove.score)
