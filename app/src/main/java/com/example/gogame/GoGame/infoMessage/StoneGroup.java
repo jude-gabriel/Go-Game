@@ -1,5 +1,7 @@
 package com.example.gogame.GoGame.infoMessage;
 
+import com.example.gogame.GoGame.infoMessage.moveData.Intersection;
+
 import java.util.HashSet;
 import java.util.Set;
 

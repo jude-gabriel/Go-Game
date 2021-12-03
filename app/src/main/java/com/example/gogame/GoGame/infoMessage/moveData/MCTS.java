@@ -1,10 +1,12 @@
-package com.example.gogame.GoGame.infoMessage;
+package com.example.gogame.GoGame.infoMessage.moveData;
+
+import com.example.gogame.GoGame.infoMessage.MCTSNode;
+import com.example.gogame.GoGame.infoMessage.StoneGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Go Player using non-parallel Monte Carlo Tree Search with a default of 10k moves

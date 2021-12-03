@@ -1,4 +1,6 @@
-package com.example.gogame.GoGame.infoMessage;
+package com.example.gogame.GoGame.infoMessage.moveData;
+
+import com.example.gogame.GoGame.infoMessage.Stone;
 
 import java.util.ArrayList;
 import java.util.List;
