@@ -1,5 +1,6 @@
 package com.example.gogame.GoGame.players;
 
+// game imports
 import com.example.gogame.GameFramework.infoMessage.GameInfo;
 import com.example.gogame.GameFramework.infoMessage.IllegalMoveInfo;
 import com.example.gogame.GameFramework.infoMessage.NotYourTurnInfo;
@@ -12,6 +13,8 @@ import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 
 import java.util.ArrayList;
+
+// Java API
 
 /**
  * A computerized Go player that recognizes an immediate capture of the
@@ -38,6 +41,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 	Stone.StoneColor oppStoneColor;		// opponent's stone color
 	private int boardSize;				// determine the board size
 	private static final int winningScore = 100000000;	// winning score (initially "infinity")
+
 
 	/*
 	 * constructor
@@ -784,3 +788,29 @@ public class GoSmartComputerPlayer extends GameComputerPlayer {
 		test.playerMove(row, col);
 	}//addStoneNoGUI
 }//GoSmartComputerPlayer
+
+/**
+ * MCTSNode
+ *
+ * a node for the Monte-Carlo tree search
+ *
+ * @author Brynn Harrington
+ */
+class MCTSNode
+{
+
+
+}//MCTSNode
+
+/**
+ * Move
+ *
+ * a valid Go move
+ *
+ * @author Brynn Harrington
+ */
+class Move
+{
+
+}
+
