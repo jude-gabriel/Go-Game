@@ -14,6 +14,8 @@ package com.example.gogame.GoGame.infoMessage;
 import com.example.gogame.GameFramework.infoMessage.GameState;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GoGameState extends GameState implements Serializable {
 
@@ -989,6 +991,23 @@ public class GoGameState extends GameState implements Serializable {
     }
 
 
+    /**
+	 * Returns a set of moves for the requested player
+	 * @param player 	the requested player
+	 * @return			the set of possible moves
+	 */
+	public Set<Move> getPossibleMoves(PlayerColor player) {
+		Set<Move> moves = new HashSet<Move>();
+		for (int i = 0; i < boardSize; i++){
+			for (int j = 0; j < boardSize; j++){
+				Move move = Move.getMoveInstance(MoveType.PLACE, i, j);
+				if (isLegalMove(move, player)){
+					moves.add(move);
+				}
+			}
+		}
+		return moves;
+	}
 
 
     /********* HELPER METHODS FOR TESTING ***********/
