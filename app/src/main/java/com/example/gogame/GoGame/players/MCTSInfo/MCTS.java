@@ -6,6 +6,7 @@ import com.example.gogame.GoGame.infoMessage.StoneGroup;
 import com.example.gogame.GoGame.infoMessage.moveData.Intersection;
 import com.example.gogame.GoGame.infoMessage.moveData.Move;
 import com.example.gogame.GoGame.infoMessage.moveData.MoveType;
+import com.example.gogame.GoGame.players.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +25,7 @@ import java.util.TreeSet;
  *
  * @author calebj
  */
-public class MCTS {
+public class MCTS extends Player {
 
     private static int ITERATIONS_PER_MOVE = 10000;
     private final Random random;
