@@ -35,7 +35,7 @@ import java.util.ArrayList;
  */
 public class GoSmartComputerPlayer2 extends GameComputerPlayer {
 	 /* LOGGING TAGS */
-	private static final String TAG = "GoSmartComputerPlayer";
+	private static final String TAG = "GoSmartComputerPlaye2r";
 
  	/* INSTANCE / MEMBER VARIABLES */
 	// instantiate variables to...
