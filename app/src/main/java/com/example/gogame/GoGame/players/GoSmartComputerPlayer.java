@@ -13,9 +13,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * The Medium smart computer player
+ * GoSmartComputer
  *
- * @author Jude Gabriel
+ * this class represents the hard smart computer by implementing
+ * a "look-ahead" tree to determine which move will give them
+ * the current score based on the current game state
+ *
+ * @author Brynn Harrington
  */
 public class GoSmartComputerPlayer extends GameComputerPlayer
 {
@@ -32,19 +36,18 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	/**
 	 * constructor
 	 *
-	 * @param name get the current player's score
+	 * initializes the smart computer by taking in the player's name from its parent
 	 *
-	 * @author Brynn Harrington
+	 * @param name get the current player's score
 	 */
 	public GoSmartComputerPlayer(String name) { super(name); }//GoSmartComputerPlayerConstructor
 
-	/** receiveInfo
+	/**
+	 * receiveInfo
 	 *
      * updates the game based on the information given
      *
      * @param info the current information of the game
-     *
-     * @author Brynn Harrington
      */
     @Override
     protected void receiveInfo(GameInfo info) {
@@ -77,7 +80,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
         resetScore();
 
         // determine the scores at each position
-        getAllMoves();
+        getPossibleScores();
 
         // determine the best score
         findBestScore();
@@ -91,29 +94,24 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
     }//receiveInfo
 
     /**
-     * Resets the scoring array
+     * resetScore
+	 * 
+	 * resets the current scores 
      *
-     * @author Jude Gabriel
      */
-    public void resetScore(){
-        //Iterate through the array and set the scores to 0
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
-                bestMove[i][j] = 0;
-            }
-        }
-    }
+    public void resetScore(){ for(int i = 0; i < boardSize; i++) for(int j = 0; j < boardSize; j++) bestMove[i][j] = 0; }//resetScore
 
     /**
-     * Finds the score at each spot
+	 * getPossibleScores
+	 *
+     * determines the possible scores at each spot from the AI
      *
-     * @author Jude Gabriel
      */
-    public void getAllMoves(){
-        //Iterate through the gameboard and create a copy of the state each iteration
+    public void getPossibleScores(){
+        //Iterate through the game board and create a copy of the state each iteration
         for(int i = 0; i < goGS.getBoardSize(); i++){
             for(int j = 0; j < goGS.getBoardSize(); j++){
-                //Create the new gamestate
+                // copy the current game state
                 copyState = new GoGameState(goGS);
 
                 //Make it always be our turn
@@ -161,8 +159,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
         ArrayList<Integer[]> equalMoves = new ArrayList<Integer[]>();
 
         //Iterate through the best move array and find the highest scoring move
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
+        for(int i = 0; i < boardSize; i++){
+            for(int j = 0; j < boardSize; j++){
                 if(bestMove[i][j] > runningScore){
                     //Store the location of the highest scoring move
                     row = i;
@@ -200,4 +198,41 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
             col = equalMoves.get(index)[1];
         }
     }
+
+    /**
+	 * Node
+	 *
+	 * represents an object of a node that stores:
+	 	* x: highest scoring x-coordinate
+	 	* y: highest scoring y-coordinate
+	 	* s: the score
+	 *
+	 * @author Brynn Harrington
+	 */
+    class Node
+	{
+    	/* INSTANCE VARIABLES */
+		private int x;			// x-coordinate
+		private int y;			// y-coordinate
+		private int s; 		// score of node
+
+		/**
+		 * constructor
+		 *
+		 * this object represents a node in the tree that stores the coordinates and score of the move
+		 * */
+		public Node(int xCord, int yCord, int score)
+		{
+			x = xCord;
+			y = yCord;
+			s = score;
+		}
+
+		/**
+		 * lambda???
+		 *
+		 * */
+
+	}
+
 }//GoSmartComputerPlayer
