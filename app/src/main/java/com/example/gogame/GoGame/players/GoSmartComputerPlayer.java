@@ -10,13 +10,14 @@ import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Random;
 
 /**
  * GoSmartComputer
  *
  * this class represents the hard smart computer by implementing
- * a "look-ahead" tree to determine which move will give them
+ * a "look-ahead" queue to determine which move will give them
  * the current score based on the current game state
  *
  * @author Brynn Harrington
@@ -29,9 +30,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
     GoGameState copyState;      	// instantiate a copy of the game state
     boolean SmartAIPlayer;          // track if the smart AI is playing
 	int[][] bestMove;           	// instantiate an array containing the best moves
-    int row = -1;                    // the x-coordinate of the move
-    int col = -1;                    // the y-coordinate of the move
+    int row = -1;                   // the x-coordinate of the move
+    int col = -1;                   // the y-coordinate of the move
     int runningScore;           	// tracks the winning score
+	Queue<Move> queueMoves;			// queue of moves
 
 	/**
 	 * constructor
@@ -199,8 +201,8 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
         }
     }
 
-    /**
-	 * Node
+     /**
+	 * MoveQueue
 	 *
 	 * represents an object of a node that stores:
 	 	* x: highest scoring x-coordinate
@@ -209,19 +211,51 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	 *
 	 * @author Brynn Harrington
 	 */
-    class Node
+    class MoveQueue
 	{
-    	/* INSTANCE VARIABLES */
-		private int x;			// x-coordinate
-		private int y;			// y-coordinate
-		private int s; 		// score of node
+		/* INSTANCE VARIABLES*/
+		Move head;				// the head node of the queue
+		int depth;				// current depth of the queue
+		int bestX;				// best x-coordinate of the queue
+		int bestY;				// best y-coordinate of the queue
+		int score;				// best score in the queue
 
 		/**
 		 * constructor
 		 *
-		 * this object represents a node in the tree that stores the coordinates and score of the move
-		 * */
-		public Node(int xCord, int yCord, int score)
+		 * this object represents the nodes in the queue and determines the best move through
+		 * traversing through the queue and including the score by using this function to
+		 * initialize the instance variables
+		 */
+		public MoveQueue(Move r)
+		{
+			head = r;
+		}
+	}
+
+    /**
+	 * Move
+	 *
+	 * represents an object of a node that stores:
+	 	* x: highest scoring x-coordinate
+	 	* y: highest scoring y-coordinate
+	 	* s: the score
+	 *
+	 * @author Brynn Harrington
+	 */
+	static class Move
+	{
+    	/* INSTANCE VARIABLES */
+		private int x;			// x-coordinate
+		private int y;			// y-coordinate
+		private int s; 			// score of node
+
+		/**
+		 * constructor
+		 *
+		 * this object represents a node in the queue that stores the coordinates and score of the move
+		 */
+		public Move(int xCord, int yCord, int score)
 		{
 			x = xCord;
 			y = yCord;
@@ -229,9 +263,16 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		}
 
 		/**
-		 * lambda???
+		 * getters and setters for instance variables
 		 *
-		 * */
+		 * these methods get/set the variables based on the calls from the queue
+		 */
+		public int getX() { return x; }
+		public int getY() { return y; }
+		public int getS() { return s; }
+		public void setX(int newX) { x = newX; }
+		public void setY(int newY) { y = newY; }
+		public void setS(int newS) { s = newS; }
 
 	}
 
