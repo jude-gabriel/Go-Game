@@ -22,18 +22,20 @@ import java.util.Random;
  *
  * @author Brynn Harrington
  */
+//from root node, look at next placement to get highest score. With this placement in mind, look at opponent
+	// and his last move is the new root mode, make the lowest possible point, then go back to you 
 public class GoSmartComputerPlayer extends GameComputerPlayer
 {
     /* INSTANCE VARIABLES */
-    GoGameState goGS;    			// instantiate the game state
+    GoGameState origGoGs;    		// instantiate the game state
 	int boardSize;					// the current board size
-    GoGameState copyState;      	// instantiate a copy of the game state
+    GoGameState currentGoGs;      	// instantiate a copy of the game state
     boolean SmartAIPlayer;          // track if the smart AI is playing
 	int[][] bestMove;           	// instantiate an array containing the best moves
     int row = -1;                   // the x-coordinate of the move
     int col = -1;                   // the y-coordinate of the move
-    int runningScore;           	// tracks the winning score
-	Queue<Move> queueMoves;			// queue of moves
+    int currentScore;           	// tracks the winning score
+	Queue<Move> queueBestMoves;			// queue of moves
 
 	/**
 	 * constructor
@@ -59,33 +61,39 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		if(info instanceof IllegalMoveInfo) return;	// verify it is a legal move for the AI
 
         // parse the current information into the game state
-        goGS = (GoGameState) info;
+        origGoGs = (GoGameState) info;
 
         // get the current board size
-		boardSize = goGS.getBoardSize();
+		boardSize = origGoGs.getBoardSize();
 
         // initialize an array to store the best move
         bestMove = new int[boardSize][boardSize];
 
         // we always assume the smart AI is better so it will always agree to a handicap
-        if(goGS.getTotalMoves() == 0) game.sendAction(new GoHandicapAction(this));
+        if(origGoGs.getTotalMoves() == 0) game.sendAction(new GoHandicapAction(this));
 
         // determine which player the smart AI is
-        SmartAIPlayer = goGS.getIsPlayer1();
+        SmartAIPlayer = origGoGs.getIsPlayer1();
 
         // initialize the rows, columns, and current running score
         row = -1;
         col = -1;
-        runningScore = 0;
+        currentScore = 0;
+        
+        // initialize the queue the null before adding moves
+		queueBestMoves = null;
 
-        //Reset the score --- why???
+        //TODO ---- Reset the score --- why???
         resetScore();
 
         // determine the scores at each position
         getPossibleScores();
 
+        // initialize the furthest depth to go to 
+		int depth = 0;
+		
         // determine the best score
-        findBestScore();
+        findOptimalMove(depth);
 
         //Sleep to simulate the AI thinking
         sleep(1);
@@ -101,7 +109,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	 * resets the current scores 
      *
      */
-    public void resetScore(){ for(int i = 0; i < boardSize; i++) for(int j = 0; j < boardSize; j++) bestMove[i][j] = 0; }//resetScore
+    public void resetScore(){ for(int r = 0; r < boardSize; r++) for(int c = 0; c < boardSize; c++) bestMove[r][c] = 0; }//resetScore
 
     /**
 	 * getPossibleScores
@@ -110,96 +118,70 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
      *
      */
     public void getPossibleScores(){
-        //Iterate through the game board and create a copy of the state each iteration
-        for(int i = 0; i < goGS.getBoardSize(); i++){
-            for(int j = 0; j < goGS.getBoardSize(); j++){
+		// iterate through the game state and copy at each position to give current game state
+        for(int r = 0; r < origGoGs.getBoardSize(); r++){
+            for(int c = 0; c < origGoGs.getBoardSize(); c++){
                 // copy the current game state
-                copyState = new GoGameState(goGS);
+                currentGoGs = new GoGameState(origGoGs);
 
-                //Make it always be our turn
-                if(copyState.getIsPlayer1() != SmartAIPlayer){
-                    copyState.skipTurn();
-                }
+               /* //
+                if(currentGoGs.getIsPlayer1() != SmartAIPlayer){
+                    currentGoGs.skipTurn();
+                }*/
 
-                //Always make sure the game is not over
-                copyState.setGameOver(false);
+                // ensure the game is still going
+                currentGoGs.setGameOver(false);
 
-                //Check that a move is possible
-                if(copyState.getGameBoard()[i][j].getStoneColor() != Stone.StoneColor.NONE){
-                    bestMove[i][j] = 0;
+                // verify there is a possible move
+                if(currentGoGs.getGameBoard()[r][c].getStoneColor() != Stone.StoneColor.NONE){
+                    bestMove[r][c] = 0;
                     continue;
                 }
 
-                //Check if the move is valid or not
-                boolean isValid = true;
-                isValid = copyState.playerMove(i, j);
-                if(isValid == false){
-                    bestMove[i][j] = 0;
+                //  verify the move is valid
+                boolean isValid = currentGoGs.playerMove(r, c);
+                if(!isValid){
+                    bestMove[r][c] = 0;
                     continue;
                 }
 
-                //Place the score in the array
-                if(copyState.getIsPlayer1() == SmartAIPlayer) {
-                    bestMove[i][j] = copyState.getPlayer1Score();
-                }
-                else{
-                    bestMove[i][j] = copyState.getPlayer2Score();
-                }
-
+                // place the node into the queue of moves
+                if(currentGoGs.getIsPlayer1() == SmartAIPlayer) bestMove[r][c] = currentGoGs.getPlayer1Score();
+                else bestMove[r][c] = currentGoGs.getPlayer2Score();
             }
         }
     }
-
 
     /**
-     * Finds the location of the highest score
+	 * findOptimalMoves
      *
-     * @author Jude Gabriel
+     * finds the set of optimal moves that can be played
+	 *
      */
-    public void findBestScore(){
-        //Create an array list to store the locations of equally scoring moves
-        ArrayList<Integer[]> equalMoves = new ArrayList<Integer[]>();
-
-        //Iterate through the best move array and find the highest scoring move
-        for(int i = 0; i < boardSize; i++){
-            for(int j = 0; j < boardSize; j++){
-                if(bestMove[i][j] > runningScore){
-                    //Store the location of the highest scoring move
-                    row = i;
-                    col = j;
-
-                    //Change the running score and clear the arraylist to find new equal moves
-                    runningScore = bestMove[i][j];
-                    equalMoves.clear();
+    public void findOptimalMoves()
+	{
+        // iterate through the best move array and find the highest scoring move
+        for(int r = 0; r < boardSize; r++){
+            for(int c = 0; c < boardSize; c++){
+				// if greater running score,  clear the arraylist to find new equal moves
+                if(bestMove[r][c] > currentScore)
+                {
+                	// clear the past moves
+                	queueBestMoves.clear();
+                	
+                	// add the new optimal move
+					queueBestMoves.add(new Move(r, c, bestMove[r][c]));
                 }
 
-                //If there is an equal move, update the array list to store it
-                if(bestMove[i][j] == runningScore){
-                    Integer[] move = {i, j};
-                    equalMoves.add(move);
+                // if there is an equal move, update the array list to store the next best move
+                if(bestMove[r][c] == currentScore)
+                {
+                    Move move = new Move(r, c, currentScore);
+                    queueBestMoves.add(move);
                 }
-            }
-        }
-
-        //Check if there are moves that produce the same highest score
-        if (equalMoves.isEmpty() == false){
-            //Generate a new random to select the move
-            Random rand = new Random();
-
-            //Initialze the random value
-            int index = 0;
-
-            //Check if the array list is big enough to generate a random number
-            if(equalMoves.size() > 1) {
-                //Create a random value
-                index = rand.nextInt(equalMoves.size() - 1);
-            }
-
-            //Set the locations of the moves
-            row = equalMoves.get(index)[0];
-            col = equalMoves.get(index)[1];
-        }
-    }
+            }//end column loop
+        }//end row loop
+    }//findOptimalMove
 
      /**
 	 * MoveQueue
