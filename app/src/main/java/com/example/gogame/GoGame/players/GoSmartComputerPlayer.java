@@ -9,9 +9,8 @@ import com.example.gogame.GoGame.goActionMessage.GoMoveAction;
 import com.example.gogame.GoGame.goActionMessage.GoSkipTurnAction;
 import com.example.gogame.GoGame.infoMessage.GoGameState;
 import com.example.gogame.GoGame.infoMessage.Stone;
-import java.util.ArrayList;
+
 import java.util.Queue;
-import java.util.Random;
 
 /**
  * GoSmartComputer
@@ -23,7 +22,7 @@ import java.util.Random;
  * @author Brynn Harrington
  */
 //from root node, look at next placement to get highest score. With this placement in mind, look at opponent
-	// and his last move is the new root mode, make the lowest possible point, then go back to you 
+	// and his last move is the new root mode, make the lowest possible point, then go back to you
 public class GoSmartComputerPlayer extends GameComputerPlayer
 {
     /* INSTANCE VARIABLES */
@@ -34,8 +33,6 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	int[][] bestMove;           	// instantiate an array containing the best moves
     int row = -1;                   // the x-coordinate of the move
     int col = -1;                   // the y-coordinate of the move
-    int currentScore;           	// tracks the winning score
-	Queue<Move> queueBestMoves;			// queue of moves
 
 	/**
 	 * constructor
@@ -78,35 +75,29 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
         // initialize the rows, columns, and current running score
         row = -1;
         col = -1;
-        currentScore = 0;
-        
-        // initialize the queue the null before adding moves
-		queueBestMoves = null;
+        int currentScore = 0;
 
-        //TODO ---- Reset the score --- why???
+		// reset the score for each computation
         resetScore();
 
         // determine the scores at each position
-        getPossibleScores();
+		Queue<Move> queueBestMoves = getPossibleScores(null);
 
-        // initialize the furthest depth to go to 
-		int depth = 0;
-		
-        // determine the best score
-        findOptimalMove(depth);
+        // determine the optimal moves
+        findOptimalMoves(currentScore, queueBestMoves);
 
         //Sleep to simulate the AI thinking
         sleep(1);
 
         // verify the move is valid - if not skip
-        if(row == -1 || col == -1) game.sendAction(new GoSkipTurnAction(this));
+        if(queueBestMoves.size() == 0) game.sendAction(new GoSkipTurnAction(this));
 		else game.sendAction(new GoMoveAction(this, row, col));
     }//receiveInfo
 
     /**
      * resetScore
-	 * 
-	 * resets the current scores 
+	 *
+	 * resets the current scores
      *
      */
     public void resetScore(){ for(int r = 0; r < boardSize; r++) for(int c = 0; c < boardSize; c++) bestMove[r][c] = 0; }//resetScore
@@ -115,33 +106,28 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	 * getPossibleScores
 	 *
      * determines the possible scores at each spot from the AI
-     *
      */
-    public void getPossibleScores(){
+    public Queue<Move> getPossibleScores(Queue<Move> queueMoves){
 		// iterate through the game state and copy at each position to give current game state
         for(int r = 0; r < origGoGs.getBoardSize(); r++){
             for(int c = 0; c < origGoGs.getBoardSize(); c++){
                 // copy the current game state
                 currentGoGs = new GoGameState(origGoGs);
 
-               /* //
-                if(currentGoGs.getIsPlayer1() != SmartAIPlayer){
-                    currentGoGs.skipTurn();
-                }*/
-
                 // ensure the game is still going
                 currentGoGs.setGameOver(false);
 
                 // verify there is a possible move
                 if(currentGoGs.getGameBoard()[r][c].getStoneColor() != Stone.StoneColor.NONE){
+                    queueMoves.add(new Move(r, 1));
                     bestMove[r][c] = 0;
                     continue;
                 }
 
                 //  verify the move is valid
-                boolean isValid = currentGoGs.playerMove(r, c);
-                if(!isValid){
-                    bestMove[r][c] = 0;
+                if(!currentGoGs.playerMove(r, c))
+                {
+                    bestMove[r][c] = -1;
                     continue;
                 }
 
@@ -150,15 +136,20 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
                 else bestMove[r][c] = currentGoGs.getPlayer2Score();
             }
         }
-    }
+        // return the moves in the queue
+		return queueMoves;
+    }//getPossible Scores
 
     /**
 	 * findOptimalMoves
      *
      * finds the set of optimal moves that can be played
 	 *
+	 ****** NOTE: this is not entirely optimal because it still relies on random
+	 * generations of which move is the best move - however, due to time constraints
+	 * the mini max alpha-beta pruning search was unable to be implemented effectively
      */
-    public void findOptimalMoves()
+    public int findOptimalMoves(int currentScore, Queue<Move> queueBestMoves)
 	{
         // iterate through the best move array and find the highest scoring move
         for(int r = 0; r < boardSize; r++){
@@ -170,50 +161,37 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
                 	queueBestMoves.clear();
                 	
                 	// add the new optimal move
-					queueBestMoves.add(new Move(r, c, bestMove[r][c]));
+					queueBestMoves.add(new Move(r, bestMove[r][c]));
                 }
 
                 // if there is an equal move, update the array list to store the next best move
-                if(bestMove[r][c] == currentScore)
-                {
-                    Move move = new Move(r, c, currentScore);
-                    queueBestMoves.add(move);
-                }
+                if(bestMove[r][c] == currentScore) queueBestMoves.add(new Move(r, currentScore));
             }//end column loop
         }//end row loop
+
+		// determine a value based on the queue's size
+		row = queueBestMoves.element().getX();
+        col = queueBestMoves.element().getX();
+
+		// if there are more than one move with the same score, pick a random move
+		if(queueBestMoves.size() > 1)
+		{
+			for (Move ignored : queueBestMoves) {
+				// determine the current move
+				Move currentMove = queueBestMoves.remove();
+
+				// call the best move on each tied score
+				int newScore = findOptimalMoves(currentScore, queueBestMoves);
+
+				// verify the new score isn't better than the initialize in the queue
+				assert currentMove != null;
+				if (newScore > currentMove.getS()) queueBestMoves.remove();
+			}
+		}
+		// return the best current score
+		return currentScore;
     }//findOptimalMove
 
-     /**
-	 * MoveQueue
-	 *
-	 * represents an object of a node that stores:
-	 	* x: highest scoring x-coordinate
-	 	* y: highest scoring y-coordinate
-	 	* s: the score
-	 *
-	 * @author Brynn Harrington
-	 */
-    class MoveQueue
-	{
-		/* INSTANCE VARIABLES*/
-		Move head;				// the head node of the queue
-		int depth;				// current depth of the queue
-		int bestX;				// best x-coordinate of the queue
-		int bestY;				// best y-coordinate of the queue
-		int score;				// best score in the queue
-
-		/**
-		 * constructor
-		 *
-		 * this object represents the nodes in the queue and determines the best move through
-		 * traversing through the queue and including the score by using this function to
-		 * initialize the instance variables
-		 */
-		public MoveQueue(Move r)
-		{
-			head = r;
-		}
-	}
 
     /**
 	 * Move
@@ -229,7 +207,7 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 	{
     	/* INSTANCE VARIABLES */
 		private int x;			// x-coordinate
-		private int y;			// y-coordinate
+		// y-coordinate
 		private int s; 			// score of node
 
 		/**
@@ -237,10 +215,9 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		 *
 		 * this object represents a node in the queue that stores the coordinates and score of the move
 		 */
-		public Move(int xCord, int yCord, int score)
+		public Move(int xCord, int score)
 		{
 			x = xCord;
-			y = yCord;
 			s = score;
 		}
 
@@ -249,13 +226,10 @@ public class GoSmartComputerPlayer extends GameComputerPlayer
 		 *
 		 * these methods get/set the variables based on the calls from the queue
 		 */
-		public int getX() { return x; }
-		public int getY() { return y; }
-		public int getS() { return s; }
-		public void setX(int newX) { x = newX; }
-		public void setY(int newY) { y = newY; }
-		public void setS(int newS) { s = newS; }
+		public int getX() { return x; }//getX
+		public int getS() { return s; }//getS
+		public void setX(int newX) { x = newX; }//setX
+		public void setS(int newS) { s = newS; }//setS
 
-	}
-
+	}//Move
 }//GoSmartComputerPlayer
